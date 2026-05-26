@@ -75,11 +75,16 @@ export default async function VerifyPage({ params }: VerifyPageProps) {
       {/* Brand Header */}
       <header className="max-w-5xl mx-auto w-full flex items-center justify-between py-4 border-b border-slate-200/50 dark:border-white/5">
         <Link href="/" className="flex items-center gap-2">
-          <div className="flex items-center justify-center w-7 h-7 rounded-lg bg-gradient-to-tr from-dent-blue-600 to-dent-green-500 shadow-md">
-            <ShieldCheck className="w-4 h-4 text-white" />
+          {/* Custom logo container */}
+          <div className="relative shrink-0 w-8 h-8 rounded-lg overflow-hidden border border-slate-200/50 dark:border-white/10 shadow flex items-center justify-center bg-slate-900 transition-all duration-300 hover:scale-105">
+            <img 
+              src={card?.labLogo || creatorLogo || "/logo.png"} 
+              alt={`${creatorLab} Logo`} 
+              className="w-full h-full object-cover"
+            />
           </div>
-          <span className="font-extrabold text-sm tracking-tight bg-gradient-to-r from-dent-blue-600 to-emerald-500 dark:from-dent-blue-400 dark:to-emerald-400 bg-clip-text text-transparent">
-            32 Dental Design
+          <span className="font-extrabold text-sm tracking-tight bg-gradient-to-r from-dent-blue-600 to-emerald-500 dark:from-dent-blue-400 dark:to-emerald-400 bg-clip-text text-transparent select-none">
+            {creatorLab}
           </span>
         </Link>
         <div className="flex items-center gap-3">
@@ -115,27 +120,34 @@ export default async function VerifyPage({ params }: VerifyPageProps) {
             </div>
 
             {/* Side-by-side Premium visual card mockup */}
-            <div className="flex flex-col xl:flex-row gap-8 items-center justify-center scale-90 sm:scale-100 origin-top">
-              <CardFront
-                labName={creatorLab}
-                labLogo={card.labLogo || creatorLogo}
-                patientName={card.patientName}
-                doctorName={card.doctorName}
-                date={card.date as any}
-                materialType={card.materialType}
-                jobId={card.jobId}
-                warrantyYears={card.warrantyYears}
-                cardBgImage={card.cardBgImage || cardBgImage}
-              />
-              <CardBack
-                jobId={card.jobId}
-                signature={card.signature}
-                labPhone={card.labPhone || labPhone}
-                labEmail={card.labEmail || labEmail}
-                labWebsite={card.labWebsite || labWebsite}
-                labAddress={card.labAddress || labAddress}
-                cardBgImage={card.cardBgImage || cardBgImage}
-              />
+            <div className="flex flex-col xl:flex-row gap-6 xl:gap-8 items-center justify-center w-full py-4 overflow-hidden">
+              {/* Card Front Wrapper with responsive scaling and margin compensation */}
+              <div className="relative shrink-0 flex items-center justify-center w-[500px] h-[315px] scale-[0.6] min-[370px]:scale-[0.7] min-[440px]:scale-[0.8] sm:scale-[0.9] xl:scale-100 origin-center my-[-60px] min-[370px]:my-[-45px] min-[440px]:my-[-30px] sm:my-[-15px] xl:my-0">
+                <CardFront
+                  labName={creatorLab}
+                  labLogo={card.labLogo || creatorLogo}
+                  patientName={card.patientName}
+                  doctorName={card.doctorName}
+                  date={card.date as any}
+                  materialType={card.materialType}
+                  jobId={card.jobId}
+                  warrantyYears={card.warrantyYears}
+                  cardBgImage={card.cardBgImage || cardBgImage}
+                />
+              </div>
+
+              {/* Card Back Wrapper with responsive scaling and margin compensation */}
+              <div className="relative shrink-0 flex items-center justify-center w-[500px] h-[315px] scale-[0.6] min-[370px]:scale-[0.7] min-[440px]:scale-[0.8] sm:scale-[0.9] xl:scale-100 origin-center my-[-60px] min-[370px]:my-[-45px] min-[440px]:my-[-30px] sm:my-[-15px] xl:my-0">
+                <CardBack
+                  jobId={card.jobId}
+                  signature={card.signature}
+                  labPhone={card.labPhone || labPhone}
+                  labEmail={card.labEmail || labEmail}
+                  labWebsite={card.labWebsite || labWebsite}
+                  labAddress={card.labAddress || labAddress}
+                  cardBgImage={card.cardBgImage || cardBgImage}
+                />
+              </div>
             </div>
 
             {/* Validation detail credentials table */}
@@ -155,8 +167,12 @@ export default async function VerifyPage({ params }: VerifyPageProps) {
 
               {/* Lab Header */}
               <div className="flex items-center gap-3.5 border-b border-slate-100 dark:border-slate-800/60 pb-5 z-10 relative">
-                <div className="w-11 h-11 rounded-2xl bg-amber-500/10 border border-amber-500/35 flex items-center justify-center text-amber-600 dark:text-amber-500 shadow-md shadow-amber-500/5 shrink-0">
-                  <ShieldCheck className="w-6 h-6" />
+                <div className="w-11 h-11 rounded-2xl overflow-hidden border border-slate-200/60 dark:border-slate-800/60 flex items-center justify-center bg-slate-900 shadow-md shrink-0">
+                  <img 
+                    src={card.labLogo || creatorLogo || "/logo.png"} 
+                    alt={`${creatorLab} Logo`} 
+                    className="w-full h-full object-cover"
+                  />
                 </div>
                 <div className="min-w-0 flex-1">
                   <span className="text-[9px] uppercase font-black text-slate-400 dark:text-slate-500 tracking-[0.2em] leading-none block">Certified Laboratory</span>
