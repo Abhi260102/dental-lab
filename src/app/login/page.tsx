@@ -107,9 +107,9 @@ export default function LoginPage() {
             <div className="relative group cursor-pointer transition-all duration-300">
               <div className="absolute -inset-1 bg-gradient-to-r from-dent-blue-500 to-emerald-500 rounded-2xl blur opacity-30 group-hover:opacity-50 transition duration-300" />
               <div className="relative w-20 h-20 rounded-2xl overflow-hidden border border-slate-200/50 dark:border-white/10 shadow-lg flex items-center justify-center bg-slate-900 transition-all duration-300 group-hover:scale-105">
-                <img 
-                  src={logoUrl} 
-                  alt={`${labName} Logo`} 
+                <img
+                  src={logoUrl}
+                  alt={`${labName} Logo`}
                   className="w-full h-full object-cover"
                 />
               </div>
@@ -165,12 +165,12 @@ export default function LoginPage() {
         </form>
 
         {/* Navigation redirection */}
-        <div className="text-center text-xs text-slate-500 dark:text-slate-400 font-medium">
+        {/* <div className="text-center text-xs text-slate-500 dark:text-slate-400 font-medium">
           Need a workspace account?{" "}
           <Link href="/register" className="text-emerald-600 dark:text-emerald-400 font-bold hover:underline">
             Register Laboratory
           </Link>
-        </div>
+        </div> */}
       </div>
     </div>
   );
