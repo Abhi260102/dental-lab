@@ -188,7 +188,7 @@ export default async function DashboardPage() {
               const pct = (count / maxTrendVal) * 100;
               return (
                 <div key={month} className="flex-1 flex flex-col items-center gap-2 group h-full justify-end">
-                  <div className="relative w-full flex justify-center">
+                  <div className="relative w-full h-32 flex items-end justify-center">
                     {/* Tooltip on hover */}
                     <div className="absolute bottom-full mb-1 opacity-0 group-hover:opacity-100 transition-opacity bg-slate-900 text-white text-[9px] font-bold py-0.5 px-1.5 rounded shadow pointer-events-none">
                       {count} Cards
