@@ -545,14 +545,14 @@ export default function CardsPage() {
                   {loading ? (
                     Array.from({ length: 5 }).map((_, idx) => (
                       <tr key={idx} className="animate-pulse">
-                        <td className="p-4"><div className="h-4 w-20 bg-slate-250 dark:bg-slate-800 rounded" /></td>
-                        <td className="p-4"><div className="h-4 w-28 bg-slate-250 dark:bg-slate-800 rounded" /></td>
-                        <td className="p-4"><div className="h-4 w-28 bg-slate-250 dark:bg-slate-800 rounded" /></td>
-                        <td className="p-4"><div className="h-4 w-12 bg-slate-250 dark:bg-slate-800 rounded" /></td>
-                        <td className="p-4"><div className="h-4 w-24 bg-slate-250 dark:bg-slate-800 rounded" /></td>
-                        <td className="p-4"><div className="h-4 w-20 bg-slate-250 dark:bg-slate-800 rounded" /></td>
-                        <td className="p-4"><div className="h-4 w-16 bg-slate-250 dark:bg-slate-800 rounded" /></td>
-                        <td className="p-4"><div className="h-6 w-24 bg-slate-250 dark:bg-slate-800 rounded mx-auto" /></td>
+                        <td className="p-4"><div className="h-4 w-20 bg-slate-200 dark:bg-slate-800 rounded" /></td>
+                        <td className="p-4"><div className="h-4 w-28 bg-slate-200 dark:bg-slate-800 rounded" /></td>
+                        <td className="p-4"><div className="h-4 w-28 bg-slate-200 dark:bg-slate-800 rounded" /></td>
+                        <td className="p-4"><div className="h-4 w-12 bg-slate-200 dark:bg-slate-800 rounded" /></td>
+                        <td className="p-4"><div className="h-4 w-24 bg-slate-200 dark:bg-slate-800 rounded" /></td>
+                        <td className="p-4"><div className="h-4 w-20 bg-slate-200 dark:bg-slate-800 rounded" /></td>
+                        <td className="p-4"><div className="h-4 w-16 bg-slate-200 dark:bg-slate-800 rounded" /></td>
+                        <td className="p-4"><div className="h-6 w-24 bg-slate-200 dark:bg-slate-800 rounded mx-auto" /></td>
                       </tr>
                     ))
                   ) : cards.length === 0 ? (

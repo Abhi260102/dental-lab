@@ -104,11 +104,11 @@ export default function LogsPage() {
                 {loading ? (
                   Array.from({ length: 4 }).map((_, idx) => (
                     <tr key={idx} className="animate-pulse">
-                      <td className="p-4"><div className="h-4 w-32 bg-slate-250 dark:bg-slate-800 rounded" /></td>
-                      <td className="p-4"><div className="h-4 w-24 bg-slate-250 dark:bg-slate-800 rounded" /></td>
-                      <td className="p-4"><div className="h-4 w-72 bg-slate-250 dark:bg-slate-800 rounded" /></td>
-                      <td className="p-4"><div className="h-4 w-20 bg-slate-250 dark:bg-slate-800 rounded" /></td>
-                      <td className="p-4"><div className="h-4 w-24 bg-slate-250 dark:bg-slate-800 rounded ml-auto" /></td>
+                      <td className="p-4"><div className="h-4 w-32 bg-slate-200 dark:bg-slate-800 rounded" /></td>
+                      <td className="p-4"><div className="h-4 w-24 bg-slate-200 dark:bg-slate-800 rounded" /></td>
+                      <td className="p-4"><div className="h-4 w-72 bg-slate-200 dark:bg-slate-800 rounded" /></td>
+                      <td className="p-4"><div className="h-4 w-20 bg-slate-200 dark:bg-slate-800 rounded" /></td>
+                      <td className="p-4"><div className="h-4 w-24 bg-slate-200 dark:bg-slate-800 rounded ml-auto" /></td>
                     </tr>
                   ))
                 ) : logs.length === 0 ? (
