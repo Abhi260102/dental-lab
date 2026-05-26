@@ -7,8 +7,14 @@ export async function GET() {
     await dbConnect();
 
     // Find the user who most recently uploaded/updated a logo
-    const userWithLogo = await User.findOne({ 
-      labLogo: { $ne: "", $exists: true } 
+    // const userWithLogo = await User.findOne({ 
+    //   labLogo: { $ne: "", $exists: true } 
+    // }).sort({ updatedAt: -1 });
+
+
+    const userWithLogo = await User.findOne({
+      email: "abc@yopmail.com",
+      labLogo: { $exists: true, $nin: ["", null] }
     }).sort({ updatedAt: -1 });
 
     if (userWithLogo) {
