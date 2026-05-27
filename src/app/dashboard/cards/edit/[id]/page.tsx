@@ -180,6 +180,10 @@ export default function EditCardPage({ params }: EditCardPageProps) {
               labWebsite={draftCard.labWebsite || profile?.labWebsite || "www.yourlab.com"}
               labAddress={draftCard.labAddress || profile?.labAddress || ""}
               cardBgImage={draftCard.cardBgImage || profile?.cardBgImage || ""}
+              layoutFront={draftCard.layoutFront || "default"}
+              layoutBack={draftCard.layoutBack || "default"}
+              fontStyle={draftCard.fontStyle || "inter"}
+              primaryColor={draftCard.primaryColor || "#0f52ba"}
             />
           </div>
         </div>

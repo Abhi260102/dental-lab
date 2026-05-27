@@ -89,7 +89,7 @@ export function Dialog({
             </div>
 
             {/* Content */}
-            <div className="my-4 max-h-[70vh] overflow-y-auto pr-1 no-scrollbar">
+            <div className="my-4 max-h-[70vh] overflow-y-auto overflow-x-hidden pr-1 no-scrollbar">
               {children}
             </div>
 

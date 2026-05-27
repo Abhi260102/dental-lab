@@ -28,6 +28,12 @@ async function dbConnect() {
     return cached!.conn;
   }
 
+  // Check if mongoose is already connected globally (independent of local cache)
+  if (mongoose.connection.readyState === 1) {
+    cached!.conn = mongoose;
+    return cached!.conn;
+  }
+
   if (!cached!.promise) {
     const opts = {
       bufferCommands: false,

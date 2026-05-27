@@ -70,6 +70,22 @@ const WarrantyCardSchema = new Schema(
       type: String,
       default: "", // base64 card-specific background image
     },
+    layoutFront: {
+      type: String,
+      default: "default",
+    },
+    layoutBack: {
+      type: String,
+      default: "default",
+    },
+    fontStyle: {
+      type: String,
+      default: "inter",
+    },
+    primaryColor: {
+      type: String,
+      default: "#0f52ba",
+    },
     createdBy: {
       type: Schema.Types.ObjectId,
       ref: "User",

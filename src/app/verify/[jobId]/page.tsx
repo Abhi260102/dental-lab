@@ -68,9 +68,12 @@ export default async function VerifyPage({ params }: VerifyPageProps) {
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-white flex flex-col justify-between p-6 relative overflow-hidden select-none transition-colors duration-300">
 
+      {/* Interactive visual grid background */}
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:14px_24px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] pointer-events-none z-0" />
+
       {/* Background ambient glows */}
-      <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full bg-dent-blue-500/5 dark:bg-dent-blue-500/10 blur-[120px] pointer-events-none" />
-      <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full bg-emerald-500/5 dark:bg-emerald-500/5 blur-[120px] pointer-events-none" />
+      <div className="absolute top-[-20%] left-[-20%] w-[60%] h-[60%] rounded-full bg-dent-blue-500/10 dark:bg-dent-blue-600/15 blur-[130px] pointer-events-none animate-pulse" />
+      <div className="absolute bottom-[-20%] right-[-20%] w-[60%] h-[60%] rounded-full bg-emerald-500/5 dark:bg-emerald-550/8 blur-[130px] pointer-events-none" />
 
       {/* Brand Header */}
       <header className="max-w-5xl mx-auto w-full flex items-center justify-between py-4 border-b border-slate-200/50 dark:border-white/5">
@@ -133,6 +136,9 @@ export default async function VerifyPage({ params }: VerifyPageProps) {
                   jobId={card.jobId}
                   warrantyYears={card.warrantyYears}
                   cardBgImage={card.cardBgImage || cardBgImage}
+                  layoutFront={card.layoutFront || "default"}
+                  fontStyle={card.fontStyle || "inter"}
+                  primaryColor={card.primaryColor || "#0f52ba"}
                 />
               </div>
 
@@ -146,17 +152,20 @@ export default async function VerifyPage({ params }: VerifyPageProps) {
                   labWebsite={card.labWebsite || labWebsite}
                   labAddress={card.labAddress || labAddress}
                   cardBgImage={card.cardBgImage || cardBgImage}
+                  layoutBack={card.layoutBack || "default"}
+                  fontStyle={card.fontStyle || "inter"}
+                  primaryColor={card.primaryColor || "#0f52ba"}
                 />
               </div>
             </div>
 
             {/* Validation detail credentials table */}
-            <div className="w-full max-w-[500px] border border-slate-200/80 dark:border-slate-800/80 rounded-[24px] bg-white/80 dark:bg-slate-900/60 backdrop-blur-xl p-8 flex flex-col gap-6 text-left shadow-2xl transition-all duration-300 relative overflow-hidden">
+            <div className="group w-full max-w-[500px] border border-slate-200/80 dark:border-slate-800/80 rounded-[32px] bg-white/90 dark:bg-slate-900/60 backdrop-blur-xl p-8 flex flex-col gap-6 text-left shadow-2xl hover:shadow-3xl hover:border-slate-350 dark:hover:border-slate-700/80 hover:-translate-y-1.5 transition-all duration-500 relative overflow-hidden">
 
-              {/* Dynamic lab background image watermark */}
+              {/* Dynamic lab background image watermark (with interactive hover parallax scale/rotate) */}
               {(card.cardBgImage || cardBgImage) && (
                 <div
-                  className="absolute inset-0 opacity-[0.06] pointer-events-none dark:opacity-[0.04] z-0"
+                  className="absolute inset-0 opacity-[0.14] dark:opacity-[0.09] pointer-events-none z-0 transition-transform duration-700 ease-out group-hover:scale-[1.08] group-hover:rotate-2"
                   style={{
                     backgroundImage: `url(${card.cardBgImage || cardBgImage})`,
                     backgroundSize: "cover",
@@ -180,7 +189,7 @@ export default async function VerifyPage({ params }: VerifyPageProps) {
                     {creatorLab}
                   </h3>
                   {(card.labAddress || labAddress) && (
-                    <span className="text-[10px] text-slate-500 dark:text-slate-400 mt-1 block font-semibold leading-normal truncate">
+                    <span className="text-[10px] text-slate-505 dark:text-slate-400 mt-1 block font-semibold leading-normal truncate">
                       {card.labAddress || labAddress}
                     </span>
                   )}
@@ -188,60 +197,62 @@ export default async function VerifyPage({ params }: VerifyPageProps) {
               </div>
 
               {/* Information Grid */}
-              <div className="grid grid-cols-2 gap-y-5 gap-x-6 text-sm leading-normal z-10 relative">
+              <div className="grid grid-cols-2 gap-y-6 gap-x-6 text-sm leading-normal z-10 relative">
 
-                <div className="flex flex-col">
-                  <span className="text-[8.5px] uppercase font-black text-slate-400 dark:text-slate-500 tracking-wider">Patient Name</span>
-                  <span className="font-extrabold text-slate-900 dark:text-white mt-1.5 text-base">
+                <div className="flex flex-col border-l-2 border-dent-blue-500/30 pl-3.5 transition-colors duration-300 group-hover:border-dent-blue-500/60">
+                  <span className="text-[9px] uppercase font-black text-slate-400 dark:text-slate-500 tracking-wider">Patient Name</span>
+                  <span className="font-extrabold text-slate-900 dark:text-white mt-1 text-base tracking-tight">
                     {card.patientName}
                   </span>
                 </div>
 
-                <div className="flex flex-col">
-                  <span className="text-[8.5px] uppercase font-black text-slate-400 dark:text-slate-500 tracking-wider">Issuing Doctor</span>
-                  <span className="font-extrabold text-slate-900 dark:text-white mt-1.5 text-base">
+                <div className="flex flex-col border-l-2 border-dent-blue-500/30 pl-3.5 transition-colors duration-300 group-hover:border-dent-blue-500/60">
+                  <span className="text-[9px] uppercase font-black text-slate-400 dark:text-slate-500 tracking-wider">Issuing Doctor</span>
+                  <span className="font-extrabold text-slate-900 dark:text-white mt-1 text-base tracking-tight">
                     {card.doctorName}
                   </span>
                 </div>
 
-                <div className="flex flex-col">
-                  <span className="text-[8.5px] uppercase font-black text-slate-400 dark:text-slate-500 tracking-wider block mb-1.5">Restoration Material</span>
-                  <div className="px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/25 inline-flex items-center w-fit">
+                <div className="flex flex-col border-l-2 border-emerald-500/30 pl-3.5 transition-colors duration-300 group-hover:border-emerald-500/60">
+                  <span className="text-[9px] uppercase font-black text-slate-400 dark:text-slate-500 tracking-wider block mb-1">Restoration Material</span>
+                  <div className="px-3 py-1 rounded-full text-xs font-bold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/25 inline-flex items-center w-fit shadow-xs">
                     {card.materialType}
                   </div>
                 </div>
 
-                <div className="flex flex-col">
-                  <span className="text-[8.5px] uppercase font-black text-slate-400 dark:text-slate-500 tracking-wider block mb-1">Tooth Designations</span>
-                  <div className="flex flex-wrap gap-1 mt-1 font-bold font-mono text-dent-blue-600 dark:text-dent-blue-400">
+                <div className="flex flex-col border-l-2 border-indigo-500/30 pl-3.5 transition-colors duration-300 group-hover:border-indigo-500/60">
+                  <span className="text-[9px] uppercase font-black text-slate-400 dark:text-slate-500 tracking-wider block mb-1">Tooth Designations</span>
+                  <div className="flex flex-wrap gap-1 mt-0.5 font-bold font-mono text-dent-blue-600 dark:text-dent-blue-400">
                     {card.toothNumber.split(",").map((t: string, idx: number) => (
-                      <span key={idx} className="px-2 py-0.5 bg-dent-blue-500/10 border border-dent-blue-500/20 rounded-md text-[11px]">
+                      <span key={idx} className="px-2 py-0.5 bg-indigo-500/10 border border-indigo-500/20 rounded-md text-[11px] font-bold">
                         {t.trim()}
                       </span>
                     ))}
                   </div>
                 </div>
 
-                <div className="flex flex-col">
-                  <span className="text-[8.5px] uppercase font-black text-slate-400 dark:text-slate-500 tracking-wider">Date Issued</span>
-                  <span className="font-bold text-slate-700 dark:text-slate-350 mt-1.5">
+                <div className="flex flex-col border-l-2 border-slate-300 dark:border-slate-800 pl-3.5 transition-colors duration-300 group-hover:border-slate-450 dark:group-hover:border-slate-700">
+                  <span className="text-[9px] uppercase font-black text-slate-400 dark:text-slate-500 tracking-wider">Date Issued</span>
+                  <span className="font-bold text-slate-700 dark:text-slate-300 mt-1 text-sm">
                     {issueDateStr}
                   </span>
                 </div>
 
-                <div className="flex flex-col">
-                  <span className="text-[8.5px] uppercase font-black text-slate-400 dark:text-slate-500 tracking-wider block mb-1">Warranty Term Expiry</span>
-                  <div className="px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/25 inline-flex items-center w-fit">
+                <div className="flex flex-col border-l-2 border-amber-500/30 pl-3.5 transition-colors duration-300 group-hover:border-amber-500/60">
+                  <span className="text-[9px] uppercase font-black text-slate-400 dark:text-slate-500 tracking-wider block mb-1">Warranty Term Expiry</span>
+                  <div className="px-3 py-1 rounded-full text-xs font-bold bg-amber-500/10 text-amber-600 dark:text-amber-450 border border-amber-500/25 inline-flex items-center w-fit shadow-xs">
                     {expiryDateStr}
                   </div>
                 </div>
 
                 {card.notes && (
-                  <div className="flex flex-col col-span-2 border-t border-slate-100 dark:border-slate-800/80 pt-4">
-                    <span className="text-[8.5px] uppercase font-black text-slate-400 dark:text-slate-500 tracking-wider">Prosthesis Notes</span>
-                    <span className="text-xs text-slate-600 dark:text-slate-400 mt-1.5 italic bg-slate-50 dark:bg-slate-900/50 p-3 rounded-xl border border-slate-100 dark:border-slate-800/40">
-                      &quot;{card.notes}&quot;
-                    </span>
+                  <div className="flex flex-col col-span-2 border-t border-slate-150 dark:border-slate-850/80 pt-4">
+                    <span className="text-[9px] uppercase font-black text-slate-400 dark:text-slate-500 tracking-wider">Prosthesis Notes</span>
+                    <div className="relative mt-2 p-3.5 rounded-2xl bg-slate-50/50 dark:bg-slate-900/30 border border-slate-200/50 dark:border-slate-850/80">
+                      <span className="text-xs text-slate-655 dark:text-slate-300 italic block leading-relaxed">
+                        &ldquo;{card.notes}&rdquo;
+                      </span>
+                    </div>
                   </div>
                 )}
 

@@ -5,8 +5,7 @@ import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { ShieldCheck, CreditCard, Sparkles, Database, CheckCircle, ArrowRight } from "lucide-react";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
-import CardFront from "@/components/warranty/card-front";
-import CardBack from "@/components/warranty/card-back";
+import WarrantyCardPreview from "@/components/warranty/warranty-card-preview";
 
 export default function Home() {
   const { data: session, status } = useSession();
@@ -17,7 +16,7 @@ export default function Home() {
   const [labWebsite, setLabWebsite] = useState("www.yourlab.com");
   const [labAddress, setLabAddress] = useState("");
   const [cardBgImage, setCardBgImage] = useState("");
-  const [activeSide, setActiveSide] = useState<'front' | 'back'>('front');
+
 
   useEffect(() => {
     fetch("/api/auth/logo")
@@ -46,18 +45,12 @@ export default function Home() {
       <header className="sticky top-0 z-30 w-full border-b border-slate-200/50 dark:border-white/5 bg-white/60 dark:bg-slate-950/60 backdrop-blur-md transition-colors">
         <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            {logoUrl ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
-                src={logoUrl}
-                alt="Logo"
-                className="w-8 h-8 object-cover rounded-lg border border-slate-200/50 shadow-sm shrink-0"
-              />
-            ) : (
-              <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-gradient-to-tr from-dent-blue-600 to-dent-green-500 shadow-md">
-                <ShieldCheck className="w-5 h-5 text-white" />
-              </div>
-            )}
+            <img
+              src={logoUrl || '/logo.png'}
+              alt="Logo"
+              className="w-8 h-8 object-cover rounded-lg border border-slate-200/50 shadow-sm shrink-0"
+            />
+
             <span className="font-extrabold text-lg tracking-tight bg-gradient-to-r from-dent-blue-600 to-emerald-500 dark:from-dent-blue-400 dark:to-emerald-400 bg-clip-text text-transparent uppercase">
               {labName}
             </span>
@@ -139,40 +132,29 @@ export default function Home() {
           )}
         </div>
 
-        {/* Hero Visual Mockup showing the actual custom card designs */}
+        {/* Hero Visual Mockup showing the actual custom card design */}
         <div className="relative w-full aspect-[4/3] flex items-center justify-center select-none scale-[0.6] min-[370px]:scale-[0.7] min-[440px]:scale-[0.8] sm:scale-100 origin-center py-4 overflow-hidden">
-          {/* Card Mockup Front */}
-          <div 
-            onClick={() => setActiveSide("front")}
-            className={`rotate-[-6deg] hover:rotate-0 transition-all duration-500 cursor-pointer shadow-2xl relative shrink-0 ${activeSide === "front" ? "z-20 scale-105" : "z-10 opacity-75 hover:opacity-100"}`}
-          >
-            <CardFront
-              labName={labName}
-              labLogo={logoUrl}
-              patientName="Jane Doe"
-              doctorName="Dr. John Smith"
-              date={new Date().toISOString()}
-              materialType="Zirconia Premium"
-              jobId="DS-2605-AF9X"
-              warrantyYears={10}
-              cardBgImage={cardBgImage}
-            />
-          </div>
-
-          {/* Card Mockup Back (peeking behind) */}
-          <div 
-            onClick={() => setActiveSide("back")}
-            className={`absolute rotate-[6deg] hover:rotate-0 transition-all duration-500 cursor-pointer shadow-2xl shrink-0 ${activeSide === "back" ? "z-20 scale-105" : "z-10 opacity-75 hover:opacity-100"}`}
-          >
-            <CardBack
-              jobId="DS-2605-AF9X"
-              labPhone={labPhone}
-              labEmail={labEmail}
-              labWebsite={labWebsite}
-              labAddress={labAddress}
-              cardBgImage={cardBgImage}
-            />
-          </div>
+          <WarrantyCardPreview
+            jobId="DS-2605-AF9X"
+            doctorName="Dr. John Smith"
+            patientName="Jane Doe"
+            toothNumber="16"
+            warrantyYears={10}
+            materialType="Zirconia Premium"
+            date={new Date().toISOString()}
+            signature={""}
+            labLogo={logoUrl}
+            labName={labName}
+            labPhone={labPhone}
+            labEmail={labEmail}
+            labWebsite={labWebsite}
+            labAddress={labAddress}
+            cardBgImage={cardBgImage}
+            layoutFront="default"
+            layoutBack="default"
+            fontStyle="inter"
+            primaryColor="#0f52ba"
+          />
         </div>
       </main>
 

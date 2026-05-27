@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useState, useEffect, Suspense } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { useProfile } from "@/context/ProfileContext";
 import { useWarrantyStore } from "@/store/use-warranty-store";
@@ -13,9 +13,12 @@ import { ArrowLeft, Sparkles } from "lucide-react";
 import Link from "next/link";
 import confetti from "canvas-confetti";
 
-export default function CreateCardPage() {
+function CreateCardContent() {
   const [isLoading, setIsLoading] = useState(false);
+  const [prefilledValues, setPrefilledValues] = useState<any>(null);
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const templateId = searchParams.get("templateId");
   const { data: session } = useSession();
   const { profile } = useProfile();
   const { toast } = useToast();
@@ -23,6 +26,38 @@ export default function CreateCardPage() {
   // Connect to Zustand store to retrieve draft details in real time
   const draftCard = useWarrantyStore((state) => state.draftCard);
   const resetDraftCard = useWarrantyStore((state) => state.resetDraftCard);
+
+  useEffect(() => {
+    if (templateId) {
+      fetch(`/api/templates/${templateId}`)
+        .then((res) => res.json())
+        .then((json) => {
+          if (json.success && json.data) {
+            const template = json.data;
+            setPrefilledValues({
+              doctorName: template.doctorName || "",
+              warrantyYears: template.warrantyYears,
+              materialType: template.materialType,
+              notes: template.notes || "",
+              cardBgImage: template.cardBgImage || "",
+              layoutFront: template.layoutFront || "default",
+              layoutBack: template.layoutBack || "default",
+              fontStyle: template.fontStyle || "inter",
+              primaryColor: template.primaryColor || "#0f52ba",
+            });
+            
+            toast({
+              title: "Template Loaded",
+              description: `Applying settings from template "${template.name}".`,
+              variant: "success",
+            });
+          }
+        })
+        .catch((err) => {
+          console.error("Failed to load template:", err);
+        });
+    }
+  }, [templateId, toast]);
 
   const handleSubmit = async (data: any) => {
     setIsLoading(true);
@@ -41,7 +76,11 @@ export default function CreateCardPage() {
           labEmail: profile?.labEmail || "",
           labWebsite: profile?.labWebsite || "",
           labAddress: profile?.labAddress || "",
-          cardBgImage: profile?.cardBgImage || "",
+          cardBgImage: data.cardBgImage || profile?.cardBgImage || "",
+          layoutFront: data.layoutFront || "default",
+          layoutBack: data.layoutBack || "default",
+          fontStyle: data.fontStyle || "inter",
+          primaryColor: data.primaryColor || "#0f52ba",
         }),
       });
 
@@ -115,7 +154,12 @@ export default function CreateCardPage() {
               </CardDescription>
             </CardHeader>
             <CardContent className="mt-4">
-              <WarrantyForm onSubmit={handleSubmit} isLoading={isLoading} />
+              <WarrantyForm 
+                onSubmit={handleSubmit} 
+                isLoading={isLoading} 
+                defaultValues={prefilledValues || undefined}
+                initialTemplateId={templateId || ""}
+              />
             </CardContent>
           </Card>
         </div>
@@ -145,7 +189,11 @@ export default function CreateCardPage() {
               labEmail={profile?.labEmail || "info@yourlab.com"}
               labWebsite={profile?.labWebsite || "www.yourlab.com"}
               labAddress={profile?.labAddress || ""}
-              cardBgImage={profile?.cardBgImage || ""}
+              cardBgImage={draftCard.cardBgImage || profile?.cardBgImage || ""}
+              layoutFront={draftCard.layoutFront || "default"}
+              layoutBack={draftCard.layoutBack || "default"}
+              fontStyle={draftCard.fontStyle || "inter"}
+              primaryColor={draftCard.primaryColor || "#0f52ba"}
             />
           </div>
         </div>
@@ -153,5 +201,17 @@ export default function CreateCardPage() {
       </div>
 
     </div>
+  );
+}
+
+export default function CreateCardPage() {
+  return (
+    <Suspense fallback={
+      <div className="flex items-center justify-center min-h-[300px]">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-dent-blue-500"></div>
+      </div>
+    }>
+      <CreateCardContent />
+    </Suspense>
   );
 }

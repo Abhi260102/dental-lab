@@ -23,6 +23,10 @@ interface WarrantyCardPreviewProps {
   labWebsite?: string;
   labAddress?: string;
   cardBgImage?: string;
+  layoutFront?: string;
+  layoutBack?: string;
+  fontStyle?: string;
+  primaryColor?: string;
 }
 
 export default function WarrantyCardPreview({
@@ -41,6 +45,10 @@ export default function WarrantyCardPreview({
   labWebsite,
   labAddress,
   cardBgImage,
+  layoutFront,
+  layoutBack,
+  fontStyle,
+  primaryColor,
 }: WarrantyCardPreviewProps) {
   const [isFlipped, setIsFlipped] = useState(false);
 
@@ -53,7 +61,7 @@ export default function WarrantyCardPreview({
       {/* 3D Flipping Card Container (with responsive scaling and centering) */}
       <div 
         onClick={handleFlip}
-        className="relative cursor-pointer perspective-1000 group shrink-0 w-[500px] h-[315px] scale-[0.6] min-[370px]:scale-[0.7] min-[440px]:scale-[0.8] sm:scale-[0.9] md:scale-100 origin-center my-[-60px] min-[370px]:my-[-45px] min-[440px]:my-[-30px] sm:my-[-15px] md:my-0"
+        className="relative cursor-pointer perspective-1000 group shrink-0 w-[500px] h-[315px] scale-[0.5] min-[350px]:scale-[0.55] min-[400px]:scale-[0.7] min-[480px]:scale-[0.8] sm:scale-[0.9] md:scale-100 origin-center my-[-75px] min-[350px]:my-[-70px] min-[400px]:my-[-45px] min-[480px]:my-[-30px] sm:my-[-15px] md:my-0"
         title="Click to flip card"
       >
         <motion.div
@@ -73,6 +81,9 @@ export default function WarrantyCardPreview({
               jobId={jobId}
               warrantyYears={warrantyYears}
               cardBgImage={cardBgImage}
+              layoutFront={layoutFront}
+              fontStyle={fontStyle}
+              primaryColor={primaryColor}
             />
           </div>
 
@@ -86,6 +97,9 @@ export default function WarrantyCardPreview({
               labWebsite={labWebsite}
               labAddress={labAddress}
               cardBgImage={cardBgImage}
+              layoutBack={layoutBack}
+              fontStyle={fontStyle}
+              primaryColor={primaryColor}
             />
           </div>
         </motion.div>

@@ -22,6 +22,10 @@ const initialDraft: WarrantyCardInput = {
   notes: "",
   signature: "",
   labLogo: "",
+  layoutFront: "default",
+  layoutBack: "default",
+  fontStyle: "inter",
+  primaryColor: "#0f52ba",
 };
 
 export const useWarrantyStore = create<WarrantyStore>((set) => ({

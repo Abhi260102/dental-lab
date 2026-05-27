@@ -98,7 +98,11 @@ export async function PUT(req: Request, context: RouteContext) {
     if (updatedData.labEmail) card.labEmail = updatedData.labEmail;
     if (updatedData.labWebsite) card.labWebsite = updatedData.labWebsite;
     if (updatedData.labAddress !== undefined) card.labAddress = updatedData.labAddress;
-    if (updatedData.cardBgImage) card.cardBgImage = updatedData.cardBgImage;
+    if (updatedData.cardBgImage !== undefined) card.cardBgImage = updatedData.cardBgImage;
+    if (updatedData.layoutFront !== undefined) card.layoutFront = updatedData.layoutFront;
+    if (updatedData.layoutBack !== undefined) card.layoutBack = updatedData.layoutBack;
+    if (updatedData.fontStyle !== undefined) card.fontStyle = updatedData.fontStyle;
+    if (updatedData.primaryColor !== undefined) card.primaryColor = updatedData.primaryColor;
 
     await card.save();
 

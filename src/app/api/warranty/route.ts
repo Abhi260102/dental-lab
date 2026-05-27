@@ -25,7 +25,7 @@ export async function POST(req: Request) {
 
     const { 
       jobId, doctorName, patientName, toothNumber, warrantyYears, materialType, date, notes, signature, labLogo,
-      labPhone, labEmail, labWebsite, labAddress, cardBgImage
+      labPhone, labEmail, labWebsite, labAddress, cardBgImage, layoutFront, layoutBack, fontStyle, primaryColor
     } = validationResult.data;
 
     await dbConnect();
@@ -59,6 +59,10 @@ export async function POST(req: Request) {
       labWebsite: labWebsite || userDoc?.labWebsite || "www.yourlab.com",
       labAddress: labAddress || userDoc?.labAddress || "",
       cardBgImage: cardBgImage || userDoc?.cardBgImage || "",
+      layoutFront: layoutFront || "default",
+      layoutBack: layoutBack || "default",
+      fontStyle: fontStyle || "inter",
+      primaryColor: primaryColor || "#0f52ba",
       createdBy: session.user.id,
     });
 

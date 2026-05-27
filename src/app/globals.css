@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Montserrat:wght@400;600;700;900&family=Playfair+Display:ital,wght@0,400;0,700;1,900&display=swap');
 @import "tailwindcss";
 
 @variant dark (&:where(.dark, .dark *));
@@ -183,4 +184,22 @@ body {
 .no-scrollbar {
   -ms-overflow-style: none;
   scrollbar-width: none;
+}
+
+/* Custom design font utility classes */
+.font-style-inter {
+  font-family: var(--font-sans), system-ui, sans-serif;
+}
+.font-style-playfair {
+  font-family: 'Playfair Display', Georgia, serif;
+}
+.font-style-cinzel {
+  font-family: 'Cinzel', Times New Roman, serif;
+  letter-spacing: 0.05em;
+}
+.font-style-mono {
+  font-family: var(--font-mono), monospace;
+}
+.font-style-montserrat {
+  font-family: 'Montserrat', Helvetica, sans-serif;
 }

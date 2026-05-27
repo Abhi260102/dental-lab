@@ -690,6 +690,9 @@ export default function CardsPage() {
               jobId={selectedCard.jobId}
               warrantyYears={selectedCard.warrantyYears}
               cardBgImage={selectedCard.cardBgImage || profile?.cardBgImage || ""}
+              layoutFront={selectedCard.layoutFront || "default"}
+              fontStyle={selectedCard.fontStyle || "inter"}
+              primaryColor={selectedCard.primaryColor || "#0f52ba"}
             />
           </div>
           <div ref={exportBackRef} className="w-[500px] h-[315px] rounded-2xl overflow-hidden shrink-0">
@@ -701,6 +704,9 @@ export default function CardsPage() {
               labWebsite={selectedCard.labWebsite || profile?.labWebsite || "www.yourlab.com"}
               labAddress={selectedCard.labAddress || profile?.labAddress || ""}
               cardBgImage={selectedCard.cardBgImage || profile?.cardBgImage || ""}
+              layoutBack={selectedCard.layoutBack || "default"}
+              fontStyle={selectedCard.fontStyle || "inter"}
+              primaryColor={selectedCard.primaryColor || "#0f52ba"}
             />
           </div>
         </div>
@@ -759,9 +765,9 @@ export default function CardsPage() {
         }
       >
         {selectedCard && (
-          <div className="flex flex-col items-center justify-center p-4 border border-dashed border-slate-200 dark:border-slate-800/80 rounded-2xl bg-slate-50/50 dark:bg-slate-900/10 min-h-[350px]">
+          <div className="flex flex-col items-center justify-center p-2 sm:p-4 border border-dashed border-slate-200 dark:border-slate-800/80 rounded-2xl bg-slate-50/50 dark:bg-slate-900/10 min-h-[350px] w-full overflow-hidden">
             {/* Inject print-area ID for window print selectors */}
-            <div id="print-area" className="flex flex-col gap-6 md:gap-0 md:block">
+            <div id="print-area" className="flex flex-col items-center md:items-stretch gap-6 md:gap-0 md:block w-full overflow-hidden">
               <WarrantyCardPreview
                 jobId={selectedCard.jobId}
                 doctorName={selectedCard.doctorName}
@@ -778,6 +784,10 @@ export default function CardsPage() {
                 labWebsite={selectedCard.labWebsite || profile?.labWebsite || "www.yourlab.com"}
                 labAddress={selectedCard.labAddress || profile?.labAddress || ""}
                 cardBgImage={selectedCard.cardBgImage || profile?.cardBgImage || ""}
+                layoutFront={selectedCard.layoutFront || "default"}
+                layoutBack={selectedCard.layoutBack || "default"}
+                fontStyle={selectedCard.fontStyle || "inter"}
+                primaryColor={selectedCard.primaryColor || "#0f52ba"}
               />
             </div>
           </div>

@@ -2,6 +2,7 @@ import { getSessionServer } from "@/lib/session";
 import dbConnect from "@/lib/mongodb";
 import WarrantyCard from "@/models/WarrantyCard";
 import ActivityLog from "@/models/ActivityLog";
+import Template from "@/models/Template";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { 
@@ -12,7 +13,10 @@ import {
   Activity, 
   Plus, 
   TrendingUp, 
-  ArrowUpRight 
+  ArrowUpRight,
+  Star,
+  ArrowRight,
+  Layers
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -74,6 +78,15 @@ export default async function DashboardPage() {
     .limit(5)
     .lean();
 
+  // Fetch default templates for this user
+  const defaultTemplateQuery: any = { isDefault: true };
+  if (session.user.role !== "admin") {
+    defaultTemplateQuery.createdBy = session.user.id;
+  }
+  const defaultTemplates = await Template.find(defaultTemplateQuery)
+    .sort({ updatedAt: -1 })
+    .lean();
+
   // Create monthly trends statistics for last 6 months
   const monthlyData: Record<string, number> = {};
   for (let i = 5; i >= 0; i--) {
@@ -113,6 +126,104 @@ export default async function DashboardPage() {
             Generate Warranty Card
           </Button>
         </Link>
+      </div>
+
+      {/* Default Templates Section */}
+      <div className="space-y-3">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <Layers className="w-4 h-4 text-amber-500" />
+            <h3 className="text-sm font-bold tracking-wide">Default Templates</h3>
+            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">· Pinned Presets</span>
+          </div>
+          <Link href="/dashboard/templates" className="text-xs font-bold text-dent-blue-500 hover:text-dent-blue-600 flex items-center gap-1 group">
+            Manage Templates
+            <ArrowUpRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+          </Link>
+        </div>
+
+        {defaultTemplates.length === 0 ? (
+          <div className="flex items-center justify-between gap-4 p-4 rounded-xl border border-dashed border-amber-300/50 dark:border-amber-800/40 bg-amber-50/30 dark:bg-amber-950/5">
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 rounded-xl bg-amber-100 dark:bg-amber-950/30 flex items-center justify-center shrink-0">
+                <Star className="w-4 h-4 text-amber-500" />
+              </div>
+              <div>
+                <p className="text-xs font-bold text-slate-700 dark:text-slate-300">No default templates pinned</p>
+                <p className="text-[10px] text-slate-400 mt-0.5">Star a template to pin it here for quick access.</p>
+              </div>
+            </div>
+            <Link href="/dashboard/templates">
+              <Button size="sm" variant="outline" className="text-xs border-amber-300/60 dark:border-amber-800/40 text-amber-600 dark:text-amber-400 hover:bg-amber-50 dark:hover:bg-amber-950/20 shrink-0">
+                Go to Templates
+              </Button>
+            </Link>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {(defaultTemplates as any[]).map((tmpl) => (
+              <div
+                key={tmpl._id.toString()}
+                className="group relative glass-panel rounded-2xl border-2 border-amber-300/50 dark:border-amber-700/30 bg-amber-50/20 dark:bg-amber-950/5 overflow-hidden shadow-sm hover:-translate-y-0.5 transition-all duration-200"
+              >
+                {/* Amber top accent line */}
+                <div className="h-1 w-full bg-gradient-to-r from-amber-400 to-amber-500" />
+
+                {/* Mini visual preview */}
+                <div
+                  className="relative h-20 overflow-hidden flex items-end"
+                  style={{ backgroundColor: tmpl.layoutFront === 'modern' ? '#020617' : '#f1f5f9' }}
+                >
+                  {tmpl.cardBgImage && (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={tmpl.cardBgImage} className="absolute inset-0 w-full h-full object-cover opacity-40" alt="" />
+                  )}
+                  {(tmpl.layoutFront === 'default' || tmpl.layoutFront === 'modern') && (
+                    <svg className="absolute bottom-0 right-0 w-16 h-16 z-0" viewBox="0 0 100 100" preserveAspectRatio="none">
+                      <path d="M 100 0 Q 30 30 0 100 L 100 100 Z" fill={tmpl.layoutFront === 'modern' ? '#020617' : '#e2e8f0'} opacity="0.8" />
+                      <path d="M 100 -3 Q 27 27 -3 100" fill="none" stroke={tmpl.primaryColor || '#0f52ba'} strokeWidth="3.5" />
+                    </svg>
+                  )}
+                  {tmpl.layoutFront === 'classic' && (
+                    <div className="absolute inset-1.5 border-2 border-double rounded z-10" style={{ borderColor: tmpl.primaryColor || '#0f52ba', opacity: 0.6 }} />
+                  )}
+                  <div className="relative z-10 p-3 w-full">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[8px] font-black uppercase tracking-widest leading-none" style={{ color: tmpl.layoutFront === 'modern' ? '#fff' : '#0f172a' }}>
+                        {tmpl.name}
+                      </span>
+                      <div className="w-3 h-3 rounded-full border-2 border-white/40 shadow-sm" style={{ backgroundColor: tmpl.primaryColor || '#0f52ba' }} />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="p-3 space-y-2">
+                  <div className="flex items-center gap-1.5">
+                    <Star className="w-3 h-3 fill-amber-400 text-amber-400 shrink-0" />
+                    <span className="text-[9px] font-black uppercase tracking-widest text-amber-500">Default Preset</span>
+                  </div>
+                  <div className="grid grid-cols-2 gap-x-3 gap-y-1 text-[10px]">
+                    <div>
+                      <span className="text-[8px] text-slate-400 uppercase tracking-wider block">Font</span>
+                      <span className="font-bold text-slate-600 dark:text-slate-400 capitalize">{tmpl.fontStyle || 'inter'}</span>
+                    </div>
+                    <div>
+                      <span className="text-[8px] text-slate-400 uppercase tracking-wider block">Layout</span>
+                      <span className="font-bold text-slate-600 dark:text-slate-400 capitalize">{tmpl.layoutFront || 'default'}</span>
+                    </div>
+                  </div>
+                  <Link
+                    href={`/dashboard/cards/create?templateId=${tmpl._id.toString()}`}
+                    className="flex items-center justify-center gap-1.5 w-full mt-1 px-3 py-2 rounded-lg bg-amber-50 hover:bg-amber-100 dark:bg-amber-950/20 dark:hover:bg-amber-950/40 text-amber-700 dark:text-amber-400 text-[10px] font-bold border border-amber-200/60 dark:border-amber-800/30 transition-colors group/use"
+                  >
+                    Use This Template
+                    <ArrowRight className="w-3 h-3 group-hover/use:translate-x-0.5 transition-transform" />
+                  </Link>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
 
       {/* Metrics Row */}

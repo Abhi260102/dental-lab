@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useSession } from "next-auth/react";
@@ -18,6 +18,7 @@ interface WarrantyFormProps {
   isLoading: boolean;
   defaultValues?: Partial<WarrantyCardInput>;
   submitLabel?: string;
+  initialTemplateId?: string;
 }
 
 export default function WarrantyForm({
@@ -25,11 +26,64 @@ export default function WarrantyForm({
   isLoading,
   defaultValues,
   submitLabel = "Generate Warranty Card",
+  initialTemplateId,
 }: WarrantyFormProps) {
   const { data: session } = useSession();
   const { profile } = useProfile();
   const setDraftCard = useWarrantyStore((state) => state.setDraftCard);
   const resetDraftCard = useWarrantyStore((state) => state.resetDraftCard);
+  const [templates, setTemplates] = useState<any[]>([]);
+  const [selectedTemplateId, setSelectedTemplateId] = useState<string>(initialTemplateId || "");
+
+  useEffect(() => {
+    if (session?.user) {
+      fetch("/api/templates?limit=100")
+        .then((res) => res.json())
+        .then((json) => {
+          if (json.success && json.data) {
+            setTemplates(json.data);
+          }
+        })
+        .catch((err) => console.error("Error loading templates in form:", err));
+    }
+  }, [session]);
+
+  // When initialTemplateId is provided (coming from templates page), apply its styles once templates load
+  useEffect(() => {
+    if (initialTemplateId && templates.length > 0) {
+      const template = templates.find((t) => t._id === initialTemplateId);
+      if (template) {
+        setValue("cardBgImage", template.cardBgImage || "", { shouldValidate: true });
+        setValue("layoutFront", template.layoutFront || "default", { shouldValidate: true });
+        setValue("layoutBack", template.layoutBack || "default", { shouldValidate: true });
+        setValue("fontStyle", template.fontStyle || "inter", { shouldValidate: true });
+        setValue("primaryColor", template.primaryColor || "#0f52ba", { shouldValidate: true });
+      }
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [initialTemplateId, templates]);
+
+  // In edit mode: auto-match the card's styling to a saved template and pre-select it in the dropdown
+  useEffect(() => {
+    if (!initialTemplateId && defaultValues && templates.length > 0 && !selectedTemplateId) {
+      const cardLayout     = defaultValues.layoutFront  || "default";
+      const cardLayoutBack = defaultValues.layoutBack   || "default";
+      const cardFont       = defaultValues.fontStyle    || "inter";
+      const cardColor      = (defaultValues.primaryColor || "#0f52ba").toLowerCase();
+
+      const matched = templates.find((t) =>
+        (t.layoutFront  || "default") === cardLayout &&
+        (t.layoutBack   || "default") === cardLayoutBack &&
+        (t.fontStyle    || "inter")   === cardFont &&
+        (t.primaryColor || "#0f52ba").toLowerCase() === cardColor
+      );
+
+      if (matched) {
+        setSelectedTemplateId(matched._id);
+      }
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [templates, defaultValues]);
 
   const getTodayDateString = () => {
     return new Date().toISOString().split("T")[0];
@@ -59,6 +113,11 @@ export default function WarrantyForm({
       notes: defaultValues?.notes || "",
       signature: defaultValues?.signature || profile?.signature || session?.user?.signature || "",
       labLogo: defaultValues?.labLogo || profile?.labLogo || session?.user?.labLogo || "",
+      cardBgImage: defaultValues?.cardBgImage || "",
+      layoutFront: defaultValues?.layoutFront || "default",
+      layoutBack: defaultValues?.layoutBack || "default",
+      fontStyle: defaultValues?.fontStyle || "inter",
+      primaryColor: defaultValues?.primaryColor || "#0f52ba",
     },
   });
 
@@ -69,6 +128,11 @@ export default function WarrantyForm({
       ...values,
       signature: values.signature || profile?.signature || session?.user?.signature || "",
       labLogo: values.labLogo || profile?.labLogo || session?.user?.labLogo || "",
+      cardBgImage: values.cardBgImage || "",
+      layoutFront: values.layoutFront || "default",
+      layoutBack: values.layoutBack || "default",
+      fontStyle: values.fontStyle || "inter",
+      primaryColor: values.primaryColor || "#0f52ba",
     });
   }, [session, profile, setDraftCard, getValues]);
 
@@ -79,6 +143,7 @@ export default function WarrantyForm({
         ...values,
         signature: values.signature || profile?.signature || session?.user?.signature || "",
         labLogo: values.labLogo || profile?.labLogo || session?.user?.labLogo || "",
+        cardBgImage: values.cardBgImage || "",
       } as any);
     });
     return () => subscription.unsubscribe();
@@ -94,6 +159,11 @@ export default function WarrantyForm({
           : getTodayDateString(),
         signature: defaultValues.signature || profile?.signature || session?.user?.signature || "",
         labLogo: defaultValues.labLogo || profile?.labLogo || session?.user?.labLogo || "",
+        cardBgImage: defaultValues.cardBgImage || "",
+        layoutFront: defaultValues.layoutFront || "default",
+        layoutBack: defaultValues.layoutBack || "default",
+        fontStyle: defaultValues.fontStyle || "inter",
+        primaryColor: defaultValues.primaryColor || "#0f52ba",
       };
       reset(resetValues as any);
       setDraftCard(resetValues);
@@ -131,6 +201,56 @@ export default function WarrantyForm({
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+      {/* Quick Template Preset — always visible */}
+      <div className="flex flex-col gap-1.5 w-full bg-slate-50/85 dark:bg-slate-900/40 p-4 rounded-xl border border-slate-200/60 dark:border-slate-800/80">
+        <label className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+          Apply Design Template
+        </label>
+        <div className="relative">
+          <select
+            value={selectedTemplateId}
+            onChange={(e) => {
+              const selectedId = e.target.value;
+              setSelectedTemplateId(selectedId);
+              if (!selectedId) return;
+              const template = templates.find((t) => t._id === selectedId);
+              if (template) {
+                setValue("cardBgImage", template.cardBgImage || "", { shouldValidate: true });
+                setValue("layoutFront", template.layoutFront || "default", { shouldValidate: true });
+                setValue("layoutBack", template.layoutBack || "default", { shouldValidate: true });
+                setValue("fontStyle", template.fontStyle || "inter", { shouldValidate: true });
+                setValue("primaryColor", template.primaryColor || "#0f52ba", { shouldValidate: true });
+              }
+            }}
+            disabled={templates.length === 0}
+            className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800/80 bg-white/50 dark:bg-slate-900/50 backdrop-blur-sm text-sm text-slate-900 dark:text-slate-100 focus:outline-none appearance-none disabled:opacity-60 disabled:cursor-not-allowed"
+          >
+            {templates.length === 0 ? (
+              <option value="">No templates yet — create one in Templates</option>
+            ) : (
+              <>
+                <option value="">-- Apply a Design Template --</option>
+                {templates.map((t) => (
+                  <option key={t._id} value={t._id}>
+                    {t.name}
+                  </option>
+                ))}
+              </>
+            )}
+          </select>
+          <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-slate-500">
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+            </svg>
+          </div>
+        </div>
+        {selectedTemplateId && (
+          <p className="text-[10px] text-emerald-500 font-semibold">
+            ✓ Template styling applied — layout, font & color loaded from preset
+          </p>
+        )}
+      </div>
+
       {/* Job ID Row */}
       <div className="flex gap-2 items-end">
         <div className="flex-grow">
@@ -223,6 +343,14 @@ export default function WarrantyForm({
         error={errors.notes?.message}
         {...register("notes")}
       />
+
+      {/* Hidden inputs to preserve layout and design settings in React Hook Form programmatically from templates */}
+      <input type="hidden" {...register("layoutFront")} />
+      <input type="hidden" {...register("layoutBack")} />
+      <input type="hidden" {...register("fontStyle")} />
+      <input type="hidden" {...register("primaryColor")} />
+      <input type="hidden" {...register("cardBgImage")} />
+
 
       {/* Submit Action */}
       <Button

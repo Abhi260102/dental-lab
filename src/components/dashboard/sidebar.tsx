@@ -35,6 +35,7 @@ export default function Sidebar({ isOpen, setIsOpen, session: propSession }: Sid
   const links = [
     { href: "/dashboard", label: "Overview", icon: LayoutDashboard },
     { href: "/dashboard/cards", label: "Warranty Cards", icon: CreditCard },
+    { href: "/dashboard/templates", label: "Templates", icon: FileText },
     { href: "/dashboard/logs", label: "Activity Logs", icon: Activity },
     { href: "/dashboard/settings", label: "Lab Settings", icon: Settings },
   ];
@@ -55,19 +56,16 @@ export default function Sidebar({ isOpen, setIsOpen, session: propSession }: Sid
       >
         <div className="flex flex-col h-full">
           {/* Logo & Header */}
-          <div className="flex items-center gap-2 px-6 py-5 border-b border-slate-200/40 dark:border-slate-900/40">
-            {(profile?.labLogo || session?.user?.labLogo) ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
-                src={profile?.labLogo || session?.user?.labLogo}
-                alt="Logo"
-                className="w-9 h-9 object-cover rounded-xl border border-slate-200/60 dark:border-slate-800 shadow-sm shrink-0"
-              />
-            ) : (
-              <div className="flex items-center justify-center w-9 h-9 rounded-xl bg-gradient-to-tr from-dent-blue-600 to-dent-green-500 shadow-md shrink-0">
-                <ShieldCheck className="w-5.5 h-5.5 text-white" />
-              </div>
-            )}
+          <Link
+            href="/"
+            className="flex items-center gap-2 px-6 py-5 border-b border-slate-200/40 dark:border-slate-900/40 cursor-pointer hover:opacity-90 transition-opacity"
+          >
+            <img
+              src={profile?.labLogo || session?.user?.labLogo || '/logo.png'}
+              alt="Logo"
+              className="w-9 h-9 object-cover rounded-xl border border-slate-200/60 dark:border-slate-800 shadow-sm shrink-0"
+            />
+
             <div className="min-w-0 flex-1">
               <h1 className="text-sm font-bold bg-gradient-to-r from-dent-blue-500 to-dent-green-500 bg-clip-text text-transparent tracking-tight leading-none truncate">
                 {profile?.labName || session?.user?.labName || "32 Dental Design"}
@@ -76,7 +74,7 @@ export default function Sidebar({ isOpen, setIsOpen, session: propSession }: Sid
                 Lab Warranty System
               </p>
             </div>
-          </div>
+          </Link>
 
           {/* Navigation Links */}
           <nav className="flex-grow p-4 space-y-1">
@@ -89,8 +87,8 @@ export default function Sidebar({ isOpen, setIsOpen, session: propSession }: Sid
                   href={link.href}
                   onClick={() => setIsOpen(false)}
                   className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all duration-200 ${isActive
-                      ? "bg-dent-blue-500 text-white shadow-md shadow-dent-blue-500/20"
-                      : "text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-900/80 hover:text-slate-900 dark:hover:text-slate-100"
+                    ? "bg-dent-blue-500 text-white shadow-md shadow-dent-blue-500/20"
+                    : "text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-900/80 hover:text-slate-900 dark:hover:text-slate-100"
                     }`}
                 >
                   <Icon className="w-5 h-5" />

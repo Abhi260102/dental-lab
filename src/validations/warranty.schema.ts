@@ -40,6 +40,10 @@ export const warrantyCardSchema = z.object({
   labWebsite: z.string().optional(),
   labAddress: z.string().optional(),
   cardBgImage: z.string().optional(),
+  layoutFront: z.string().optional(),
+  layoutBack: z.string().optional(),
+  fontStyle: z.string().optional(),
+  primaryColor: z.string().optional(),
 });
 
 export type WarrantyCardInput = z.infer<typeof warrantyCardSchema>;
