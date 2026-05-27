@@ -714,22 +714,22 @@ export default function CardsPage() {
         description="Verify layout aesthetics and export high-resolution copies."
         maxWidth="2xl"
         footer={
-          <div className="flex flex-wrap items-center justify-between w-full gap-3">
+          <div className="flex flex-col sm:flex-row items-center justify-between w-full gap-4">
             {/* Verification Link */}
             <Link
               href={`/verify/${selectedCard?.jobId}`}
               target="_blank"
-              className="text-xs font-bold text-dent-blue-500 hover:underline flex items-center gap-1"
+              className="text-xs font-bold text-dent-blue-500 hover:underline flex items-center gap-1 shrink-0"
             >
               Public Verification Webpage
             </Link>
 
-            <div className="flex items-center gap-2">
+            <div className="flex flex-wrap items-center justify-center sm:justify-end gap-2 w-full sm:w-auto">
               <Button
                 variant="outline"
                 size="sm"
                 onClick={() => handleExport("png")}
-                className="gap-1.5 py-2 px-3.5 bg-slate-50 dark:bg-slate-900 border-slate-200 dark:border-slate-800"
+                className="gap-1.5 py-2 px-3 flex-1 sm:flex-none justify-center bg-slate-50 dark:bg-slate-900 border-slate-200 dark:border-slate-800"
               >
                 <Download className="w-4 h-4 text-dent-blue-500" />
                 PNG Images
@@ -739,7 +739,7 @@ export default function CardsPage() {
                 variant="outline"
                 size="sm"
                 onClick={() => handleExport("pdf")}
-                className="gap-1.5 py-2 px-3.5 bg-slate-50 dark:bg-slate-900 border-slate-200 dark:border-slate-800"
+                className="gap-1.5 py-2 px-3 flex-1 sm:flex-none justify-center bg-slate-50 dark:bg-slate-900 border-slate-200 dark:border-slate-800"
               >
                 <Download className="w-4 h-4 text-rose-500" />
                 A4 PDF
@@ -749,7 +749,7 @@ export default function CardsPage() {
                 variant="secondary"
                 size="sm"
                 onClick={() => handleExport("print")}
-                className="gap-1.5 py-2 px-3.5"
+                className="gap-1.5 py-2 px-3 flex-1 sm:flex-none justify-center text-xs"
               >
                 <Printer className="w-4 h-4 text-indigo-500" />
                 Print Certificate

@@ -22,6 +22,11 @@ export async function GET() {
         success: true,
         labLogo: userWithLogo.labLogo,
         labName: userWithLogo.labName || "32 Dental Design",
+        labPhone: userWithLogo.labPhone || "+91 12345 67890",
+        labEmail: userWithLogo.labEmail || "info@yourlab.com",
+        labWebsite: userWithLogo.labWebsite || "www.yourlab.com",
+        labAddress: userWithLogo.labAddress || "",
+        cardBgImage: userWithLogo.cardBgImage || "",
       });
     }
 
@@ -33,6 +38,11 @@ export async function GET() {
       success: true,
       labLogo: admin?.labLogo || "",
       labName: admin?.labName || "32 Dental Design",
+      labPhone: admin?.labPhone || "+91 12345 67890",
+      labEmail: admin?.labEmail || "info@yourlab.com",
+      labWebsite: admin?.labWebsite || "www.yourlab.com",
+      labAddress: admin?.labAddress || "",
+      cardBgImage: admin?.cardBgImage || "",
     });
   } catch (error: any) {
     console.error("Fetch logo API error:", error);

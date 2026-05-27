@@ -64,7 +64,7 @@ export function Dialog({
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 15 }}
             transition={{ duration: 0.2 }}
-            className={`relative w-full ${widthClasses[maxWidth]} overflow-hidden rounded-2xl border border-slate-200/50 dark:border-slate-800/80 bg-white/95 dark:bg-slate-950/95 shadow-2xl p-6 z-10 backdrop-blur-md`}
+            className={`relative w-full ${widthClasses[maxWidth]} overflow-hidden rounded-2xl border border-slate-200/50 dark:border-slate-800/80 bg-white/95 dark:bg-slate-950/95 shadow-2xl p-4 sm:p-6 z-10 backdrop-blur-md`}
           >
             {/* Header */}
             <div className="flex items-start justify-between pb-3 border-b border-slate-100 dark:border-slate-900">

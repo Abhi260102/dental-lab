@@ -37,11 +37,11 @@ export default function CardFront({
 
   return (
     <div className="w-[500px] h-[315px] rounded-2xl bg-white border border-slate-200/80 shadow-2xl relative flex flex-col justify-between p-6 select-none text-slate-800 shrink-0 overflow-hidden">
-      
+
       {/* Dynamic Background Image Watermark or default accent background */}
       {cardBgImage ? (
-        <div 
-          className="absolute inset-0 opacity-15 pointer-events-none" 
+        <div
+          className="absolute inset-0 opacity-15 pointer-events-none"
           style={{ backgroundImage: `url(${cardBgImage})`, backgroundSize: "cover", backgroundPosition: "center" }}
         />
       ) : (
@@ -88,7 +88,7 @@ export default function CardFront({
             </span>
           </div>
         </div>
-        
+
         {/* restoration type shorthand tagline */}
         <div className="text-right">
           <span className="text-[8px] uppercase font-bold text-slate-400 tracking-wider">Product Class</span>

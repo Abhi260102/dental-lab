@@ -1,8 +1,41 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
 import { ShieldCheck, CreditCard, Sparkles, Database, CheckCircle, ArrowRight } from "lucide-react";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
+import CardFront from "@/components/warranty/card-front";
+import CardBack from "@/components/warranty/card-back";
 
 export default function Home() {
+  const { data: session, status } = useSession();
+  const [logoUrl, setLogoUrl] = useState("");
+  const [labName, setLabName] = useState("32 Dental Design");
+  const [labPhone, setLabPhone] = useState("+91 12345 67890");
+  const [labEmail, setLabEmail] = useState("info@yourlab.com");
+  const [labWebsite, setLabWebsite] = useState("www.yourlab.com");
+  const [labAddress, setLabAddress] = useState("");
+  const [cardBgImage, setCardBgImage] = useState("");
+  const [activeSide, setActiveSide] = useState<'front' | 'back'>('front');
+
+  useEffect(() => {
+    fetch("/api/auth/logo")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success) {
+          if (data.labLogo) setLogoUrl(data.labLogo);
+          if (data.labName) setLabName(data.labName);
+          if (data.labPhone) setLabPhone(data.labPhone);
+          if (data.labEmail) setLabEmail(data.labEmail);
+          if (data.labWebsite) setLabWebsite(data.labWebsite);
+          if (data.labAddress) setLabAddress(data.labAddress);
+          if (data.cardBgImage) setCardBgImage(data.cardBgImage);
+        }
+      })
+      .catch((err) => console.error("Error fetching branding details:", err));
+  }, []);
+
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-white relative overflow-hidden flex flex-col justify-between transition-colors duration-300">
       {/* Background glowing effects */}
@@ -13,27 +46,52 @@ export default function Home() {
       <header className="sticky top-0 z-30 w-full border-b border-slate-200/50 dark:border-white/5 bg-white/60 dark:bg-slate-950/60 backdrop-blur-md transition-colors">
         <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-gradient-to-tr from-dent-blue-600 to-dent-green-500 shadow-md">
-              <ShieldCheck className="w-5 h-5 text-white" />
-            </div>
-            <span className="font-extrabold text-lg tracking-tight bg-gradient-to-r from-dent-blue-600 to-emerald-500 dark:from-dent-blue-400 dark:to-emerald-400 bg-clip-text text-transparent">
-              32 Dental Design
+            {logoUrl ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={logoUrl}
+                alt="Logo"
+                className="w-8 h-8 object-cover rounded-lg border border-slate-200/50 shadow-sm shrink-0"
+              />
+            ) : (
+              <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-gradient-to-tr from-dent-blue-600 to-dent-green-500 shadow-md">
+                <ShieldCheck className="w-5 h-5 text-white" />
+              </div>
+            )}
+            <span className="font-extrabold text-lg tracking-tight bg-gradient-to-r from-dent-blue-600 to-emerald-500 dark:from-dent-blue-400 dark:to-emerald-400 bg-clip-text text-transparent uppercase">
+              {labName}
             </span>
           </div>
 
           <div className="flex items-center gap-4">
-            <Link
-              href="/login"
-              className="text-xs font-bold text-slate-600 dark:text-slate-300 hover:text-dent-blue-600 dark:hover:text-emerald-400 transition-colors uppercase tracking-wider"
-            >
-              Sign In
-            </Link>
-            <Link
-              href="/register"
-              className="px-4 py-2 rounded-xl text-xs font-bold bg-slate-900 dark:bg-white text-white dark:text-slate-950 hover:bg-slate-800 dark:hover:bg-slate-100 transition-all uppercase tracking-wider active:scale-95"
-            >
-              Get Started
-            </Link>
+            {status === "authenticated" ? (
+              <>
+                <span className="text-xs font-semibold text-slate-500 dark:text-slate-400 hidden sm:inline">
+                  Welcome, <span className="font-bold text-slate-700 dark:text-slate-200">{session?.user?.name || "User"}</span>
+                </span>
+                <Link
+                  href="/dashboard"
+                  className="px-4 py-2 rounded-xl text-xs font-bold bg-slate-900 dark:bg-white text-white dark:text-slate-950 hover:bg-slate-800 dark:hover:bg-slate-100 transition-all uppercase tracking-wider active:scale-95 shadow-sm"
+                >
+                  Dashboard
+                </Link>
+              </>
+            ) : (
+              <>
+                <Link
+                  href="/login"
+                  className="text-xs font-bold text-slate-600 dark:text-slate-300 hover:text-dent-blue-600 dark:hover:text-emerald-400 transition-colors uppercase tracking-wider"
+                >
+                  Sign In
+                </Link>
+                <Link
+                  href="/register"
+                  className="px-4 py-2 rounded-xl text-xs font-bold bg-slate-900 dark:bg-white text-white dark:text-slate-950 hover:bg-slate-800 dark:hover:bg-slate-100 transition-all uppercase tracking-wider active:scale-95"
+                >
+                  Get Started
+                </Link>
+              </>
+            )}
             <ThemeToggle />
           </div>
         </div>
@@ -44,7 +102,7 @@ export default function Home() {
         <div className="flex flex-col gap-6 text-left animate-fade-in">
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-slate-200/50 dark:bg-white/5 border border-slate-300/50 dark:border-white/10 w-fit text-slate-600 dark:text-slate-300">
             <Sparkles className="w-3.5 h-3.5 text-emerald-500 dark:text-emerald-400 animate-pulse" />
-            <span>32 Dental Designoratory Grade</span>
+            <span>Laboratory Grade Certificate System</span>
           </div>
 
           <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight leading-tight text-slate-900 dark:text-white">
@@ -58,81 +116,62 @@ export default function Home() {
             Create, manage, and verify high-fidelity dental warranty certificates. Fully responsive live 3D card previews, printable layouts, QR code instant lookup, and analytics.
           </p>
 
-          <div className="flex flex-col sm:flex-row gap-4 mt-4">
-            <Link href="/register" className="group px-6 py-3.5 rounded-xl bg-gradient-to-r from-dent-blue-600 to-dent-blue-500 hover:from-dent-blue-700 hover:to-dent-blue-600 text-white font-bold text-sm tracking-wide shadow-lg shadow-dent-blue-500/20 active:scale-98 transition-all flex items-center justify-center gap-2">
-              Generate Free Cards
-              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-            </Link>
-            <Link href="/login" className="px-6 py-3.5 rounded-xl bg-slate-200/60 dark:bg-white/5 border border-slate-300/40 dark:border-white/10 hover:bg-slate-200 dark:hover:bg-white/10 text-slate-800 dark:text-white font-bold text-sm tracking-wide active:scale-98 transition-all flex items-center justify-center">
-              Dashboard Login
-            </Link>
-          </div>
+          {status === "authenticated" ? (
+            <div className="flex flex-col sm:flex-row gap-4 mt-4">
+              <Link href="/dashboard/cards/create" className="group px-6 py-3.5 rounded-xl bg-gradient-to-r from-dent-blue-600 to-dent-blue-500 hover:from-dent-blue-700 hover:to-dent-blue-600 text-white font-bold text-sm tracking-wide shadow-lg shadow-dent-blue-500/20 active:scale-98 transition-all flex items-center justify-center gap-2">
+                Create Certificate
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </Link>
+              <Link href="/dashboard" className="px-6 py-3.5 rounded-xl bg-slate-200/60 dark:bg-white/5 border border-slate-300/40 dark:border-white/10 hover:bg-slate-200 dark:hover:bg-white/10 text-slate-800 dark:text-white font-bold text-sm tracking-wide active:scale-98 transition-all flex items-center justify-center">
+                Go to Dashboard
+              </Link>
+            </div>
+          ) : (
+            <div className="flex flex-col sm:flex-row gap-4 mt-4">
+              <Link href="/register" className="group px-6 py-3.5 rounded-xl bg-gradient-to-r from-dent-blue-600 to-dent-blue-500 hover:from-dent-blue-700 hover:to-dent-blue-600 text-white font-bold text-sm tracking-wide shadow-lg shadow-dent-blue-500/20 active:scale-98 transition-all flex items-center justify-center gap-2">
+                Generate Free Cards
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </Link>
+              <Link href="/login" className="px-6 py-3.5 rounded-xl bg-slate-200/60 dark:bg-white/5 border border-slate-300/40 dark:border-white/10 hover:bg-slate-200 dark:hover:bg-white/10 text-slate-800 dark:text-white font-bold text-sm tracking-wide active:scale-98 transition-all flex items-center justify-center">
+                Dashboard Login
+              </Link>
+            </div>
+          )}
         </div>
 
-        {/* Hero Visual Mockup */}
-        <div className="relative w-full aspect-[4/3] flex items-center justify-center select-none">
+        {/* Hero Visual Mockup showing the actual custom card designs */}
+        <div className="relative w-full aspect-[4/3] flex items-center justify-center select-none scale-[0.6] min-[370px]:scale-[0.7] min-[440px]:scale-[0.8] sm:scale-100 origin-center py-4 overflow-hidden">
           {/* Card Mockup Front */}
-          <div className="w-[380px] sm:w-[450px] aspect-[1.58] rounded-2xl bg-gradient-to-tr from-dent-blue-700 to-dent-blue-900 border border-white/10 shadow-2xl relative p-6 rotate-[-6deg] hover:rotate-0 transition-transform duration-500 z-10 flex flex-col justify-between overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-br from-white/5 via-transparent to-black/30 pointer-events-none" />
-            <div className="flex justify-between items-center">
-              <div className="flex items-center gap-1.5">
-                <div className="w-6 h-6 rounded bg-emerald-500 flex items-center justify-center">
-                  <ShieldCheck className="w-3.5 h-3.5 text-slate-950" />
-                </div>
-                <span className="text-[10px] font-bold tracking-widest text-emerald-400">32 Dental Design LAB</span>
-              </div>
-              <span className="text-[8px] uppercase tracking-wider text-slate-400">Authentic Card</span>
-            </div>
-            <div className="flex flex-col gap-1">
-              <h2 className="text-xl font-bold font-mono tracking-wider text-white">WARRANTY</h2>
-              <span className="text-[9px] uppercase tracking-widest text-emerald-400 font-semibold">Certificate of Authenticity</span>
-            </div>
-            <div className="flex justify-between items-end border-t border-white/10 pt-4">
-              <div className="flex gap-4 text-left">
-                <div className="flex flex-col">
-                  <span className="text-[8px] text-slate-450">Material</span>
-                  <span className="text-[10px] font-bold text-slate-200">Zirconia Premium</span>
-                </div>
-                <div className="flex flex-col">
-                  <span className="text-[8px] text-slate-450">Warranty</span>
-                  <span className="text-[10px] font-bold text-emerald-400">10 Years</span>
-                </div>
-              </div>
-              <div className="px-2.5 py-1 rounded-full border border-emerald-500/20 bg-emerald-500/5 text-[8px] font-bold tracking-wider text-emerald-400">
-                Genuine Product
-              </div>
-            </div>
+          <div 
+            onClick={() => setActiveSide("front")}
+            className={`rotate-[-6deg] hover:rotate-0 transition-all duration-500 cursor-pointer shadow-2xl relative shrink-0 ${activeSide === "front" ? "z-20 scale-105" : "z-10 opacity-75 hover:opacity-100"}`}
+          >
+            <CardFront
+              labName={labName}
+              labLogo={logoUrl}
+              patientName="Jane Doe"
+              doctorName="Dr. John Smith"
+              date={new Date().toISOString()}
+              materialType="Zirconia Premium"
+              jobId="DS-2605-AF9X"
+              warrantyYears={10}
+              cardBgImage={cardBgImage}
+            />
           </div>
 
           {/* Card Mockup Back (peeking behind) */}
-          <div className="w-[380px] sm:w-[450px] aspect-[1.58] rounded-2xl bg-white border border-slate-300 shadow-2xl absolute p-6 rotate-[6deg] hover:rotate-0 transition-transform duration-500 text-slate-800 flex flex-col justify-between">
-            <div className="absolute top-3 left-0 right-0 h-4 bg-slate-900/5" />
-            <div className="flex justify-between items-start mt-3">
-              <div className="grid grid-cols-2 gap-x-3 gap-y-2 text-left">
-                <div className="flex flex-col">
-                  <span className="text-[8px] text-slate-400 font-semibold uppercase leading-none">Job ID</span>
-                  <span className="text-[11px] font-bold font-mono text-slate-900 mt-1">DS-91F2-921A</span>
-                </div>
-                <div className="flex flex-col">
-                  <span className="text-[8px] text-slate-400 font-semibold uppercase leading-none">Issue Date</span>
-                  <span className="text-[10px] font-semibold text-slate-700 mt-1">May 26, 2026</span>
-                </div>
-                <div className="flex flex-col col-span-2">
-                  <span className="text-[8px] text-slate-400 font-semibold uppercase leading-none">Patient</span>
-                  <span className="text-[10px] font-bold text-slate-800 truncate mt-1">Jane Doe</span>
-                </div>
-              </div>
-              <div className="flex flex-col items-center gap-1 border-l border-slate-100 pl-4">
-                <div className="w-14 h-14 bg-slate-100 border border-slate-200 rounded flex items-center justify-center">
-                  <span className="text-[8px] text-slate-455">QR Code</span>
-                </div>
-                <span className="text-[7px] font-bold text-slate-400 uppercase">Scan to verify</span>
-              </div>
-            </div>
-            <div className="flex justify-between items-center text-[7.5px] text-slate-400 border-t border-slate-100 pt-2 leading-none">
-              <span>* Verify online or scan barcode.</span>
-              <span className="font-bold text-emerald-600">SECURE DENTAL NETWORK</span>
-            </div>
+          <div 
+            onClick={() => setActiveSide("back")}
+            className={`absolute rotate-[6deg] hover:rotate-0 transition-all duration-500 cursor-pointer shadow-2xl shrink-0 ${activeSide === "back" ? "z-20 scale-105" : "z-10 opacity-75 hover:opacity-100"}`}
+          >
+            <CardBack
+              jobId="DS-2605-AF9X"
+              labPhone={labPhone}
+              labEmail={labEmail}
+              labWebsite={labWebsite}
+              labAddress={labAddress}
+              cardBgImage={cardBgImage}
+            />
           </div>
         </div>
       </main>

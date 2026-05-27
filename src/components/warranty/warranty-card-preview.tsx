@@ -49,11 +49,11 @@ export default function WarrantyCardPreview({
   };
 
   return (
-    <div className="flex flex-col items-center gap-4">
-      {/* 3D Flipping Card Container */}
+    <div className="flex flex-col items-center gap-4 w-full overflow-hidden">
+      {/* 3D Flipping Card Container (with responsive scaling and centering) */}
       <div 
         onClick={handleFlip}
-        className="w-[500px] h-[315px] cursor-pointer perspective-1000 group hidden md:block shrink-0"
+        className="relative cursor-pointer perspective-1000 group shrink-0 w-[500px] h-[315px] scale-[0.6] min-[370px]:scale-[0.7] min-[440px]:scale-[0.8] sm:scale-[0.9] md:scale-100 origin-center my-[-60px] min-[370px]:my-[-45px] min-[440px]:my-[-30px] sm:my-[-15px] md:my-0"
         title="Click to flip card"
       >
         <motion.div
@@ -91,37 +91,7 @@ export default function WarrantyCardPreview({
         </motion.div>
       </div>
 
-      {/* Mobile Stack view (front and back visible vertically) */}
-      <div className="flex flex-col gap-6 md:hidden w-full max-w-[500px] items-center scale-90 sm:scale-100 origin-top">
-        <div className="flex flex-col gap-1 w-full text-center">
-          <span className="text-xs font-semibold text-slate-500 dark:text-slate-400">Card Front</span>
-          <CardFront
-            labName={labName}
-            labLogo={labLogo}
-            patientName={patientName}
-            doctorName={doctorName}
-            date={date}
-            materialType={materialType}
-            jobId={jobId}
-            warrantyYears={warrantyYears}
-            cardBgImage={cardBgImage}
-          />
-        </div>
-        <div className="flex flex-col gap-1 w-full text-center">
-          <span className="text-xs font-semibold text-slate-500 dark:text-slate-400">Card Back</span>
-          <CardBack
-            jobId={jobId}
-            signature={signature}
-            labPhone={labPhone}
-            labEmail={labEmail}
-            labWebsite={labWebsite}
-            labAddress={labAddress}
-            cardBgImage={cardBgImage}
-          />
-        </div>
-      </div>
-
-      {/* Manual flip trigger for desktop */}
+      {/* Manual flip trigger */}
       <Button
         variant="outline"
         size="sm"
@@ -129,7 +99,7 @@ export default function WarrantyCardPreview({
           e.stopPropagation();
           handleFlip();
         }}
-        className="hidden md:flex gap-2 items-center bg-white/50 dark:bg-slate-900/50"
+        className="flex gap-2 items-center bg-white/50 dark:bg-slate-900/50"
       >
         <RefreshCw className="w-3.5 h-3.5" />
         Flip Card View
