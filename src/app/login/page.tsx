@@ -394,7 +394,7 @@ export default function LoginPage() {
             </motion.form>
 
             {/* Divider + register link */}
-            <motion.p
+            {/* <motion.p
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.75, duration: 0.4 }}
@@ -412,7 +412,7 @@ export default function LoginPage() {
               >
                 Register your lab
               </Link>
-            </motion.p>
+            </motion.p> */}
 
           </div>{/* end .card-shell */}
 
