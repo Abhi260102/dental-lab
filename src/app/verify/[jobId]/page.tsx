@@ -1,5 +1,6 @@
 import dbConnect from "@/lib/mongodb";
 import WarrantyCard from "@/models/WarrantyCard";
+import User from "@/models/User";
 import { ShieldCheck, AlertTriangle, ShieldAlert, Sparkles, ArrowLeft, FileText } from "lucide-react";
 import Link from "next/link";
 import CardFront from "@/components/warranty/card-front";
@@ -295,26 +296,72 @@ export default async function VerifyPage({ params }: VerifyPageProps) {
                 </div>
 
                 {/* Terms List */}
-                <div className="flex flex-col gap-4 text-xs text-slate-600 dark:text-slate-200 font-semibold leading-relaxed z-10 relative whitespace-pre-line">
-                  {termsAndConditions.split("\n").map((term: string, idx: number) => {
-                    if (!term.trim()) return null;
-                    // Check if the term starts with a number like "1. ", "2) ", etc.
-                    const matchesNumber = term.match(/^(\d+[\.\)]?)\s*(.*)/);
-                    if (matchesNumber) {
+                <div className="flex flex-col gap-3.5 text-xs leading-relaxed z-10 relative">
+                  {termsAndConditions
+                    .split("\n")
+                    .map((term: string) => term.trim())
+                    .filter(Boolean)
+                    .map((trimmed: string, idx: number) => {
+                      // 1. Main Heading (First Line)
+                      if (idx === 0) {
+                        return (
+                          <h4 key={idx} className="text-xs text-slate-500 dark:text-slate-400 italic mb-1.5 font-medium pl-1 leading-normal">
+                            {trimmed}
+                          </h4>
+                        );
+                      }
+
+                      // 2. Subheadings (starts with "1. ", "2. ", etc.)
+                      const matchesNumber = trimmed.match(/^(\d+[\.\)]?)\s*(.*)/);
+                      if (matchesNumber) {
+                        return (
+                          <div key={idx} className="mt-4 flex gap-2.5 items-start pl-2 border-l-2 border-amber-500/40">
+                            <span className="font-black text-amber-600 dark:text-amber-400 select-none shrink-0 font-mono text-xs mt-[1px]">
+                              {matchesNumber[1]}
+                            </span>
+                            <span className="flex-1 font-black text-slate-900 dark:text-white text-xs tracking-wide">
+                              {matchesNumber[2]}
+                            </span>
+                          </div>
+                        );
+                      }
+
+                      // 3. Intro / Normal Paragraph (does not start with bullet indicators and is right after heading)
+                      if (idx === 1 && !trimmed.startsWith("-") && !trimmed.startsWith("•") && !trimmed.startsWith("*")) {
+                        return (
+                          <p key={idx} className="text-xs text-slate-500 dark:text-slate-400 italic mb-1.5 font-medium pl-1 leading-normal">
+                            {trimmed}
+                          </p>
+                        );
+                      }
+
+                      // 4. Default Bullet Point
+                      // Remove leading bullet characters if they exist in the string to avoid double bullets
+                      const cleanTerm = trimmed.replace(/^[-•*]\s*/, "");
+
+                      // Check if it has a title prefix (e.g. "Material Defects: ...")
+                      const colonIndex = cleanTerm.indexOf(":");
+                      if (colonIndex > 0 && colonIndex < 40 && cleanTerm.substring(colonIndex + 1).startsWith(" ")) {
+                        const title = cleanTerm.substring(0, colonIndex + 1);
+                        const rest = cleanTerm.substring(colonIndex + 1);
+                        return (
+                          <div key={idx} className="flex gap-2.5 items-start pl-4 text-slate-600 dark:text-slate-400 font-medium">
+                            <span className="w-1.5 h-1.5 rounded-full bg-amber-500 dark:bg-amber-400 select-none shrink-0 mt-[6px]" />
+                            <span className="flex-1">
+                              <strong className="font-extrabold text-slate-900 dark:text-white mr-1">{title}</strong>
+                              {rest.trim()}
+                            </span>
+                          </div>
+                        );
+                      }
+
                       return (
-                        <div key={idx} className="flex gap-2.5 items-start pl-1">
-                          <span className="font-bold text-amber-600 dark:text-amber-400 select-none shrink-0 font-mono text-xs mt-[1px]">{matchesNumber[1]}</span>
-                          <span className="flex-1">{matchesNumber[2]}</span>
+                        <div key={idx} className="flex gap-2.5 items-start pl-4 text-slate-600 dark:text-slate-400 font-medium">
+                          <span className="w-1.5 h-1.5 rounded-full bg-amber-500 dark:bg-amber-400 select-none shrink-0 mt-[6px]" />
+                          <span className="flex-1">{cleanTerm}</span>
                         </div>
                       );
-                    }
-                    return (
-                      <div key={idx} className="flex gap-2.5 items-start pl-1">
-                        <span className="w-1.5 h-1.5 rounded-full bg-amber-600 dark:bg-amber-400 select-none shrink-0 mt-[7px]" />
-                        <span className="flex-1">{term}</span>
-                      </div>
-                    );
-                  })}
+                    })}
                 </div>
               </div>
             )}

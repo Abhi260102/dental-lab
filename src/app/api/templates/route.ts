@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { getSessionServer } from "@/lib/session";
 import dbConnect from "@/lib/mongodb";
 import Template from "@/models/Template";
+import User from "@/models/User";
 import { templateSchema } from "@/validations/template.schema";
 import { createLog } from "@/services/log.service";
 

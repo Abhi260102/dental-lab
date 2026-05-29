@@ -83,15 +83,20 @@ export default function CardBack({
         <div className="flex w-full gap-4 z-10 relative">
           {/* Left Column (65% width): Terms, Divider, Contacts, Footer */}
           <div className="flex-[1.8] flex flex-col justify-between h-full pr-1">
-            <div className="space-y-1">
-              <h4 className="text-[10px] font-black uppercase tracking-widest leading-none" style={{ color: primaryColor }}>
+            <div className="space-y-0.5">
+              <h4 className="text-[8.5px] font-black uppercase tracking-widest leading-none" style={{ color: primaryColor }}>
                 TERMS & CONDITIONS
               </h4>
-              <ul className="list-disc pl-3 text-[8px] text-slate-300 space-y-1 leading-normal font-medium mt-1">
-                <li>Warranty applies only to manufacturing defects.</li>
-                <li>Damage due to accident, trauma, improper handling, or patient negligence is not covered.</li>
-                <li>Adjustments done outside authorized lab may void warranty.</li>
-                <li>Original invoice / Case ID required.</li>
+              <ul className="list-disc pl-2.5 text-[8.5px] text-slate-350 space-y-0.5 leading-tight font-medium mt-2">
+                <li>Covers structural breakage, fractures & ceramic chipping.</li>
+                <li>Free repair or replacement within first 3 years.</li>
+                <li>50-50% remake cost-sharing after 3 years within warranty.</li>
+                <li>Original Warranty Card is mandatory for claims.</li>
+                <li>Old/damaged prosthesis must be returned to the lab.</li>
+                <li>New impressions or tooth preps are charged separately.</li>
+                <li>Valid strictly on original master model & prep design.</li>
+                <li>Excludes accidental damage, trauma, or standard wear.</li>
+                <li>Excludes clinical failures or unauthorized alterations.</li>
               </ul>
             </div>
 
@@ -170,13 +175,19 @@ export default function CardBack({
           {/* Left Column: Rules & Contacts */}
           <div className="flex-[1.8] flex flex-col justify-between h-full pr-1 p-1">
             <div>
-              <h4 className="text-[9px] font-black uppercase tracking-widest leading-none mb-1.5" style={{ color: primaryColor }}>
+              <h4 className="text-[8.5px] font-black uppercase tracking-widest leading-none mb-1" style={{ color: primaryColor }}>
                 Warranty Validation Guide
               </h4>
-              <ul className="text-[8px] text-slate-500 space-y-1 leading-normal font-semibold">
-                <li className="flex items-center gap-1"><Check className="w-3 h-3 text-emerald-500" /> Cover covers material/lab processing.</li>
-                <li className="flex items-center gap-1"><Check className="w-3 h-3 text-emerald-500" /> Adjustments must be dentist-reported.</li>
-                <li className="flex items-center gap-1"><Check className="w-3 h-3 text-emerald-500" /> Scan the QR code for status verification.</li>
+              <ul className="text-[6.5px] text-slate-500 space-y-0.5 leading-tight font-semibold">
+                <li className="flex items-start gap-1"><Check className="w-2 h-2 text-emerald-500 shrink-0 mt-0.5" /> Covers structural breakage, fractures & ceramic chipping.</li>
+                <li className="flex items-start gap-1"><Check className="w-2 h-2 text-emerald-500 shrink-0 mt-0.5" /> Free repair/replacement for defects within first 3 years.</li>
+                <li className="flex items-start gap-1"><Check className="w-2 h-2 text-emerald-500 shrink-0 mt-0.5" /> 50-50% remake cost-sharing after 3 years within warranty.</li>
+                <li className="flex items-start gap-1"><Check className="w-2 h-2 text-emerald-500 shrink-0 mt-0.5" /> Original Warranty Card is mandatory for claims.</li>
+                <li className="flex items-start gap-1"><Check className="w-2 h-2 text-emerald-500 shrink-0 mt-0.5" /> Old/damaged prosthesis must be returned to the lab.</li>
+                <li className="flex items-start gap-1"><Check className="w-2 h-2 text-emerald-500 shrink-0 mt-0.5" /> New impressions or tooth preps are charged separately.</li>
+                <li className="flex items-start gap-1"><Check className="w-2 h-2 text-emerald-500 shrink-0 mt-0.5" /> Valid strictly on original master model & prep design.</li>
+                <li className="flex items-start gap-1"><Check className="w-2 h-2 text-emerald-500 shrink-0 mt-0.5" /> Excludes accidental damage, trauma, or standard wear.</li>
+                <li className="flex items-start gap-1"><Check className="w-2 h-2 text-emerald-500 shrink-0 mt-0.5" /> Excludes clinical failures or unauthorized alterations.</li>
               </ul>
             </div>
 
@@ -239,11 +250,11 @@ export default function CardBack({
           {/* Left Column */}
           <div className="flex-[1.8] flex flex-col justify-between h-full pr-1 font-serif text-slate-200">
             <div>
-              <h4 className="text-[9px] font-black uppercase tracking-widest font-sans" style={{ color: primaryColor }}>
+              <h4 className="text-[8.5px] font-black uppercase tracking-widest font-sans mb-1" style={{ color: primaryColor }}>
                 Prosthetic Certification Details
               </h4>
-              <p className="text-[8px] text-slate-400 italic mt-1 leading-relaxed">
-                Subject to standard laboratory protocols, this crown/restoration is certified genuine. Adjustments must follow prescribing guidelines.
+              <p className="text-[6.5px] text-slate-400 italic leading-relaxed">
+                Certified genuine. Covers structural breakage, fractures & ceramic chipping with free remake for 3 years, and 50-50% cost sharing thereafter. Claims require original card & prosthesis. New preps/impressions are charged separately. Valid strictly on original model/prep. Excludes accidental wear, clinical failure, or unauthorized alterations.
               </p>
             </div>
 

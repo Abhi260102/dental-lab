@@ -68,6 +68,10 @@ const UserSchema = new Schema(
   }
 );
 
-const User = models.User || model("User", UserSchema);
+if (models.User) {
+  delete (models as any).User;
+}
+
+const User = model("User", UserSchema);
 
 export default User;

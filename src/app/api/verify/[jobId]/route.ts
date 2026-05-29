@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import dbConnect from "@/lib/mongodb";
 import WarrantyCard from "@/models/WarrantyCard";
+import User from "@/models/User";
 
 type RouteContext = {
   params: Promise<{ jobId: string }>;
