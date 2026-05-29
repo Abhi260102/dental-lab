@@ -177,17 +177,44 @@ export default function CardFront({
             </div>
           </div>
 
-          <div className="flex items-center justify-center"
-            title="ISO 9001:2015 Certified"
-          >
-            <img
-              src="/iso-9001.png"
-              alt="ISO 9001:2015 Certified"
-              className="w-12 h-12 object-contain rounded-[50%]"
-              style={{
-                filter: "invert(1) brightness(1.6) drop-shadow(0 0 2px rgba(255,255,255,0.35))",
-              }}
-            />
+          <div className="flex mx-[-10px] items-center gap-1.5 z-10 shrink-0">
+            {/* CE Seal */}
+            <div className="lex items-center justify-center" title="CE Approved">
+              <img
+                src="/ce-approved.png"
+                alt="CE Approved"
+                className="w-8 h-8 object-contain rounded-[50%]"
+                style={{
+                  filter:
+                    "invert(1) brightness(1.6) drop-shadow(rgba(255, 255, 255, 0.35) 0px 0px 2px)",
+                }}
+              />
+            </div>
+            {/* FDA Seal */}
+            <div className="lex items-center justify-center" title="FDA Approved">
+              <img
+                src="/fda-approved.jpg"
+                alt="FDA Approved"
+                className="w-8 h-8 object-contain rounded-[50%]"
+                style={{
+                  filter:
+                    "invert(1) brightness(1.6) drop-shadow(rgba(255, 255, 255, 0.35) 0px 0px 2px)",
+                }}
+              />
+            </div>
+
+            {/* ISO Seal */}
+            <div className="flex items-center justify-center" title="ISO 9001:2015 Certified">
+              <img
+                src="/iso-9001.png"
+                alt="ISO 9001:2015 Certified"
+                className="w-8 h-8 object-contain rounded-[50%]"
+                style={{
+                  filter:
+                    "invert(1) brightness(1.6) drop-shadow(rgba(255, 255, 255, 0.35) 0px 0px 2px)",
+                }}
+              />
+            </div>
           </div>
         </div>
       </>
