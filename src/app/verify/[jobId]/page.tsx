@@ -1,6 +1,6 @@
 import dbConnect from "@/lib/mongodb";
 import WarrantyCard from "@/models/WarrantyCard";
-import { ShieldCheck, AlertTriangle, ShieldAlert, Sparkles, Printer, ArrowLeft } from "lucide-react";
+import { ShieldCheck, AlertTriangle, ShieldAlert, Sparkles, ArrowLeft, FileText } from "lucide-react";
 import Link from "next/link";
 import CardFront from "@/components/warranty/card-front";
 import CardBack from "@/components/warranty/card-back";
@@ -19,7 +19,7 @@ export default async function VerifyPage({ params }: VerifyPageProps) {
 
   // Query certificate from database and join creator lab branding
   const card = await WarrantyCard.findOne({ jobId: jobId.trim() })
-    .populate("createdBy", "name labName labLogo labPhone labEmail labWebsite labAddress cardBgImage")
+    .populate("createdBy", "name labName labLogo labPhone labEmail labWebsite labAddress cardBgImage termsAndConditions")
     .lean();
 
   const isExist = !!card;
@@ -33,6 +33,8 @@ export default async function VerifyPage({ params }: VerifyPageProps) {
   let labWebsite = "www.yourlab.com";
   let labAddress = "";
   let cardBgImage = "";
+  const defaultTerms = "1. This warranty certificate is valid only for genuine restorations fabricated by our laboratory.\n2. The warranty covers manufacturing defects under normal clinical conditions and wear.\n3. Damages caused by clinical preparation errors, patient accidents, neglect, or subsequent dental modifications are excluded.";
+  let termsAndConditions = defaultTerms;
 
   if (card) {
     const now = new Date();
@@ -62,6 +64,7 @@ export default async function VerifyPage({ params }: VerifyPageProps) {
       labWebsite = (card.createdBy as any).labWebsite || labWebsite;
       labAddress = (card.createdBy as any).labAddress || labAddress;
       cardBgImage = (card.createdBy as any).cardBgImage || "";
+      termsAndConditions = (card.createdBy as any).termsAndConditions?.trim() || defaultTerms;
     }
   }
 
@@ -80,9 +83,9 @@ export default async function VerifyPage({ params }: VerifyPageProps) {
         <Link href="/" className="flex items-center gap-2">
           {/* Custom logo container */}
           <div className="relative shrink-0 w-8 h-8 rounded-lg overflow-hidden border border-slate-200/50 dark:border-white/10 shadow flex items-center justify-center bg-slate-900 transition-all duration-300 hover:scale-105">
-            <img 
-              src={card?.labLogo || creatorLogo || "/logo.png"} 
-              alt={`${creatorLab} Logo`} 
+            <img
+              src={card?.labLogo || creatorLogo || "/logo.png"}
+              alt={`${creatorLab} Logo`}
               className="w-full h-full object-cover"
             />
           </div>
@@ -139,6 +142,7 @@ export default async function VerifyPage({ params }: VerifyPageProps) {
                   layoutFront={card.layoutFront || "default"}
                   fontStyle={card.fontStyle || "inter"}
                   primaryColor={card.primaryColor || "#0f52ba"}
+                  toothNumber={card.toothNumber}
                 />
               </div>
 
@@ -160,7 +164,7 @@ export default async function VerifyPage({ params }: VerifyPageProps) {
             </div>
 
             {/* Validation detail credentials table */}
-            <div className="group w-full max-w-[500px] border border-slate-200/80 dark:border-slate-800/80 rounded-[32px] bg-white/90 dark:bg-slate-900/60 backdrop-blur-xl p-8 flex flex-col gap-6 text-left shadow-2xl hover:shadow-3xl hover:border-slate-350 dark:hover:border-slate-700/80 hover:-translate-y-1.5 transition-all duration-500 relative overflow-hidden">
+            <div className="group w-full max-w-[500px] border border-slate-200/80 dark:border-slate-800/80 rounded-[32px] bg-white/90 dark:bg-slate-900/60 backdrop-blur-xl p-8 flex flex-col gap-6 text-left shadow-2xl hover:shadow-3xl hover:border-slate-300 dark:hover:border-slate-700/80 hover:-translate-y-1.5 transition-all duration-500 relative overflow-hidden">
 
               {/* Dynamic lab background image watermark (with interactive hover parallax scale/rotate) */}
               {(card.cardBgImage || cardBgImage) && (
@@ -177,9 +181,9 @@ export default async function VerifyPage({ params }: VerifyPageProps) {
               {/* Lab Header */}
               <div className="flex items-center gap-3.5 border-b border-slate-100 dark:border-slate-800/60 pb-5 z-10 relative">
                 <div className="w-11 h-11 rounded-2xl overflow-hidden border border-slate-200/60 dark:border-slate-800/60 flex items-center justify-center bg-slate-900 shadow-md shrink-0">
-                  <img 
-                    src={card.labLogo || creatorLogo || "/logo.png"} 
-                    alt={`${creatorLab} Logo`} 
+                  <img
+                    src={card.labLogo || creatorLogo || "/logo.png"}
+                    alt={`${creatorLab} Logo`}
                     className="w-full h-full object-cover"
                   />
                 </div>
@@ -189,7 +193,7 @@ export default async function VerifyPage({ params }: VerifyPageProps) {
                     {creatorLab}
                   </h3>
                   {(card.labAddress || labAddress) && (
-                    <span className="text-[10px] text-slate-505 dark:text-slate-400 mt-1 block font-semibold leading-normal truncate">
+                    <span className="text-[10px] text-slate-500 dark:text-slate-400 mt-1 block font-semibold leading-normal truncate">
                       {card.labAddress || labAddress}
                     </span>
                   )}
@@ -220,7 +224,7 @@ export default async function VerifyPage({ params }: VerifyPageProps) {
                   </div>
                 </div>
 
-                <div className="flex flex-col border-l-2 border-indigo-500/30 pl-3.5 transition-colors duration-300 group-hover:border-indigo-500/60">
+                {/* <div className="flex flex-col border-l-2 border-indigo-500/30 pl-3.5 transition-colors duration-300 group-hover:border-indigo-500/60">
                   <span className="text-[9px] uppercase font-black text-slate-400 dark:text-slate-500 tracking-wider block mb-1">Tooth Designations</span>
                   <div className="flex flex-wrap gap-1 mt-0.5 font-bold font-mono text-dent-blue-600 dark:text-dent-blue-400">
                     {card.toothNumber.split(",").map((t: string, idx: number) => (
@@ -229,9 +233,9 @@ export default async function VerifyPage({ params }: VerifyPageProps) {
                       </span>
                     ))}
                   </div>
-                </div>
+                </div> */}
 
-                <div className="flex flex-col border-l-2 border-slate-300 dark:border-slate-800 pl-3.5 transition-colors duration-300 group-hover:border-slate-450 dark:group-hover:border-slate-700">
+                <div className="flex flex-col border-l-2 border-slate-300 dark:border-slate-800 pl-3.5 transition-colors duration-300 group-hover:border-slate-400 dark:group-hover:border-slate-700">
                   <span className="text-[9px] uppercase font-black text-slate-400 dark:text-slate-500 tracking-wider">Date Issued</span>
                   <span className="font-bold text-slate-700 dark:text-slate-300 mt-1 text-sm">
                     {issueDateStr}
@@ -240,16 +244,16 @@ export default async function VerifyPage({ params }: VerifyPageProps) {
 
                 <div className="flex flex-col border-l-2 border-amber-500/30 pl-3.5 transition-colors duration-300 group-hover:border-amber-500/60">
                   <span className="text-[9px] uppercase font-black text-slate-400 dark:text-slate-500 tracking-wider block mb-1">Warranty Term Expiry</span>
-                  <div className="px-3 py-1 rounded-full text-xs font-bold bg-amber-500/10 text-amber-600 dark:text-amber-450 border border-amber-500/25 inline-flex items-center w-fit shadow-xs">
+                  <div className="px-3 py-1 rounded-full text-xs font-bold bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/25 inline-flex items-center w-fit shadow-xs">
                     {expiryDateStr}
                   </div>
                 </div>
 
                 {card.notes && (
-                  <div className="flex flex-col col-span-2 border-t border-slate-150 dark:border-slate-850/80 pt-4">
+                  <div className="flex flex-col col-span-2 border-t border-slate-200 dark:border-slate-800/80 pt-4">
                     <span className="text-[9px] uppercase font-black text-slate-400 dark:text-slate-500 tracking-wider">Prosthesis Notes</span>
-                    <div className="relative mt-2 p-3.5 rounded-2xl bg-slate-50/50 dark:bg-slate-900/30 border border-slate-200/50 dark:border-slate-850/80">
-                      <span className="text-xs text-slate-655 dark:text-slate-300 italic block leading-relaxed">
+                    <div className="relative mt-2 p-3.5 rounded-2xl bg-slate-50/50 dark:bg-slate-900/30 border border-slate-200/50 dark:border-slate-800/80">
+                      <span className="text-xs text-slate-600 dark:text-slate-300 italic block leading-relaxed">
                         &ldquo;{card.notes}&rdquo;
                       </span>
                     </div>
@@ -258,6 +262,62 @@ export default async function VerifyPage({ params }: VerifyPageProps) {
 
               </div>
             </div>
+
+            {/* WARRANTY TERMS & CONDITIONS SECTION */}
+            {termsAndConditions && (
+              <div className="group w-full max-w-[500px] border border-slate-200/80 dark:border-slate-800/80 rounded-[32px] bg-white/90 dark:bg-slate-900/60 backdrop-blur-xl p-8 flex flex-col gap-5 text-left shadow-2xl hover:shadow-3xl hover:border-slate-300 dark:hover:border-slate-700/80 hover:-translate-y-1.5 transition-all duration-500 relative overflow-hidden">
+                {/* Accent glow matching primaryColor or amber */}
+                <div className="absolute top-0 left-0 w-24 h-24 rounded-br-full pointer-events-none z-0 bg-amber-500/[0.04] dark:bg-amber-500/[0.06]" />
+
+                {/* Dynamic lab background image watermark */}
+                {(card.cardBgImage || cardBgImage) && (
+                  <div
+                    className="absolute inset-0 opacity-[0.14] dark:opacity-[0.09] pointer-events-none z-0 transition-transform duration-700 ease-out group-hover:scale-[1.08] group-hover:rotate-2"
+                    style={{
+                      backgroundImage: `url(${card.cardBgImage || cardBgImage})`,
+                      backgroundSize: "cover",
+                      backgroundPosition: "center"
+                    }}
+                  />
+                )}
+
+                {/* Section Header */}
+                <div className="flex items-center gap-3.5 border-b border-slate-100 dark:border-slate-800/60 pb-5 z-10 relative">
+                  <div className="w-11 h-11 rounded-2xl overflow-hidden border border-amber-500/20 dark:border-amber-500/30 flex items-center justify-center bg-amber-500/5 shadow-inner shrink-0 text-amber-600 dark:text-amber-400">
+                    <FileText className="w-5.5 h-5.5" />
+                  </div>
+                  <div>
+                    <span className="text-[9px] uppercase font-black text-slate-400 dark:text-slate-500 tracking-[0.2em] leading-none block">Laboratory Policy</span>
+                    <h3 className="text-base font-black text-slate-900 dark:text-white mt-1.5 uppercase tracking-wide leading-none">
+                      Warranty Terms & Conditions
+                    </h3>
+                  </div>
+                </div>
+
+                {/* Terms List */}
+                <div className="flex flex-col gap-4 text-xs text-slate-600 dark:text-slate-200 font-semibold leading-relaxed z-10 relative whitespace-pre-line">
+                  {termsAndConditions.split("\n").map((term: string, idx: number) => {
+                    if (!term.trim()) return null;
+                    // Check if the term starts with a number like "1. ", "2) ", etc.
+                    const matchesNumber = term.match(/^(\d+[\.\)]?)\s*(.*)/);
+                    if (matchesNumber) {
+                      return (
+                        <div key={idx} className="flex gap-2.5 items-start pl-1">
+                          <span className="font-bold text-amber-600 dark:text-amber-400 select-none shrink-0 font-mono text-xs mt-[1px]">{matchesNumber[1]}</span>
+                          <span className="flex-1">{matchesNumber[2]}</span>
+                        </div>
+                      );
+                    }
+                    return (
+                      <div key={idx} className="flex gap-2.5 items-start pl-1">
+                        <span className="w-1.5 h-1.5 rounded-full bg-amber-600 dark:bg-amber-400 select-none shrink-0 mt-[7px]" />
+                        <span className="flex-1">{term}</span>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
 
           </div>
         ) : (
@@ -273,8 +333,8 @@ export default async function VerifyPage({ params }: VerifyPageProps) {
               <h3 className="text-xs font-semibold text-slate-500 dark:text-slate-400 mt-1">
                 Certificate Registry Mismatch
               </h3>
-              <p className="text-slate-650 dark:text-slate-400 text-xs leading-relaxed mt-4">
-                The Job ID <span className="font-mono text-rose-600 dark:text-rose-450 font-bold">`{jobId}`</span> is not registered in our dental warranty validation database.
+              <p className="text-slate-600 dark:text-slate-400 text-xs leading-relaxed mt-4">
+                The Job ID <span className="font-mono text-rose-600 dark:text-rose-400 font-bold">`{jobId}`</span> is not registered in our dental warranty validation database.
               </p>
               <p className="text-slate-500 text-[10px] leading-relaxed mt-3">
                 Please double check the Job ID spelling or contact your prescribing dentist or 32 Dental Designoratory to verify authorization status.

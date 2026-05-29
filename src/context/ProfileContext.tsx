@@ -16,6 +16,7 @@ interface Profile {
   labWebsite: string;
   labAddress: string;
   cardBgImage: string;
+  termsAndConditions: string;
 }
 
 interface ProfileContextType {
@@ -54,6 +55,7 @@ export function ProfileProvider({ children }: { children: React.ReactNode }) {
             labWebsite: json.user.labWebsite || "www.yourlab.com",
             labAddress: json.user.labAddress || "",
             cardBgImage: json.user.cardBgImage || "",
+            termsAndConditions: json.user.termsAndConditions || "",
           });
         }
       }

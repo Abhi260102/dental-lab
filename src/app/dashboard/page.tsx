@@ -229,7 +229,7 @@ export default async function DashboardPage() {
       {/* Metrics Row */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {/* Metric 1 */}
-        <div className="glass-panel p-6 rounded-2xl border border-slate-200/50 dark:border-slate-850/50 flex items-center justify-between shadow-sm">
+        <div className="glass-panel p-6 rounded-2xl border border-slate-200/50 dark:border-slate-800/50 flex items-center justify-between shadow-sm">
           <div className="space-y-1">
             <span className="text-[10px] uppercase font-bold tracking-wider text-slate-400">Total Issued</span>
             <h3 className="text-2xl font-extrabold tracking-tight">{total}</h3>
@@ -241,7 +241,7 @@ export default async function DashboardPage() {
         </div>
 
         {/* Metric 2 */}
-        <div className="glass-panel p-6 rounded-2xl border border-slate-200/50 dark:border-slate-850/50 flex items-center justify-between shadow-sm">
+        <div className="glass-panel p-6 rounded-2xl border border-slate-200/50 dark:border-slate-800/50 flex items-center justify-between shadow-sm">
           <div className="space-y-1">
             <span className="text-[10px] uppercase font-bold tracking-wider text-slate-400">Active Warranties</span>
             <h3 className="text-2xl font-extrabold tracking-tight text-emerald-500">{active}</h3>
@@ -253,7 +253,7 @@ export default async function DashboardPage() {
         </div>
 
         {/* Metric 3 */}
-        <div className="glass-panel p-6 rounded-2xl border border-slate-200/50 dark:border-slate-850/50 flex items-center justify-between shadow-sm">
+        <div className="glass-panel p-6 rounded-2xl border border-slate-200/50 dark:border-slate-800/50 flex items-center justify-between shadow-sm">
           <div className="space-y-1">
             <span className="text-[10px] uppercase font-bold tracking-wider text-slate-400">Avg Duration</span>
             <h3 className="text-2xl font-extrabold tracking-tight">{avgWarranty}</h3>
@@ -265,7 +265,7 @@ export default async function DashboardPage() {
         </div>
 
         {/* Metric 4 */}
-        <div className="glass-panel p-6 rounded-2xl border border-slate-200/50 dark:border-slate-850/50 flex items-center justify-between shadow-sm">
+        <div className="glass-panel p-6 rounded-2xl border border-slate-200/50 dark:border-slate-800/50 flex items-center justify-between shadow-sm">
           <div className="space-y-1">
             <span className="text-[10px] uppercase font-bold tracking-wider text-slate-400">Expired Cards</span>
             <h3 className="text-2xl font-extrabold tracking-tight text-rose-500">{expired}</h3>
@@ -281,7 +281,7 @@ export default async function DashboardPage() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         
         {/* Trend Graph */}
-        <div className="lg:col-span-2 glass-panel p-6 rounded-2xl border border-slate-200/50 dark:border-slate-850/50 flex flex-col justify-between min-h-[300px]">
+        <div className="lg:col-span-2 glass-panel p-6 rounded-2xl border border-slate-200/50 dark:border-slate-800/50 flex flex-col justify-between min-h-[300px]">
           <div className="flex items-center justify-between mb-4">
             <div>
               <h4 className="font-bold text-sm tracking-wide">Issuance Activity Trend</h4>
@@ -320,7 +320,7 @@ export default async function DashboardPage() {
         </div>
 
         {/* Material Distribution Summary */}
-        <div className="glass-panel p-6 rounded-2xl border border-slate-200/50 dark:border-slate-850/50 flex flex-col justify-between">
+        <div className="glass-panel p-6 rounded-2xl border border-slate-200/50 dark:border-slate-800/50 flex flex-col justify-between">
           <div>
             <h4 className="font-bold text-sm tracking-wide mb-1">Top Materials</h4>
             <p className="text-[10px] text-slate-400 mb-4">Preferred crown/bridge restoration materials</p>
@@ -369,7 +369,7 @@ export default async function DashboardPage() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         
         {/* Recent cards list */}
-        <div className="lg:col-span-2 glass-panel p-6 rounded-2xl border border-slate-200/50 dark:border-slate-850/50">
+        <div className="lg:col-span-2 glass-panel p-6 rounded-2xl border border-slate-200/50 dark:border-slate-800/50">
           <div className="flex items-center justify-between mb-4">
             <h4 className="font-bold text-sm tracking-wide">Recently Created Cards</h4>
             <Link href="/dashboard/cards" className="text-xs font-bold text-slate-400 hover:text-slate-300">
@@ -425,7 +425,7 @@ export default async function DashboardPage() {
         </div>
 
         {/* Activity audit feed */}
-        <div className="glass-panel p-6 rounded-2xl border border-slate-200/50 dark:border-slate-850/50">
+        <div className="glass-panel p-6 rounded-2xl border border-slate-200/50 dark:border-slate-800/50">
           <h4 className="font-bold text-sm tracking-wide mb-4 flex items-center gap-2">
             <Activity className="w-4 h-4 text-emerald-500 animate-pulse" />
             Audit Action Feed

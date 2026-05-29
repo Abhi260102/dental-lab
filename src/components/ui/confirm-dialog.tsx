@@ -323,7 +323,7 @@ export function ConfirmDialog({
                         variant="outline"
                         size="sm"
                         onClick={onClose}
-                        className="w-full py-2.5 rounded-xl bg-slate-50 dark:bg-slate-900 border-slate-200 dark:border-slate-850 text-slate-700 dark:text-slate-350 hover:bg-slate-100 dark:hover:bg-slate-800"
+                        className="w-full py-2.5 rounded-xl bg-slate-50 dark:bg-slate-900 border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-350 hover:bg-slate-100 dark:hover:bg-slate-800"
                       >
                         {cancelText}
                       </Button>

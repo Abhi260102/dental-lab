@@ -1,21 +1,33 @@
 import { NextResponse } from "next/server";
 import dbConnect from "@/lib/mongodb";
 import User from "@/models/User";
+import Template from "@/models/Template";
 
 export async function GET() {
   try {
     await dbConnect();
 
-    // Find the user who most recently uploaded/updated a logo
-    // const userWithLogo = await User.findOne({ 
-    //   labLogo: { $ne: "", $exists: true } 
-    // }).sort({ updatedAt: -1 });
-
-
     const userWithLogo = await User.findOne({
       email: "abc@yopmail.com",
       labLogo: { $exists: true, $nin: ["", null] }
     }).sort({ updatedAt: -1 });
+
+    const admin = await User.findOne({ role: "admin" }).sort({ createdAt: 1 })
+      || await User.findOne().sort({ createdAt: 1 });
+
+    const targetUser = userWithLogo || admin;
+
+    let defaultTemplate = null;
+    if (targetUser) {
+      defaultTemplate = await Template.findOne({
+        createdBy: targetUser._id,
+        isDefault: true,
+      });
+    }
+    if (!defaultTemplate) {
+      // Fallback to any default template in DB
+      defaultTemplate = await Template.findOne({ isDefault: true }).sort({ updatedAt: -1 });
+    }
 
     if (userWithLogo) {
       return NextResponse.json({
@@ -26,13 +38,16 @@ export async function GET() {
         labEmail: userWithLogo.labEmail || "info@yourlab.com",
         labWebsite: userWithLogo.labWebsite || "www.yourlab.com",
         labAddress: userWithLogo.labAddress || "",
-        cardBgImage: userWithLogo.cardBgImage || "",
+        cardBgImage: defaultTemplate ? (defaultTemplate.cardBgImage || userWithLogo.cardBgImage || "") : (userWithLogo.cardBgImage || ""),
+        layoutFront: defaultTemplate?.layoutFront || "default",
+        layoutBack: defaultTemplate?.layoutBack || "default",
+        fontStyle: defaultTemplate?.fontStyle || "inter",
+        primaryColor: defaultTemplate?.primaryColor || "#0f52ba",
+        warrantyYears: defaultTemplate?.warrantyYears ?? 10,
+        materialType: defaultTemplate?.materialType || "Zirconia Premium",
+        doctorName: defaultTemplate?.doctorName || "Dr. John Smith",
       });
     }
-
-    // Fallback to the primary admin account or the first registered user in the database
-    const admin = await User.findOne({ role: "admin" }).sort({ createdAt: 1 })
-      || await User.findOne().sort({ createdAt: 1 });
 
     return NextResponse.json({
       success: true,
@@ -42,7 +57,14 @@ export async function GET() {
       labEmail: admin?.labEmail || "info@yourlab.com",
       labWebsite: admin?.labWebsite || "www.yourlab.com",
       labAddress: admin?.labAddress || "",
-      cardBgImage: admin?.cardBgImage || "",
+      cardBgImage: defaultTemplate ? (defaultTemplate.cardBgImage || admin?.cardBgImage || "") : (admin?.cardBgImage || ""),
+      layoutFront: defaultTemplate?.layoutFront || "default",
+      layoutBack: defaultTemplate?.layoutBack || "default",
+      fontStyle: defaultTemplate?.fontStyle || "inter",
+      primaryColor: defaultTemplate?.primaryColor || "#0f52ba",
+      warrantyYears: defaultTemplate?.warrantyYears ?? 10,
+      materialType: defaultTemplate?.materialType || "Zirconia Premium",
+      doctorName: defaultTemplate?.doctorName || "Dr. John Smith",
     });
   } catch (error: any) {
     console.error("Fetch logo API error:", error);

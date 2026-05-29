@@ -3,7 +3,7 @@ import React from "react";
 export function Card({ className = "", children, ...props }: React.HTMLAttributes<HTMLDivElement>) {
   return (
     <div
-      className={`glass-panel rounded-2xl shadow-xl border border-slate-200/50 dark:border-slate-850/50 overflow-hidden ${className}`}
+      className={`glass-panel rounded-2xl shadow-xl border border-slate-200/50 dark:border-slate-800/50 overflow-hidden ${className}`}
       {...props}
     >
       {children}

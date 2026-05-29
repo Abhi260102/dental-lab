@@ -124,7 +124,7 @@ export default function EditCardPage({ params }: EditCardPageProps) {
         </Link>
         <div>
           <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Warranty Certificates</span>
-          <h2 className="text-lg font-bold text-slate-850 dark:text-white leading-tight">Edit Warranty Certificate</h2>
+          <h2 className="text-lg font-bold text-slate-800 dark:text-white leading-tight">Edit Warranty Certificate</h2>
         </div>
       </div>
 

@@ -12,7 +12,7 @@ export function ThemeToggle({ className = "" }: { className?: string }) {
       variant="outline"
       size="icon"
       onClick={toggleTheme}
-      className={`w-9 h-9 rounded-xl text-slate-650 dark:text-slate-400 border-slate-200 dark:border-slate-800/80 bg-white/50 dark:bg-slate-900/50 hover:bg-slate-100 dark:hover:bg-slate-800/80 backdrop-blur-sm transition-all ${className}`}
+      className={`w-9 h-9 rounded-xl text-slate-600 dark:text-slate-400 border-slate-200 dark:border-slate-800/80 bg-white/50 dark:bg-slate-900/50 hover:bg-slate-100 dark:hover:bg-slate-800/80 backdrop-blur-sm transition-all ${className}`}
       title="Toggle Theme"
     >
       {theme === "dark" ? (

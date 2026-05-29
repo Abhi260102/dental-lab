@@ -44,9 +44,8 @@ export default function CardBack({
 
   // Determine container styling based on layout
   const isLightBack = layoutBack === "minimal";
-  const containerClasses = `w-[500px] h-[315px] rounded-2xl border shadow-2xl relative flex justify-between p-5 select-none shrink-0 overflow-hidden ${fontClass} ${
-    isLightBack ? "bg-white text-slate-800 border-slate-200/80" : "bg-slate-950 text-white border-white/5"
-  }`;
+  const containerClasses = `w-[500px] h-[315px] rounded-2xl border shadow-2xl relative flex justify-between p-5 select-none shrink-0 overflow-hidden ${fontClass} ${isLightBack ? "bg-white text-slate-800 border-slate-200/80" : "bg-slate-950 text-white border-white/5"
+    }`;
 
   // Render Background
   const renderBackground = () => {
@@ -139,12 +138,12 @@ export default function CardBack({
               <span className="text-[7.5px] uppercase font-bold text-slate-400 text-center tracking-widest mb-1.5">
                 Authorized Signature
               </span>
-              <div className="h-[46px] border border-dashed border-slate-700 rounded-xl flex items-center justify-center bg-slate-900/60 relative overflow-hidden">
+              <div className="h-[36px] border border-dashed border-slate-700 rounded-xl flex items-center justify-center bg-slate-900/60 relative overflow-hidden">
                 {signature ? (
                   <img
                     src={signature}
                     alt="Auth Signature"
-                    className="max-h-full max-w-full object-contain p-1 invert dark:invert-0 filter brightness-125"
+                    className="max-h-[70%] max-w-[85%] object-contain invert dark:invert-0 filter brightness-125"
                   />
                 ) : (
                   <div className="flex items-center gap-1 text-[8.5px] text-slate-500 font-bold uppercase tracking-wider">
@@ -216,7 +215,7 @@ export default function CardBack({
                   <img
                     src={signature}
                     alt="Signature"
-                    className="max-h-full max-w-full object-contain p-1"
+                    className="max-h-[70%] max-w-[85%] object-contain"
                   />
                 ) : (
                   <Heart className="w-4 h-4 text-emerald-500/80 animate-pulse" />
@@ -235,7 +234,7 @@ export default function CardBack({
       <>
         {/* Frame borders */}
         <div className="absolute inset-2.5 border border-double rounded-lg pointer-events-none z-0" style={{ borderColor: primaryColor }} />
-        
+
         <div className="flex w-full gap-4 z-10 relative">
           {/* Left Column */}
           <div className="flex-[1.8] flex flex-col justify-between h-full pr-1 font-serif text-slate-200">
@@ -247,7 +246,7 @@ export default function CardBack({
                 Subject to standard laboratory protocols, this crown/restoration is certified genuine. Adjustments must follow prescribing guidelines.
               </p>
             </div>
-            
+
             <div className="border-t border-slate-800/80 pt-2 space-y-1 text-[8.5px] font-sans">
               <div className="flex items-center gap-1.5"><MapPin className="w-3 h-3 text-amber-500" style={{ color: primaryColor }} /> <span className="truncate max-w-[200px]">{labAddress || "Dental Lab Address Preserved"}</span></div>
               <div className="flex items-center gap-1.5"><Globe className="w-3 h-3 text-amber-500" style={{ color: primaryColor }} /> <span>{labWebsite}</span></div>
@@ -259,14 +258,14 @@ export default function CardBack({
             <div className="bg-white p-1 rounded border shrink-0">
               <QRCodeImage value={verifyUrl} size={65} />
             </div>
-            
+
             <div className="w-full flex flex-col mt-2 font-sans">
               <span className="text-[6.5px] uppercase text-slate-400 text-center tracking-widest">
                 Certification Sign
               </span>
               <div className="h-[44px] border border-double rounded-lg flex items-center justify-center bg-slate-900/60 relative overflow-hidden" style={{ borderColor: hexToRgba(primaryColor, 0.4) }}>
                 {signature ? (
-                  <img src={signature} alt="Sign" className="max-h-full max-w-full object-contain p-0.5 invert" />
+                  <img src={signature} alt="Sign" className="max-h-[70%] max-w-[85%] object-contain invert" />
                 ) : (
                   <span className="text-[8px] text-slate-500 font-bold uppercase tracking-wider">Verified</span>
                 )}
@@ -283,7 +282,7 @@ export default function CardBack({
       {renderBackground()}
       {/* Glare overlay */}
       <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/[0.03] to-white/[0.08] pointer-events-none z-20" />
-      
+
       {layoutBack === "minimal" && renderMinimalLayout()}
       {layoutBack === "classic" && renderClassicLayout()}
       {(layoutBack === "default" || layoutBack === "modern") && renderDefaultLayout()}

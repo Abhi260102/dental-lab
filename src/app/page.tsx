@@ -17,6 +17,14 @@ export default function Home() {
   const [labAddress, setLabAddress] = useState("");
   const [cardBgImage, setCardBgImage] = useState("");
 
+  // Default template custom design configurations
+  const [layoutFront, setLayoutFront] = useState("default");
+  const [layoutBack, setLayoutBack] = useState("default");
+  const [fontStyle, setFontStyle] = useState("inter");
+  const [primaryColor, setPrimaryColor] = useState("#0f52ba");
+  const [warrantyYears, setWarrantyYears] = useState(10);
+  const [materialType, setMaterialType] = useState("Zirconia Premium");
+  const [doctorName, setDoctorName] = useState("Dr. John Smith");
 
   useEffect(() => {
     fetch("/api/auth/logo")
@@ -29,7 +37,14 @@ export default function Home() {
           if (data.labEmail) setLabEmail(data.labEmail);
           if (data.labWebsite) setLabWebsite(data.labWebsite);
           if (data.labAddress) setLabAddress(data.labAddress);
-          if (data.cardBgImage) setCardBgImage(data.cardBgImage);
+          if (data.cardBgImage !== undefined) setCardBgImage(data.cardBgImage);
+          if (data.layoutFront) setLayoutFront(data.layoutFront);
+          if (data.layoutBack) setLayoutBack(data.layoutBack);
+          if (data.fontStyle) setFontStyle(data.fontStyle);
+          if (data.primaryColor) setPrimaryColor(data.primaryColor);
+          if (data.warrantyYears) setWarrantyYears(data.warrantyYears);
+          if (data.materialType) setMaterialType(data.materialType);
+          if (data.doctorName) setDoctorName(data.doctorName);
         }
       })
       .catch((err) => console.error("Error fetching branding details:", err));
@@ -117,6 +132,7 @@ export default function Home() {
               </Link>
               <Link href="/dashboard" className="px-6 py-3.5 rounded-xl bg-slate-200/60 dark:bg-white/5 border border-slate-300/40 dark:border-white/10 hover:bg-slate-200 dark:hover:bg-white/10 text-slate-800 dark:text-white font-bold text-sm tracking-wide active:scale-98 transition-all flex items-center justify-center">
                 Go to Dashboard
+                {/* Arrow icon can be added if needed */}
               </Link>
             </div>
           ) : (
@@ -136,11 +152,11 @@ export default function Home() {
         <div className="relative w-full aspect-[4/3] flex items-center justify-center select-none scale-[0.6] min-[370px]:scale-[0.7] min-[440px]:scale-[0.8] sm:scale-100 origin-center py-4 overflow-hidden">
           <WarrantyCardPreview
             jobId="DS-2605-AF9X"
-            doctorName="Dr. John Smith"
+            doctorName={doctorName}
             patientName="Jane Doe"
             toothNumber="16"
-            warrantyYears={10}
-            materialType="Zirconia Premium"
+            warrantyYears={warrantyYears}
+            materialType={materialType}
             date={new Date().toISOString()}
             signature={""}
             labLogo={logoUrl}
@@ -150,10 +166,10 @@ export default function Home() {
             labWebsite={labWebsite}
             labAddress={labAddress}
             cardBgImage={cardBgImage}
-            layoutFront="default"
-            layoutBack="default"
-            fontStyle="inter"
-            primaryColor="#0f52ba"
+            layoutFront={layoutFront}
+            layoutBack={layoutBack}
+            fontStyle={fontStyle}
+            primaryColor={primaryColor}
           />
         </div>
       </main>

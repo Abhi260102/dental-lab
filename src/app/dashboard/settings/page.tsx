@@ -34,6 +34,7 @@ export default function SettingsPage() {
   const [labWebsite, setLabWebsite] = useState("");
   const [labAddress, setLabAddress] = useState("");
   const [cardBgImage, setCardBgImage] = useState("");
+  const [termsAndConditions, setTermsAndConditions] = useState("");
   const [isSaving, setIsSaving] = useState(false);
   const [isInitialized, setIsInitialized] = useState(false);
 
@@ -48,6 +49,7 @@ export default function SettingsPage() {
       setLabWebsite(profile.labWebsite || "www.yourlab.com");
       setLabAddress(profile.labAddress || "");
       setCardBgImage(profile.cardBgImage || "");
+      setTermsAndConditions(profile.termsAndConditions || "");
       setIsInitialized(true);
     } else if (session?.user && !isInitialized && !profile) {
       setName(session.user.name || "");
@@ -114,6 +116,7 @@ export default function SettingsPage() {
           labWebsite,
           labAddress,
           cardBgImage,
+          termsAndConditions,
           password: password || undefined,
         }),
       });
@@ -335,16 +338,29 @@ export default function SettingsPage() {
                     required
                   />
                 </div>
-                <div className="grid grid-cols-1 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="flex flex-col gap-1.5 w-full">
                     <label className="text-[10px] uppercase font-bold text-slate-400">Lab Physical Address</label>
                     <textarea
-                      rows={2}
+                      rows={4}
                       value={labAddress}
                       onChange={(e) => setLabAddress(e.target.value)}
                       placeholder="Enter physical address..."
                       className="flex w-full rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 px-3 py-2 text-xs placeholder:text-slate-500 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-dent-blue-500 text-slate-800 dark:text-slate-100"
                     />
+                  </div>
+                  <div className="flex flex-col gap-1.5 w-full">
+                    <label className="text-[10px] uppercase font-bold text-slate-400">Default Warranty Terms & Conditions</label>
+                    <textarea
+                      rows={4}
+                      value={termsAndConditions}
+                      onChange={(e) => setTermsAndConditions(e.target.value)}
+                      placeholder="Enter warranty terms and conditions (one per line)..."
+                      className="flex w-full rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 px-3 py-2 text-xs placeholder:text-slate-500 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-dent-blue-500 text-slate-800 dark:text-slate-100"
+                    />
+                    <p className="text-[9px] text-slate-400 dark:text-slate-500 leading-none">
+                      These terms will be displayed on the public card verification page. Use newlines to separate terms.
+                    </p>
                   </div>
                 </div>
               </div>

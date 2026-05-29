@@ -1,6 +1,5 @@
 import * as htmlToImage from "html-to-image";
 import { jsPDF } from "jspdf";
-import JSZip from "jszip";
 
 export async function capturePng(element: HTMLElement): Promise<string> {
   return await htmlToImage.toPng(element, {
@@ -69,56 +68,4 @@ export async function downloadPdf(frontElement: HTMLElement, backElement: HTMLEl
   pdf.text("* This document is an official 32 Dental Designoratory warranty. Scan the QR code to verify validity online.", 20, 135);
 
   pdf.save(filename);
-}
-
-export async function downloadAllAsZip(
-  cards: any[],
-  renderCardFn: (card: any, side: "front" | "back") => HTMLElement
-) {
-  const zip = new JSZip();
-  const folder = zip.folder("dental_warranty_cards");
-
-  if (!folder) throw new Error("Could not create ZIP folder");
-
-  // Show a notification or log since capturing many cards takes time
-  console.log(`Starting ZIP compilation for ${cards.length} cards...`);
-
-  for (const card of cards) {
-    const frontEl = renderCardFn(card, "front");
-    const backEl = renderCardFn(card, "back");
-
-    // Temporarily mount to offscreen DOM
-    frontEl.style.position = "fixed";
-    frontEl.style.top = "-9999px";
-    backEl.style.position = "fixed";
-    backEl.style.top = "-9999px";
-
-    document.body.appendChild(frontEl);
-    document.body.appendChild(backEl);
-
-    // Wait a brief tick to let elements render completely
-    await new Promise((resolve) => setTimeout(resolve, 50));
-
-    try {
-      const frontData = await htmlToImage.toPng(frontEl, { quality: 0.9, pixelRatio: 1.5 });
-      const backData = await htmlToImage.toPng(backEl, { quality: 0.9, pixelRatio: 1.5 });
-
-      const frontBase64 = frontData.split(",")[1];
-      const backBase64 = backData.split(",")[1];
-
-      folder.file(`${card.jobId}_front.png`, frontBase64, { base64: true });
-      folder.file(`${card.jobId}_back.png`, backBase64, { base64: true });
-    } catch (e) {
-      console.error("ZIP card capture failed for ID:", card.jobId, e);
-    } finally {
-      document.body.removeChild(frontEl);
-      document.body.removeChild(backEl);
-    }
-  }
-
-  const content = await zip.generateAsync({ type: "blob" });
-  const link = document.createElement("a");
-  link.href = URL.createObjectURL(content);
-  link.download = `dental_warranty_cards_${new Date().toISOString().split("T")[0]}.zip`;
-  link.click();
 }

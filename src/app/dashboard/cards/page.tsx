@@ -12,8 +12,6 @@ import {
   Edit,
   Eye,
   Download,
-  FileArchive,
-  Printer,
   X,
   CreditCard,
   AlertTriangle,
@@ -29,15 +27,14 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/com
 import { Dialog } from "@/components/ui/dialog";
 import { ConfirmDialog } from "@/components/ui/confirm-dialog";
 import { useToast } from "@/hooks/use-toast";
-import { downloadImage, downloadPdf, downloadAllAsZip } from "@/utils/card-export";
-import CardFront from "@/components/warranty/card-front";
+import { downloadImage, downloadPdf } from "@/utils/card-export";
+import CardFront, { ToothCrosshair } from "@/components/warranty/card-front";
 import CardBack from "@/components/warranty/card-back";
 import WarrantyCardPreview from "@/components/warranty/warranty-card-preview";
 
 export default function CardsPage() {
   const [cards, setCards] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const [zipLoading, setZipLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [materialFilter, setMaterialFilter] = useState("");
   const [yearsFilter, setYearsFilter] = useState("");
@@ -168,7 +165,7 @@ export default function CardsPage() {
   };
 
   // Individual card downloads
-  const handleExport = async (type: "png" | "jpeg" | "pdf" | "print") => {
+  const handleExport = async (type: "png" | "jpeg" | "pdf") => {
     if (!selectedCard) return;
 
     // Wait a millisecond to let DOM elements mount completely
@@ -196,9 +193,6 @@ export default function CardsPage() {
         await downloadImage(back, `${filename}_back.jpg`, "jpeg");
       } else if (type === "pdf") {
         await downloadPdf(front, back, `${filename}.pdf`);
-      } else if (type === "print") {
-        // Trigger browser print logic
-        window.print();
       }
 
       toast({
@@ -215,151 +209,7 @@ export default function CardsPage() {
     }
   };
 
-  // Zip Download Helper (creates visual card components dynamically and passes to jszip engine)
-  const handleZipDownload = async () => {
-    if (cards.length === 0) {
-      toast({
-        title: "No Data",
-        description: "There are no cards in the current view to ZIP.",
-        variant: "destructive",
-      });
-      return;
-    }
 
-    setZipLoading(true);
-
-    try {
-      // Fetch all matching cards without pagination for complete ZIP compilation
-      const params = new URLSearchParams({
-        page: "1",
-        limit: "100", // Grab up to 100 cards matching filters
-        search: searchTerm,
-        material: materialFilter,
-        years: yearsFilter,
-      });
-
-      const res = await fetch(`/api/warranty?${params.toString()}`);
-      const json = await res.json();
-      if (!res.ok) throw new Error(json.error || "Failed to batch query cards");
-
-      const allCardsList = json.data;
-
-      // Define renderer helper to build DOM elements offscreen
-      const renderCardFn = (card: any, side: "front" | "back") => {
-        const wrapper = document.createElement("div");
-        wrapper.style.width = "500px";
-        wrapper.style.height = "315px";
-        wrapper.style.borderRadius = "16px";
-        wrapper.style.overflow = "hidden";
-        wrapper.style.fontSize = "16px";
-
-        // Root container to render components inside
-        const container = document.createElement("div");
-        wrapper.appendChild(container);
-
-        if (side === "front") {
-          // Mount card front design using plain HTML string to mimic React representation exactly
-          wrapper.className = "metallic-blue-gradient relative text-white p-6 flex flex-col justify-between border border-slate-700/30 shadow-2xl select-none";
-          wrapper.innerHTML = `
-            <div class="absolute inset-0 bg-gradient-to-tr from-transparent via-white/5 to-white/10 pointer-events-none"></div>
-            <div class="flex items-center justify-between z-10">
-              <div class="flex items-center gap-2">
-                ${card.labLogo ? `<img src="${card.labLogo}" class="w-8 h-8 object-cover rounded-lg border border-white/20" />` : `<div class="w-8 h-8 rounded-lg bg-emerald-500 flex items-center justify-center font-bold text-slate-950 text-sm">S</div>`}
-                <span class="font-bold text-[10px] uppercase tracking-widest text-emerald-400">${session?.user?.labName || "32 Dental Design"}</span>
-              </div>
-              <span class="text-[8px] uppercase font-bold text-white/50 tracking-wider">Official Certificate</span>
-            </div>
-            <div class="flex justify-between items-center my-auto z-10">
-              <div>
-                <h2 class="text-xl font-bold tracking-wider leading-none text-white font-mono">WARRANTY</h2>
-                <h3 class="text-[9px] font-bold uppercase tracking-[0.2em] text-emerald-400 mt-1">Certificate of Authenticity</h3>
-              </div>
-            </div>
-            <div class="absolute left-0 right-0 top-[60%] h-[1px] bg-gradient-to-r from-transparent via-emerald-500/80 to-transparent pointer-events-none"></div>
-            <div class="flex items-end justify-between z-10">
-              <div class="flex gap-4">
-                <div class="flex flex-col text-left">
-                  <span class="text-[8px] uppercase tracking-wider text-slate-400">Material Type</span>
-                  <span class="text-[10px] font-bold tracking-wide uppercase text-slate-200">${card.materialType}</span>
-                </div>
-                <div class="flex flex-col text-left">
-                  <span class="text-[8px] uppercase tracking-wider text-slate-400">Term Limit</span>
-                  <span class="text-[10px] font-bold tracking-wide uppercase text-emerald-400">${card.warrantyYears} Years Warranty</span>
-                </div>
-              </div>
-              <div class="flex items-center gap-1 px-2.5 py-1 rounded-full border border-emerald-500/30 bg-emerald-500/10">
-                <span class="text-[8px] uppercase font-bold tracking-wider text-emerald-400">Genuine Product</span>
-              </div>
-            </div>
-          `;
-        } else {
-          // Card back side
-          wrapper.className = "bg-white border border-slate-350 text-slate-800 p-6 flex flex-col justify-between relative shadow-2xl select-none";
-          wrapper.innerHTML = `
-            <div class="absolute left-0 right-0 top-3 h-5 bg-slate-900/5 pointer-events-none"></div>
-            <div class="flex justify-between items-start gap-4 h-full mt-4">
-              <div class="flex-grow grid grid-cols-2 gap-x-4 gap-y-3.5 mt-2">
-                <div class="flex flex-col text-left">
-                  <span class="text-[8px] uppercase font-bold text-slate-400 leading-none">Job Identifier</span>
-                  <span class="text-xs font-bold text-slate-900 font-mono tracking-tight mt-1">${card.jobId}</span>
-                </div>
-                <div class="flex flex-col text-left">
-                  <span class="text-[8px] uppercase font-bold text-slate-400 leading-none">Issue Date</span>
-                  <span class="text-[10px] font-semibold text-slate-700 mt-1">${new Date(card.date).toLocaleDateString()}</span>
-                </div>
-                <div class="flex flex-col col-span-2 text-left">
-                  <span class="text-[8px] uppercase font-bold text-slate-400 leading-none">Patient Name</span>
-                  <span class="text-[10px] font-bold text-slate-850 truncate mt-1">${card.patientName}</span>
-                </div>
-                <div class="flex flex-col col-span-2 text-left">
-                  <span class="text-[8px] uppercase font-bold text-slate-400 leading-none">Prescribing Doctor</span>
-                  <span class="text-[10px] font-bold text-slate-800 truncate mt-1">${card.doctorName}</span>
-                </div>
-                <div class="flex flex-col text-left">
-                  <span class="text-[8px] uppercase font-bold text-slate-400 leading-none">Tooth Designation</span>
-                  <span class="text-[10px] font-bold text-dent-blue-600 font-mono mt-1">${card.toothNumber}</span>
-                </div>
-              </div>
-              <div class="flex flex-col items-center justify-between h-full border-l border-slate-100 pl-4 w-[130px]">
-                <div class="flex flex-col items-center">
-                  <div class="w-16 h-16 bg-slate-150 border border-slate-200 rounded flex items-center justify-center text-[7px] text-slate-400 font-bold">QR CODE</div>
-                  <span class="text-[7px] uppercase font-bold text-slate-400 tracking-wide mt-1">Scan to Verify</span>
-                </div>
-                <div class="w-full flex flex-col items-center">
-                  <span class="text-[7.5px] uppercase font-bold text-slate-400 tracking-wider mb-1">Signature</span>
-                  <div class="h-10 border border-dashed border-slate-350 rounded bg-slate-50 w-full flex items-center justify-center text-[7.5px] text-slate-400">
-                    ${card.signature ? `<img src="${card.signature}" class="max-h-full max-w-full p-0.5 object-contain" />` : "Authorized"}
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="flex justify-between items-center border-t border-slate-100 pt-2 text-[7.5px] text-slate-400 font-medium">
-              <span>* Verify warranty online or scan barcode.</span>
-              <span class="font-bold text-emerald-600">SECURE SYSTEM</span>
-            </div>
-          `;
-        }
-
-        return wrapper;
-      };
-
-      await downloadAllAsZip(allCardsList, renderCardFn);
-
-      toast({
-        title: "ZIP Compiled",
-        description: `Successfully zipped ${allCardsList.length} warranty cards.`,
-        variant: "success",
-      });
-    } catch (e: any) {
-      toast({
-        title: "ZIP Compilation Error",
-        description: e.message || "Failed to batch build cards.",
-        variant: "destructive",
-      });
-    } finally {
-      setZipLoading(false);
-    }
-  };
 
   const materialOptions = [
     { value: "", label: "All Materials" },
@@ -389,30 +239,20 @@ export default function CardsPage() {
           <div className="flex bg-slate-100 dark:bg-slate-900 p-0.5 rounded-xl border border-slate-200/60 dark:border-slate-800/80 mr-1">
             <button
               onClick={() => setViewMode("table")}
-              className={`p-1.5 rounded-lg transition-all ${viewMode === "table" ? "bg-white dark:bg-slate-800 text-dent-blue-500 shadow-xs" : "text-slate-500 hover:text-slate-850 dark:hover:text-slate-200"}`}
+              className={`p-1.5 rounded-lg transition-all ${viewMode === "table" ? "bg-white dark:bg-slate-800 text-dent-blue-500 shadow-xs" : "text-slate-500 hover:text-slate-800 dark:hover:text-slate-200"}`}
               title="Table View"
             >
               <List className="w-4 h-4" />
             </button>
             <button
               onClick={() => setViewMode("grid")}
-              className={`p-1.5 rounded-lg transition-all ${viewMode === "grid" ? "bg-white dark:bg-slate-800 text-dent-blue-500 shadow-xs" : "text-slate-500 hover:text-slate-850 dark:hover:text-slate-200"}`}
+              className={`p-1.5 rounded-lg transition-all ${viewMode === "grid" ? "bg-white dark:bg-slate-800 text-dent-blue-500 shadow-xs" : "text-slate-500 hover:text-slate-800 dark:hover:text-slate-200"}`}
               title="Grid View"
             >
               <LayoutGrid className="w-4 h-4" />
             </button>
           </div>
 
-          <Button
-            variant="outline"
-            onClick={handleZipDownload}
-            isLoading={zipLoading}
-            className="flex-grow sm:flex-grow-0 gap-2 border-slate-200 dark:border-slate-800/80 bg-white/50 dark:bg-slate-900/50"
-            title="Download ZIP"
-          >
-            <FileArchive className="w-4 h-4 text-emerald-500" />
-            Batch ZIP
-          </Button>
 
           <Link href="/dashboard/cards/create" className="flex-grow sm:flex-grow-0">
             <Button className="w-full gap-2 shadow-md">
@@ -568,13 +408,7 @@ export default function CardsPage() {
                         <td className="p-4 font-semibold">{card.patientName}</td>
                         <td className="p-4 font-medium text-slate-500 dark:text-slate-400">{card.doctorName}</td>
                         <td className="p-4">
-                          <div className="flex flex-wrap gap-1 max-w-[120px]">
-                            {card.toothNumber.split(",").map((t: string, idx: number) => (
-                              <span key={idx} className="px-1.5 py-0.5 bg-dent-blue-500/5 dark:bg-dent-blue-500/10 border border-dent-blue-500/15 rounded text-[10px] font-mono">
-                                {t.trim()}
-                              </span>
-                            ))}
-                          </div>
+                          <ToothCrosshair toothNumber={card.toothNumber} />
                         </td>
                         <td className="p-4 font-semibold text-slate-650 dark:text-slate-300">{card.materialType}</td>
                         <td className="p-4 text-slate-450 font-medium">
@@ -693,6 +527,7 @@ export default function CardsPage() {
               layoutFront={selectedCard.layoutFront || "default"}
               fontStyle={selectedCard.fontStyle || "inter"}
               primaryColor={selectedCard.primaryColor || "#0f52ba"}
+              toothNumber={selectedCard.toothNumber}
             />
           </div>
           <div ref={exportBackRef} className="w-[500px] h-[315px] rounded-2xl overflow-hidden shrink-0">
@@ -751,15 +586,6 @@ export default function CardsPage() {
                 A4 PDF
               </Button>
 
-              <Button
-                variant="secondary"
-                size="sm"
-                onClick={() => handleExport("print")}
-                className="gap-1.5 py-2 px-3 flex-1 sm:flex-none justify-center text-xs"
-              >
-                <Printer className="w-4 h-4 text-indigo-500" />
-                Print Certificate
-              </Button>
             </div>
           </div>
         }
@@ -847,19 +673,26 @@ function MiniWarrantyCard({ card, onPreview, onDelete, profile, session }: { car
             </span>
           </div>
 
-          <div className="space-y-1.5 my-2 text-left">
-            <div className="flex items-baseline gap-1.5 min-w-0">
-              <span className="text-[8px] text-slate-400 dark:text-slate-500 uppercase font-black tracking-wider shrink-0">Patient:</span>
-              <span className="text-xs font-extrabold text-slate-800 dark:text-slate-200 truncate">{card.patientName}</span>
+          <div className="flex justify-between items-center my-2 gap-4">
+            <div className="space-y-1.5 text-left min-w-0 flex-grow">
+              <div className="flex items-baseline gap-1.5 min-w-0">
+                <span className="text-[8px] text-slate-400 dark:text-slate-500 uppercase font-black tracking-wider shrink-0">Patient:</span>
+                <span className="text-xs font-extrabold text-slate-800 dark:text-slate-200 truncate">{card.patientName}</span>
+              </div>
+              <div className="flex items-baseline gap-1.5 min-w-0">
+                <span className="text-[8px] text-slate-400 dark:text-slate-500 uppercase font-black tracking-wider shrink-0">Doctor:</span>
+                <span className="text-xs font-semibold text-slate-650 dark:text-slate-400 truncate">{card.doctorName}</span>
+              </div>
+              <div className="flex items-baseline gap-1.5 min-w-0">
+                <span className="text-[8px] text-slate-400 dark:text-slate-500 uppercase font-black tracking-wider shrink-0">Material:</span>
+                <span className="text-[10px] font-bold text-slate-500 dark:text-slate-450 truncate">{card.materialType}</span>
+              </div>
             </div>
-            <div className="flex items-baseline gap-1.5 min-w-0">
-              <span className="text-[8px] text-slate-400 dark:text-slate-500 uppercase font-black tracking-wider shrink-0">Doctor:</span>
-              <span className="text-xs font-semibold text-slate-650 dark:text-slate-400 truncate">{card.doctorName}</span>
-            </div>
-            <div className="flex items-baseline gap-1.5 min-w-0">
-              <span className="text-[8px] text-slate-400 dark:text-slate-500 uppercase font-black tracking-wider shrink-0">Material:</span>
-              <span className="text-[10px] font-bold text-slate-500 dark:text-slate-450 truncate">{card.materialType}</span>
-            </div>
+            {card.toothNumber && (
+              <div className="shrink-0 scale-90 origin-right">
+                <ToothCrosshair toothNumber={card.toothNumber} />
+              </div>
+            )}
           </div>
 
           <div className="flex justify-between items-center pt-2 border-t border-slate-100 dark:border-slate-900/60">

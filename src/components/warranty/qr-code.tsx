@@ -41,7 +41,7 @@ export function QRCodeImage({ value, size = 90 }: QRCodeImageProps) {
       alt="Verification QR Code" 
       width={size} 
       height={size} 
-      className="rounded border border-slate-200/50 dark:border-slate-850/50 shrink-0" 
+      className="rounded border border-slate-200/50 dark:border-slate-800/50 shrink-0" 
     />
   );
 }

@@ -84,6 +84,7 @@ export default function WarrantyCardPreview({
               layoutFront={layoutFront}
               fontStyle={fontStyle}
               primaryColor={primaryColor}
+              toothNumber={toothNumber}
             />
           </div>
 

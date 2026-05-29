@@ -58,16 +58,16 @@ const UserSchema = new Schema(
       type: String,
       default: "", // base64 representation of custom background image
     },
+    termsAndConditions: {
+      type: String,
+      default: "1. This warranty certificate is valid only for genuine restorations fabricated by our laboratory.\n2. The warranty covers manufacturing defects under normal clinical conditions and wear.\n3. Damages caused by clinical preparation errors, patient accidents, neglect, or subsequent dental modifications are excluded.",
+    },
   },
   {
     timestamps: true,
   }
 );
 
-if (models.User) {
-  delete (models as any).User;
-}
-
-const User = model("User", UserSchema);
+const User = models.User || model("User", UserSchema);
 
 export default User;

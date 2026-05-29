@@ -15,6 +15,7 @@ interface CardFrontProps {
   layoutFront?: string;
   fontStyle?: string;
   primaryColor?: string;
+  toothNumber?: string;
 }
 
 export default function CardFront({
@@ -30,7 +31,9 @@ export default function CardFront({
   layoutFront = "default",
   fontStyle = "inter",
   primaryColor = "#0f52ba",
+  toothNumber,
 }: CardFrontProps) {
+  const isDarkFront = layoutFront === "modern";
   const formatDate = (dateStr?: string) => {
     if (!dateStr) return new Date().toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" });
     try {
@@ -51,8 +54,24 @@ export default function CardFront({
     return `rgba(${r}, ${g}, ${b}, ${alpha})`;
   };
 
+  const renderToothCrosshairOnly = () => {
+    return <ToothCrosshair toothNumber={toothNumber} isDark={isDarkFront} />;
+  };
+
+  const renderToothCrosshairRow = () => {
+    if (!toothNumber) return null;
+    return (
+      <div className="flex items-center text-[11px] font-semibold">
+        <span className="w-24 text-slate-400 font-bold uppercase text-[8px] tracking-wider leading-none">Teeth (FDI)</span>
+        <span className="text-slate-400 mr-2.5">:</span>
+        <div className="ml-5 flex items-center">
+          {renderToothCrosshairOnly()}
+        </div>
+      </div>
+    );
+  };
+
   // Determine container styling based on layout
-  const isDarkFront = layoutFront === "modern";
   const containerClasses = `w-[500px] h-[315px] rounded-2xl border shadow-2xl relative flex flex-col justify-between p-6 select-none shrink-0 overflow-hidden ${fontClass} ${isDarkFront ? "bg-slate-950 text-white border-slate-800" : "bg-white text-slate-800 border-slate-200/80"
     }`;
 
@@ -126,20 +145,23 @@ export default function CardFront({
         </div>
 
         {/* Middle Section: Details */}
-        <div className="flex flex-col gap-2 my-auto z-10 max-w-[340px] pl-1">
-          {[
-            { label: "Patient Name", val: patientName },
-            { label: "Doctor Name", val: doctorName },
-            { label: "Delivery Date", val: formatDate(date) },
-            { label: "Restoration Type", val: materialType },
-            { label: "Case ID", val: jobId, color: primaryColor }
-          ].map((item, i) => (
-            <div key={i} className="flex items-center text-[11px] font-semibold">
-              <span className="w-24 text-slate-400 font-bold uppercase text-[8px] tracking-wider leading-none">{item.label}</span>
-              <span className="text-slate-400 mr-2.5">:</span>
-              <span className="truncate border-b border-slate-200/40 flex-grow pb-0.5" style={{ color: item.color || (isDarkFront ? "#e2e8f0" : "#1e293b"), fontWeight: item.color ? "900" : "700" }}>{item.val || "---"}</span>
-            </div>
-          ))}
+        <div className="flex items-center justify-between gap-4 my-auto z-10 w-full pl-1 pr-1">
+          <div className="flex flex-col gap-2 flex-grow max-w-[280px]">
+            {[
+              { label: "Patient Name", val: patientName },
+              { label: "Doctor Name", val: doctorName },
+              { label: "Delivery Date", val: formatDate(date) },
+              { label: "Restoration Type", val: materialType },
+              { label: "Case ID", val: jobId, color: primaryColor }
+            ].map((item, i) => (
+              <div key={i} className="flex items-center text-[11px] font-semibold">
+                <span className="w-24 text-slate-400 font-bold uppercase text-[8px] tracking-wider leading-none">{item.label}</span>
+                <span className="text-slate-400 mr-2.5">:</span>
+                <span className="truncate border-b border-slate-200/40 flex-grow pb-0.5" style={{ color: item.color || (isDarkFront ? "#e2e8f0" : "#1e293b"), fontWeight: item.color ? "900" : "700" }}>{item.val || "---"}</span>
+              </div>
+            ))}
+            {renderToothCrosshairRow()}
+          </div>
         </div>
 
         {/* Bottom Row */}
@@ -155,11 +177,17 @@ export default function CardFront({
             </div>
           </div>
 
-          <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-white/5 bg-white/5 backdrop-blur-xs shadow-inner">
-            <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-            <span className="text-[8.5px] uppercase font-extrabold tracking-widest text-emerald-400">
-              Genuine
-            </span>
+          <div className="flex items-center justify-center"
+            title="ISO 9001:2015 Certified"
+          >
+            <img
+              src="/iso-9001.png"
+              alt="ISO 9001:2015 Certified"
+              className="w-12 h-12 object-contain rounded-[50%]"
+              style={{
+                filter: "invert(1) brightness(1.6) drop-shadow(0 0 2px rgba(255,255,255,0.35))",
+              }}
+            />
           </div>
         </div>
       </>
@@ -189,23 +217,34 @@ export default function CardFront({
         </div>
 
         {/* Center Details */}
-        <div className="grid grid-cols-2 gap-x-4 gap-y-1.5 my-auto z-10 px-8 text-[10px]">
-          <div className="flex flex-col border-b border-slate-100 dark:border-slate-800/80 pb-0.5">
-            <span className="text-[7px] text-slate-400 uppercase tracking-wider font-bold">Patient</span>
-            <span className="font-extrabold text-slate-700 dark:text-slate-300 truncate mt-0.5">{patientName}</span>
+        <div className="flex flex-col gap-2 my-auto z-10 px-8 w-full">
+          <div className="grid grid-cols-2 gap-x-4 gap-y-1.5 text-[10px] w-full">
+            <div className="flex flex-col border-b border-slate-100 dark:border-slate-800/80 pb-0.5">
+              <span className="text-[7px] text-slate-400 uppercase tracking-wider font-bold">Patient</span>
+              <span className="font-extrabold text-slate-700 dark:text-slate-300 truncate mt-0.5">{patientName}</span>
+            </div>
+            <div className="flex flex-col border-b border-slate-100 dark:border-slate-800/80 pb-0.5">
+              <span className="text-[7px] text-slate-400 uppercase tracking-wider font-bold">Dentist</span>
+              <span className="font-extrabold text-slate-700 dark:text-slate-300 truncate mt-0.5">{doctorName}</span>
+            </div>
+            <div className="flex flex-col border-b border-slate-100 dark:border-slate-800/80 pb-0.5">
+              <span className="text-[7px] text-slate-400 uppercase tracking-wider font-bold">Restoration Type</span>
+              <span className="font-bold text-slate-700 dark:text-slate-300 truncate mt-0.5">{materialType}</span>
+            </div>
+            <div className="flex flex-col border-b border-slate-100 dark:border-slate-800/80 pb-0.5">
+              <span className="text-[7px] text-slate-400 uppercase tracking-wider font-bold">Case ID</span>
+              <span className="font-mono font-black mt-0.5" style={{ color: primaryColor }}>{jobId}</span>
+            </div>
           </div>
-          <div className="flex flex-col border-b border-slate-100 dark:border-slate-800/80 pb-0.5">
-            <span className="text-[7px] text-slate-400 uppercase tracking-wider font-bold">Dentist</span>
-            <span className="font-extrabold text-slate-700 dark:text-slate-300 truncate mt-0.5">{doctorName}</span>
-          </div>
-          <div className="flex flex-col border-b border-slate-100 dark:border-slate-800/80 pb-0.5">
-            <span className="text-[7px] text-slate-400 uppercase tracking-wider font-bold">Restoration Type</span>
-            <span className="font-bold text-slate-700 dark:text-slate-300 truncate mt-0.5">{materialType}</span>
-          </div>
-          <div className="flex flex-col border-b border-slate-100 dark:border-slate-800/80 pb-0.5">
-            <span className="text-[7px] text-slate-400 uppercase tracking-wider font-bold">Case ID</span>
-            <span className="font-mono font-black mt-0.5" style={{ color: primaryColor }}>{jobId}</span>
-          </div>
+          {toothNumber && (
+            <div className="flex items-center text-[10px] font-semibold mt-1">
+              <span className="text-[7px] text-slate-400 uppercase tracking-wider font-bold w-[70px]">Teeth (FDI)</span>
+              <span className="text-slate-400 mr-2">:</span>
+              <div className="ml-5">
+                {renderToothCrosshairOnly()}
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Bottom */}
@@ -241,16 +280,27 @@ export default function CardFront({
         </div>
 
         {/* Traditional details blocks */}
-        <div className="flex flex-col items-center gap-1.5 my-auto z-10 text-[10px]">
+        <div className="flex flex-col items-center gap-1.5 my-auto z-10 text-[10px] w-full px-6">
           <p className="leading-tight text-center text-slate-500 font-medium">
             This certifies that <strong className="text-slate-800 dark:text-slate-200 font-extrabold">{patientName}</strong> has received a genuine
             <br />
             <span className="font-extrabold px-1" style={{ color: primaryColor }}>{materialType}</span> prosthesis, prescribed by <strong className="text-slate-800 dark:text-slate-200 font-bold">{doctorName}</strong>.
           </p>
-          <div className="flex gap-4 text-[8px] uppercase tracking-wider text-slate-400 font-bold mt-1">
-            <span>ID: <strong style={{ color: primaryColor }} className="font-mono font-black">{jobId}</strong></span>
-            <span>•</span>
-            <span>Issued: <strong>{formatDate(date)}</strong></span>
+          <div className="flex flex-col items-center justify-center gap-1 w-full mt-1">
+            <div className="flex items-center justify-center gap-4 text-[8px] uppercase tracking-wider text-slate-400 font-bold">
+              <span>ID: <strong style={{ color: primaryColor }} className="font-mono font-black">{jobId}</strong></span>
+              <span className="opacity-30">|</span>
+              <span>Issued: <strong>{formatDate(date)}</strong></span>
+            </div>
+            {toothNumber && (
+              <div className="flex items-center gap-2 mt-1">
+                <span className="text-[7px] text-slate-400 uppercase tracking-wider font-bold">Teeth (FDI)</span>
+                <span className="text-slate-400">:</span>
+                <div className="ml-5">
+                  {renderToothCrosshairOnly()}
+                </div>
+              </div>
+            )}
           </div>
         </div>
 
@@ -277,3 +327,58 @@ export default function CardFront({
     </div>
   );
 }
+
+export function ToothCrosshair({ toothNumber, isDark }: { toothNumber?: string; isDark?: boolean }) {
+  if (!toothNumber) return null;
+
+  const teeth = toothNumber.split(",").map(t => parseInt(t.trim(), 10)).filter(t => !isNaN(t));
+  const selectedSet = new Set(teeth);
+
+  const q1 = [18, 17, 16, 15, 14, 13, 12, 11].filter(t => selectedSet.has(t));
+  const q2 = [21, 22, 23, 24, 25, 26, 27, 28].filter(t => selectedSet.has(t));
+  const q3 = [31, 32, 33, 34, 35, 36, 37, 38].filter(t => selectedSet.has(t));
+  const q4 = [48, 47, 46, 45, 44, 43, 42, 41].filter(t => selectedSet.has(t));
+
+  const formatQ = (arr: number[]) => arr.map(t => t % 10).join("");
+
+  const q1Str = formatQ(q1);
+  const q2Str = formatQ(q2);
+  const q3Str = formatQ(q3);
+  const q4Str = formatQ(q4);
+
+  let borderClass = "";
+  let textClass = "";
+
+  if (isDark === true) {
+    borderClass = "border-white/40";
+    textClass = "text-white";
+  } else if (isDark === false) {
+    borderClass = "border-slate-800/40";
+    textClass = "text-slate-800";
+  } else {
+    borderClass = "border-slate-800/40 dark:border-white/40";
+    textClass = "text-slate-800 dark:text-white";
+  }
+
+  return (
+    <div className={`grid grid-cols-2 gap-0 font-mono text-[9.5px] font-black select-none leading-none border-collapse w-fit ${textClass}`}>
+      {/* Q1: Top-Left (UR) */}
+      <div className={`flex items-end justify-end pr-1.5 pb-1 border-r-[1.5px] border-b-[1.5px] min-h-[14px] min-w-[24px] ${borderClass}`}>
+        {q1Str}
+      </div>
+      {/* Q2: Top-Right (UL) */}
+      <div className={`flex items-end justify-start pl-1.5 pb-1 border-b-[1.5px] min-h-[14px] min-w-[24px] ${borderClass}`}>
+        {q2Str}
+      </div>
+      {/* Q4: Bottom-Left (LR) */}
+      <div className={`flex items-start justify-end pr-1.5 pt-1 border-r-[1.5px] min-h-[14px] min-w-[24px] ${borderClass}`}>
+        {q4Str}
+      </div>
+      {/* Q3: Bottom-Right (LL) */}
+      <div className="flex items-start justify-start pl-1.5 pt-1 min-h-[14px] min-w-[24px]">
+        {q3Str}
+      </div>
+    </div>
+  );
+}
+

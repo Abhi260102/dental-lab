@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Montserrat:wght@400;600;700;900&family=Playfair+Display:ital,wght@0,400;0,700;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Cinzel:wght@400;700;900&family=Montserrat:wght@400;600;700;900&family=Playfair+Display:ital,wght@0,400;0,700;1,900&display=swap');
 @import "tailwindcss";
 
 @variant dark (&:where(.dark, .dark *));
@@ -35,6 +35,9 @@
 
   --color-dent-blue-50: #f0f7ff;
   --color-dent-blue-100: #e0effe;
+  --color-dent-blue-200: #b8d9fd;
+  --color-dent-blue-300: #7ab8fb;
+  --color-dent-blue-400: #3d8ef7;
   --color-dent-blue-500: #0f52ba;
   --color-dent-blue-600: #08439d;
   --color-dent-blue-700: #06357d;
@@ -184,6 +187,78 @@ body {
 .no-scrollbar {
   -ms-overflow-style: none;
   scrollbar-width: none;
+}
+
+/* Floating ambient glow keyframes for auth pages */
+@keyframes glow-float {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+    opacity: 0.7;
+  }
+  33% {
+    transform: translate(3%, 4%) scale(1.05);
+    opacity: 0.9;
+  }
+  66% {
+    transform: translate(-2%, 6%) scale(0.95);
+    opacity: 0.6;
+  }
+}
+
+@keyframes glow-float-alt {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+    opacity: 0.6;
+  }
+  33% {
+    transform: translate(-4%, -3%) scale(1.08);
+    opacity: 0.85;
+  }
+  66% {
+    transform: translate(3%, -5%) scale(0.92);
+    opacity: 0.5;
+  }
+}
+
+@keyframes glow-float-center {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+    opacity: 0.4;
+  }
+  50% {
+    transform: translate(0, -3%) scale(1.12);
+    opacity: 0.7;
+  }
+}
+
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.animate-glow-float {
+  animation: glow-float 9s ease-in-out infinite;
+}
+
+.animate-glow-float-alt {
+  animation: glow-float-alt 12s ease-in-out infinite;
+}
+
+.animate-glow-float-center {
+  animation: glow-float-center 7s ease-in-out infinite;
+}
+
+.animate-spin-slow {
+  animation: spin-slow 4s linear infinite;
+}
+
+/* Subtle shimmer for auth card border */
+@keyframes border-shimmer {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+.animate-border-shimmer {
+  animation: border-shimmer 3s ease-in-out infinite;
 }
 
 /* Custom design font utility classes */

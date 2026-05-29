@@ -12,11 +12,11 @@ export async function GET(req: Request, context: RouteContext) {
 
     await dbConnect();
     const card = await WarrantyCard.findOne({ jobId: jobId.trim() })
-      .populate("createdBy", "name labName labLogo labPhone labEmail labWebsite labAddress cardBgImage");
+      .populate("createdBy", "name labName labLogo labPhone labEmail labWebsite labAddress cardBgImage termsAndConditions");
 
     if (!card) {
       return NextResponse.json(
-        { success: false, error: "Warranty card not found" }, 
+        { success: false, error: "Warranty card not found" },
         { status: 404 }
       );
     }

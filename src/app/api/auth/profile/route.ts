@@ -34,6 +34,7 @@ export async function GET(req: Request) {
         labWebsite: user.labWebsite || "www.yourlab.com",
         labAddress: user.labAddress || "",
         cardBgImage: user.cardBgImage || "",
+        termsAndConditions: user.termsAndConditions || "1. This warranty certificate is valid only for genuine restorations fabricated by our laboratory.\n2. The warranty covers manufacturing defects under normal clinical conditions and wear.\n3. Damages caused by clinical preparation errors, patient accidents, neglect, or subsequent dental modifications are excluded.",
       },
     });
   } catch (error: any) {
@@ -52,7 +53,7 @@ export async function PUT(req: Request) {
       return NextResponse.json({ success: false, error: "Unauthorized access" }, { status: 401 });
     }
 
-    const { name, labName, labLogo, signature, password, labPhone, labEmail, labWebsite, labAddress, cardBgImage } = await req.json();
+    const { name, labName, labLogo, signature, password, labPhone, labEmail, labWebsite, labAddress, cardBgImage, termsAndConditions } = await req.json();
 
     await dbConnect();
 
@@ -68,6 +69,7 @@ export async function PUT(req: Request) {
     if (labEmail !== undefined) user.labEmail = labEmail.trim();
     if (labWebsite !== undefined) user.labWebsite = labWebsite.trim();
     if (labAddress !== undefined) user.labAddress = labAddress.trim();
+    if (termsAndConditions !== undefined) user.termsAndConditions = termsAndConditions;
     
     // Update logo/signature/background base64 if provided
     if (labLogo !== undefined) user.labLogo = labLogo;
@@ -111,6 +113,7 @@ export async function PUT(req: Request) {
         labWebsite: user.labWebsite,
         labAddress: user.labAddress,
         cardBgImage: user.cardBgImage,
+        termsAndConditions: user.termsAndConditions,
       },
     });
   } catch (error: any) {
