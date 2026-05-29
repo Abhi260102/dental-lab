@@ -103,11 +103,11 @@ export default async function VerifyPage({ params }: VerifyPageProps) {
       </header>
 
       {/* Main Validation Screen */}
-      <main className="max-w-5xl mx-auto w-full my-auto py-12 flex flex-col items-center justify-center gap-10">
+      <main className="max-w-6xl mx-auto w-full px-4 sm:px-6 py-12 flex flex-col items-center justify-center gap-10">
 
         {isExist ? (
           /* AUTHENTIC VERIFICATION PANEL */
-          <div className="flex flex-col items-center gap-8 w-full">
+          <div className="flex flex-col items-center gap-6 w-full">
 
             {/* Status Stamp Card */}
             <div className="flex flex-col items-center text-center gap-3 animate-fade-in">
@@ -126,246 +126,245 @@ export default async function VerifyPage({ params }: VerifyPageProps) {
               </div>
             </div>
 
-            {/* Side-by-side Premium visual card mockup */}
-            <div className="flex flex-col xl:flex-row gap-6 xl:gap-8 items-center justify-center w-full py-4 overflow-hidden">
-              {/* Card Front Wrapper with responsive scaling and margin compensation */}
-              <div className="relative shrink-0 flex items-center justify-center w-[500px] h-[315px] scale-[0.6] min-[370px]:scale-[0.7] min-[440px]:scale-[0.8] sm:scale-[0.9] xl:scale-100 origin-center my-[-60px] min-[370px]:my-[-45px] min-[440px]:my-[-30px] sm:my-[-15px] xl:my-0">
-                <CardFront
-                  labName={creatorLab}
-                  labLogo={card.labLogo || creatorLogo}
-                  patientName={card.patientName}
-                  doctorName={card.doctorName}
-                  date={card.date as any}
-                  materialType={card.materialType}
-                  jobId={card.jobId}
-                  warrantyYears={card.warrantyYears}
-                  cardBgImage={card.cardBgImage || cardBgImage}
-                  layoutFront={card.layoutFront || "default"}
-                  fontStyle={card.fontStyle || "inter"}
-                  primaryColor={card.primaryColor || "#0f52ba"}
-                  toothNumber={card.toothNumber}
-                />
-              </div>
+            {/* Split Grid: Cards on left column, details & terms on right column */}
+            <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 justify-center items-start w-full mt-4">
 
-              {/* Card Back Wrapper with responsive scaling and margin compensation */}
-              <div className="relative shrink-0 flex items-center justify-center w-[500px] h-[315px] scale-[0.6] min-[370px]:scale-[0.7] min-[440px]:scale-[0.8] sm:scale-[0.9] xl:scale-100 origin-center my-[-60px] min-[370px]:my-[-45px] min-[440px]:my-[-30px] sm:my-[-15px] xl:my-0">
-                <CardBack
-                  jobId={card.jobId}
-                  signature={card.signature}
-                  labPhone={card.labPhone || labPhone}
-                  labEmail={card.labEmail || labEmail}
-                  labWebsite={card.labWebsite || labWebsite}
-                  labAddress={card.labAddress || labAddress}
-                  cardBgImage={card.cardBgImage || cardBgImage}
-                  layoutBack={card.layoutBack || "default"}
-                  fontStyle={card.fontStyle || "inter"}
-                  primaryColor={card.primaryColor || "#0f52ba"}
-                />
-              </div>
-            </div>
-
-            {/* Validation detail credentials table */}
-            <div className="group w-full max-w-[500px] border border-slate-200/80 dark:border-slate-800/80 rounded-[32px] bg-white/90 dark:bg-slate-900/60 backdrop-blur-xl p-8 flex flex-col gap-6 text-left shadow-2xl hover:shadow-3xl hover:border-slate-300 dark:hover:border-slate-700/80 hover:-translate-y-1.5 transition-all duration-500 relative overflow-hidden">
-
-              {/* Dynamic lab background image watermark (with interactive hover parallax scale/rotate) */}
-              {(card.cardBgImage || cardBgImage) && (
-                <div
-                  className="absolute inset-0 opacity-[0.14] dark:opacity-[0.09] pointer-events-none z-0 transition-transform duration-700 ease-out group-hover:scale-[1.08] group-hover:rotate-2"
-                  style={{
-                    backgroundImage: `url(${card.cardBgImage || cardBgImage})`,
-                    backgroundSize: "cover",
-                    backgroundPosition: "center"
-                  }}
-                />
-              )}
-
-              {/* Lab Header */}
-              <div className="flex items-center gap-3.5 border-b border-slate-100 dark:border-slate-800/60 pb-5 z-10 relative">
-                <div className="w-11 h-11 rounded-2xl overflow-hidden border border-slate-200/60 dark:border-slate-800/60 flex items-center justify-center bg-slate-900 shadow-md shrink-0">
-                  <img
-                    src={card.labLogo || creatorLogo || "/logo.png"}
-                    alt={`${creatorLab} Logo`}
-                    className="w-full h-full object-cover"
+              {/* Left Column: Stacked Card Front & Back mockups */}
+              <div className="flex flex-col gap-6 lg:gap-8 items-center justify-center shrink-0 w-full lg:w-auto">
+                {/* Card Front Wrapper with responsive scaling and margin compensation */}
+                <div className="relative shrink-0 flex items-center justify-center w-[500px] h-[315px] scale-[0.6] min-[370px]:scale-[0.7] min-[440px]:scale-[0.8] sm:scale-[0.9] lg:scale-100 origin-center my-[-60px] min-[370px]:my-[-45px] min-[440px]:my-[-30px] sm:my-[-15px] lg:my-0">
+                  <CardFront
+                    labName={creatorLab}
+                    labLogo={card.labLogo || creatorLogo}
+                    patientName={card.patientName}
+                    doctorName={card.doctorName}
+                    date={card.date as any}
+                    materialType={card.materialType}
+                    jobId={card.jobId}
+                    warrantyYears={card.warrantyYears}
+                    cardBgImage={card.cardBgImage || cardBgImage}
+                    layoutFront={card.layoutFront || "default"}
+                    fontStyle={card.fontStyle || "inter"}
+                    primaryColor={card.primaryColor || "#0f52ba"}
+                    toothNumber={card.toothNumber}
                   />
                 </div>
-                <div className="min-w-0 flex-1">
-                  <span className="text-[9px] uppercase font-black text-slate-400 dark:text-slate-500 tracking-[0.2em] leading-none block">Certified Laboratory</span>
-                  <h3 className="text-base font-black text-slate-900 dark:text-white mt-1.5 uppercase tracking-wide leading-none truncate">
-                    {creatorLab}
-                  </h3>
-                  {(card.labAddress || labAddress) && (
-                    <span className="text-[10px] text-slate-500 dark:text-slate-400 mt-1 block font-semibold leading-normal truncate">
-                      {card.labAddress || labAddress}
-                    </span>
+
+                {/* Card Back Wrapper with responsive scaling and margin compensation */}
+                <div className="relative shrink-0 flex items-center justify-center w-[500px] h-[315px] scale-[0.6] min-[370px]:scale-[0.7] min-[440px]:scale-[0.8] sm:scale-[0.9] lg:scale-100 origin-center my-[-60px] min-[370px]:my-[-45px] min-[440px]:my-[-30px] sm:my-[-15px] lg:my-0">
+                  <CardBack
+                    jobId={card.jobId}
+                    signature={card.signature}
+                    labPhone={card.labPhone || labPhone}
+                    labEmail={card.labEmail || labEmail}
+                    labWebsite={card.labWebsite || labWebsite}
+                    labAddress={card.labAddress || labAddress}
+                    cardBgImage={card.cardBgImage || cardBgImage}
+                    layoutBack={card.layoutBack || "default"}
+                    fontStyle={card.fontStyle || "inter"}
+                    primaryColor={card.primaryColor || "#0f52ba"}
+                  />
+                </div>
+
+
+
+                <div className="group w-full border border-slate-200/80 dark:border-slate-800/80 rounded-[32px] bg-white/90 dark:bg-slate-900/60 backdrop-blur-xl p-8 flex flex-col gap-6 text-left shadow-2xl hover:shadow-3xl hover:border-slate-300 dark:hover:border-slate-700/80 hover:-translate-y-1.5 transition-all duration-500 relative overflow-hidden">
+
+                  {/* Dynamic lab background image watermark (with interactive hover parallax scale/rotate) */}
+                  {(card.cardBgImage || cardBgImage) && (
+                    <div
+                      className="absolute inset-0 opacity-[0.14] dark:opacity-[0.09] pointer-events-none z-0 transition-transform duration-700 ease-out group-hover:scale-[1.08] group-hover:rotate-2"
+                      style={{
+                        backgroundImage: `url(${card.cardBgImage || cardBgImage})`,
+                        backgroundSize: "cover",
+                        backgroundPosition: "center"
+                      }}
+                    />
                   )}
+
+                  {/* Lab Header */}
+                  <div className="flex items-center gap-3.5 border-b border-slate-100 dark:border-slate-800/60 pb-5 z-10 relative">
+                    <div className="w-11 h-11 rounded-2xl overflow-hidden border border-slate-200/60 dark:border-slate-800/60 flex items-center justify-center bg-slate-900 shadow-md shrink-0">
+                      <img
+                        src={card.labLogo || creatorLogo || "/logo.png"}
+                        alt={`${creatorLab} Logo`}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <span className="text-[9px] uppercase font-black text-slate-400 dark:text-slate-500 tracking-[0.2em] leading-none block">Certified Laboratory</span>
+                      <h3 className="text-base font-black text-slate-900 dark:text-white mt-1.5 uppercase tracking-wide leading-none truncate">
+                        {creatorLab}
+                      </h3>
+                      {(card.labAddress || labAddress) && (
+                        <span className="text-[10px] text-slate-500 dark:text-slate-400 mt-1 block font-semibold leading-normal truncate">
+                          {card.labAddress || labAddress}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Information Grid */}
+                  <div className="grid grid-cols-2 gap-y-6 gap-x-6 text-sm leading-normal z-10 relative">
+                    <div className="flex flex-col border-l-2 border-dent-blue-500/30 pl-3.5 transition-colors duration-300 group-hover:border-dent-blue-500/60">
+                      <span className="text-[9px] uppercase font-black text-slate-400 dark:text-slate-500 tracking-wider">Patient Name</span>
+                      <span className="font-extrabold text-slate-900 dark:text-white mt-1 text-base tracking-tight">
+                        {card.patientName}
+                      </span>
+                    </div>
+
+                    <div className="flex flex-col border-l-2 border-dent-blue-500/30 pl-3.5 transition-colors duration-300 group-hover:border-dent-blue-500/60">
+                      <span className="text-[9px] uppercase font-black text-slate-400 dark:text-slate-500 tracking-wider">Issuing Doctor</span>
+                      <span className="font-extrabold text-slate-900 dark:text-white mt-1 text-base tracking-tight">
+                        {card.doctorName}
+                      </span>
+                    </div>
+
+                    <div className="flex flex-col border-l-2 border-emerald-500/30 pl-3.5 transition-colors duration-300 group-hover:border-emerald-500/60">
+                      <span className="text-[9px] uppercase font-black text-slate-400 dark:text-slate-500 tracking-wider block mb-1">Restoration Material</span>
+                      <div className="px-3 py-1 rounded-full text-xs font-bold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/25 inline-flex items-center w-fit shadow-xs">
+                        {card.materialType}
+                      </div>
+                    </div>
+
+                    <div className="flex flex-col border-l-2 border-slate-300 dark:border-slate-800 pl-3.5 transition-colors duration-300 group-hover:border-slate-400 dark:group-hover:border-slate-700">
+                      <span className="text-[9px] uppercase font-black text-slate-400 dark:text-slate-500 tracking-wider">Date Issued</span>
+                      <span className="font-bold text-slate-700 dark:text-slate-300 mt-1 text-sm">
+                        {issueDateStr}
+                      </span>
+                    </div>
+
+                    <div className="flex flex-col border-l-2 border-amber-500/30 pl-3.5 transition-colors duration-300 group-hover:border-amber-500/60">
+                      <span className="text-[9px] uppercase font-black text-slate-400 dark:text-slate-500 tracking-wider block mb-1">Warranty Term Expiry</span>
+                      <div className="px-3 py-1 rounded-full text-xs font-bold bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/25 inline-flex items-center w-fit shadow-xs">
+                        {expiryDateStr}
+                      </div>
+                    </div>
+                  </div>
+
+                  {card.notes && (
+                    <div className="flex flex-col col-span-2 border-t border-slate-200 dark:border-slate-800/80 pt-4">
+                      <span className="text-[9px] uppercase font-black text-slate-400 dark:text-slate-500 tracking-wider">Prosthesis Notes</span>
+                      <div className="relative mt-2 p-3.5 rounded-2xl bg-slate-50/50 dark:bg-slate-900/30 border border-slate-200/50 dark:border-slate-800/80">
+                        <span className="text-xs text-slate-600 dark:text-slate-300 italic block leading-relaxed">
+                          &ldquo;{card.notes}&rdquo;
+                        </span>
+                      </div>
+                    </div>
+                  )}
+
                 </div>
               </div>
 
-              {/* Information Grid */}
-              <div className="grid grid-cols-2 gap-y-6 gap-x-6 text-sm leading-normal z-10 relative">
+              {/* Right Column: Validation details & Terms stacked vertically */}
+              <div className="flex-1 flex flex-col gap-8 w-full max-w-[500px] lg:max-w-none mx-auto lg:mx-0">
+                {/* Validation detail credentials table */}
 
-                <div className="flex flex-col border-l-2 border-dent-blue-500/30 pl-3.5 transition-colors duration-300 group-hover:border-dent-blue-500/60">
-                  <span className="text-[9px] uppercase font-black text-slate-400 dark:text-slate-500 tracking-wider">Patient Name</span>
-                  <span className="font-extrabold text-slate-900 dark:text-white mt-1 text-base tracking-tight">
-                    {card.patientName}
-                  </span>
-                </div>
 
-                <div className="flex flex-col border-l-2 border-dent-blue-500/30 pl-3.5 transition-colors duration-300 group-hover:border-dent-blue-500/60">
-                  <span className="text-[9px] uppercase font-black text-slate-400 dark:text-slate-500 tracking-wider">Issuing Doctor</span>
-                  <span className="font-extrabold text-slate-900 dark:text-white mt-1 text-base tracking-tight">
-                    {card.doctorName}
-                  </span>
-                </div>
+                {/* WARRANTY TERMS & CONDITIONS SECTION */}
+                {termsAndConditions && (
+                  <div className="group w-full border border-slate-200/80 dark:border-slate-800/80 rounded-[32px] bg-white/90 dark:bg-slate-900/60 backdrop-blur-xl p-8 flex flex-col gap-5 text-left shadow-2xl hover:shadow-3xl hover:border-slate-300 dark:hover:border-slate-700/80 hover:-translate-y-1.5 transition-all duration-500 relative overflow-hidden">
+                    {/* Accent glow matching primaryColor or amber */}
+                    <div className="absolute top-0 left-0 w-24 h-24 rounded-br-full pointer-events-none z-0 bg-amber-500/[0.04] dark:bg-amber-500/[0.06]" />
 
-                <div className="flex flex-col border-l-2 border-emerald-500/30 pl-3.5 transition-colors duration-300 group-hover:border-emerald-500/60">
-                  <span className="text-[9px] uppercase font-black text-slate-400 dark:text-slate-500 tracking-wider block mb-1">Restoration Material</span>
-                  <div className="px-3 py-1 rounded-full text-xs font-bold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/25 inline-flex items-center w-fit shadow-xs">
-                    {card.materialType}
-                  </div>
-                </div>
+                    {/* Dynamic lab background image watermark */}
+                    {(card.cardBgImage || cardBgImage) && (
+                      <div
+                        className="absolute inset-0 opacity-[0.14] dark:opacity-[0.09] pointer-events-none z-0 transition-transform duration-700 ease-out group-hover:scale-[1.08] group-hover:rotate-2"
+                        style={{
+                          backgroundImage: `url(${card.cardBgImage || cardBgImage})`,
+                          backgroundSize: "cover",
+                          backgroundPosition: "center"
+                        }}
+                      />
+                    )}
 
-                {/* <div className="flex flex-col border-l-2 border-indigo-500/30 pl-3.5 transition-colors duration-300 group-hover:border-indigo-500/60">
-                  <span className="text-[9px] uppercase font-black text-slate-400 dark:text-slate-500 tracking-wider block mb-1">Tooth Designations</span>
-                  <div className="flex flex-wrap gap-1 mt-0.5 font-bold font-mono text-dent-blue-600 dark:text-dent-blue-400">
-                    {card.toothNumber.split(",").map((t: string, idx: number) => (
-                      <span key={idx} className="px-2 py-0.5 bg-indigo-500/10 border border-indigo-500/20 rounded-md text-[11px] font-bold">
-                        {t.trim()}
-                      </span>
-                    ))}
-                  </div>
-                </div> */}
+                    {/* Section Header */}
+                    <div className="flex items-center gap-3.5 border-b border-slate-100 dark:border-slate-800/60 pb-5 z-10 relative">
+                      <div className="w-11 h-11 rounded-2xl overflow-hidden border border-amber-500/20 dark:border-amber-500/30 flex items-center justify-center bg-amber-500/5 shadow-inner shrink-0 text-amber-600 dark:text-amber-400">
+                        <FileText className="w-5.5 h-5.5" />
+                      </div>
+                      <div>
+                        <span className="text-[9px] uppercase font-black text-slate-400 dark:text-slate-500 tracking-[0.2em] leading-none block">Laboratory Policy</span>
+                        <h3 className="text-base font-black text-slate-900 dark:text-white mt-1.5 uppercase tracking-wide leading-none">
+                          Warranty Terms & Conditions
+                        </h3>
+                      </div>
+                    </div>
 
-                <div className="flex flex-col border-l-2 border-slate-300 dark:border-slate-800 pl-3.5 transition-colors duration-300 group-hover:border-slate-400 dark:group-hover:border-slate-700">
-                  <span className="text-[9px] uppercase font-black text-slate-400 dark:text-slate-500 tracking-wider">Date Issued</span>
-                  <span className="font-bold text-slate-700 dark:text-slate-300 mt-1 text-sm">
-                    {issueDateStr}
-                  </span>
-                </div>
+                    {/* Terms List */}
+                    <div className="flex flex-col gap-3.5 text-xs leading-relaxed z-10 relative">
+                      {termsAndConditions
+                        .split("\n")
+                        .map((term: string) => term.trim())
+                        .filter(Boolean)
+                        .map((trimmed: string, idx: number) => {
+                          // 1. Main Heading (First Line)
+                          if (idx === 0) {
+                            return (
+                              <h4 key={idx} className="text-xs text-slate-500 dark:text-slate-400 italic mb-1.5 font-medium pl-1 leading-normal">
+                                {trimmed}
+                              </h4>
+                            );
+                          }
 
-                <div className="flex flex-col border-l-2 border-amber-500/30 pl-3.5 transition-colors duration-300 group-hover:border-amber-500/60">
-                  <span className="text-[9px] uppercase font-black text-slate-400 dark:text-slate-500 tracking-wider block mb-1">Warranty Term Expiry</span>
-                  <div className="px-3 py-1 rounded-full text-xs font-bold bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/25 inline-flex items-center w-fit shadow-xs">
-                    {expiryDateStr}
-                  </div>
-                </div>
+                          // 2. Subheadings (starts with "1. ", "2. ", etc.)
+                          const matchesNumber = trimmed.match(/^(\d+[\.\)]?)\s*(.*)/);
+                          if (matchesNumber) {
+                            return (
+                              <div key={idx} className="mt-4 flex gap-2.5 items-start pl-2 border-l-2 border-amber-500/40">
+                                <span className="font-black text-amber-600 dark:text-amber-400 select-none shrink-0 font-mono text-xs mt-[1px]">
+                                  {matchesNumber[1]}
+                                </span>
+                                <span className="flex-1 font-black text-slate-900 dark:text-white text-xs tracking-wide">
+                                  {matchesNumber[2]}
+                                </span>
+                              </div>
+                            );
+                          }
 
-                {card.notes && (
-                  <div className="flex flex-col col-span-2 border-t border-slate-200 dark:border-slate-800/80 pt-4">
-                    <span className="text-[9px] uppercase font-black text-slate-400 dark:text-slate-500 tracking-wider">Prosthesis Notes</span>
-                    <div className="relative mt-2 p-3.5 rounded-2xl bg-slate-50/50 dark:bg-slate-900/30 border border-slate-200/50 dark:border-slate-800/80">
-                      <span className="text-xs text-slate-600 dark:text-slate-300 italic block leading-relaxed">
-                        &ldquo;{card.notes}&rdquo;
-                      </span>
+                          // 3. Intro / Normal Paragraph (does not start with bullet indicators and is right after heading)
+                          if (idx === 1 && !trimmed.startsWith("-") && !trimmed.startsWith("•") && !trimmed.startsWith("*")) {
+                            return (
+                              <p key={idx} className="text-xs text-slate-500 dark:text-slate-400 italic mb-1.5 font-medium pl-1 leading-normal">
+                                {trimmed}
+                              </p>
+                            );
+                          }
+
+                          // 4. Default Bullet Point
+                          // Remove leading bullet characters if they exist in the string to avoid double bullets
+                          const cleanTerm = trimmed.replace(/^[-•*]\s*/, "");
+
+                          // Check if it has a title prefix (e.g. "Material Defects: ...")
+                          const colonIndex = cleanTerm.indexOf(":");
+                          if (colonIndex > 0 && colonIndex < 40 && cleanTerm.substring(colonIndex + 1).startsWith(" ")) {
+                            const title = cleanTerm.substring(0, colonIndex + 1);
+                            const rest = cleanTerm.substring(colonIndex + 1);
+                            return (
+                              <div key={idx} className="flex gap-2.5 items-start pl-4 text-slate-650 dark:text-slate-350 font-medium">
+                                <span className="w-1.5 h-1.5 rounded-full bg-amber-500 dark:bg-amber-400 select-none shrink-0 mt-[6px]" />
+                                <span className="flex-1">
+                                  <strong className="font-extrabold text-slate-900 dark:text-white mr-1">{title}</strong>
+                                  {rest.trim()}
+                                </span>
+                              </div>
+                            );
+                          }
+
+                          return (
+                            <div key={idx} className="flex gap-2.5 items-start pl-4 text-slate-600 dark:text-slate-400 font-medium">
+                              <span className="w-1.5 h-1.5 rounded-full bg-amber-500 dark:bg-amber-400 select-none shrink-0 mt-[6px]" />
+                              <span className="flex-1">{cleanTerm}</span>
+                            </div>
+                          );
+                        })}
                     </div>
                   </div>
                 )}
-
               </div>
+
             </div>
-
-            {/* WARRANTY TERMS & CONDITIONS SECTION */}
-            {termsAndConditions && (
-              <div className="group w-full max-w-[500px] border border-slate-200/80 dark:border-slate-800/80 rounded-[32px] bg-white/90 dark:bg-slate-900/60 backdrop-blur-xl p-8 flex flex-col gap-5 text-left shadow-2xl hover:shadow-3xl hover:border-slate-300 dark:hover:border-slate-700/80 hover:-translate-y-1.5 transition-all duration-500 relative overflow-hidden">
-                {/* Accent glow matching primaryColor or amber */}
-                <div className="absolute top-0 left-0 w-24 h-24 rounded-br-full pointer-events-none z-0 bg-amber-500/[0.04] dark:bg-amber-500/[0.06]" />
-
-                {/* Dynamic lab background image watermark */}
-                {(card.cardBgImage || cardBgImage) && (
-                  <div
-                    className="absolute inset-0 opacity-[0.14] dark:opacity-[0.09] pointer-events-none z-0 transition-transform duration-700 ease-out group-hover:scale-[1.08] group-hover:rotate-2"
-                    style={{
-                      backgroundImage: `url(${card.cardBgImage || cardBgImage})`,
-                      backgroundSize: "cover",
-                      backgroundPosition: "center"
-                    }}
-                  />
-                )}
-
-                {/* Section Header */}
-                <div className="flex items-center gap-3.5 border-b border-slate-100 dark:border-slate-800/60 pb-5 z-10 relative">
-                  <div className="w-11 h-11 rounded-2xl overflow-hidden border border-amber-500/20 dark:border-amber-500/30 flex items-center justify-center bg-amber-500/5 shadow-inner shrink-0 text-amber-600 dark:text-amber-400">
-                    <FileText className="w-5.5 h-5.5" />
-                  </div>
-                  <div>
-                    <span className="text-[9px] uppercase font-black text-slate-400 dark:text-slate-500 tracking-[0.2em] leading-none block">Laboratory Policy</span>
-                    <h3 className="text-base font-black text-slate-900 dark:text-white mt-1.5 uppercase tracking-wide leading-none">
-                      Warranty Terms & Conditions
-                    </h3>
-                  </div>
-                </div>
-
-                {/* Terms List */}
-                <div className="flex flex-col gap-3.5 text-xs leading-relaxed z-10 relative">
-                  {termsAndConditions
-                    .split("\n")
-                    .map((term: string) => term.trim())
-                    .filter(Boolean)
-                    .map((trimmed: string, idx: number) => {
-                      // 1. Main Heading (First Line)
-                      if (idx === 0) {
-                        return (
-                          <h4 key={idx} className="text-xs text-slate-500 dark:text-slate-400 italic mb-1.5 font-medium pl-1 leading-normal">
-                            {trimmed}
-                          </h4>
-                        );
-                      }
-
-                      // 2. Subheadings (starts with "1. ", "2. ", etc.)
-                      const matchesNumber = trimmed.match(/^(\d+[\.\)]?)\s*(.*)/);
-                      if (matchesNumber) {
-                        return (
-                          <div key={idx} className="mt-4 flex gap-2.5 items-start pl-2 border-l-2 border-amber-500/40">
-                            <span className="font-black text-amber-600 dark:text-amber-400 select-none shrink-0 font-mono text-xs mt-[1px]">
-                              {matchesNumber[1]}
-                            </span>
-                            <span className="flex-1 font-black text-slate-900 dark:text-white text-xs tracking-wide">
-                              {matchesNumber[2]}
-                            </span>
-                          </div>
-                        );
-                      }
-
-                      // 3. Intro / Normal Paragraph (does not start with bullet indicators and is right after heading)
-                      if (idx === 1 && !trimmed.startsWith("-") && !trimmed.startsWith("•") && !trimmed.startsWith("*")) {
-                        return (
-                          <p key={idx} className="text-xs text-slate-500 dark:text-slate-400 italic mb-1.5 font-medium pl-1 leading-normal">
-                            {trimmed}
-                          </p>
-                        );
-                      }
-
-                      // 4. Default Bullet Point
-                      // Remove leading bullet characters if they exist in the string to avoid double bullets
-                      const cleanTerm = trimmed.replace(/^[-•*]\s*/, "");
-
-                      // Check if it has a title prefix (e.g. "Material Defects: ...")
-                      const colonIndex = cleanTerm.indexOf(":");
-                      if (colonIndex > 0 && colonIndex < 40 && cleanTerm.substring(colonIndex + 1).startsWith(" ")) {
-                        const title = cleanTerm.substring(0, colonIndex + 1);
-                        const rest = cleanTerm.substring(colonIndex + 1);
-                        return (
-                          <div key={idx} className="flex gap-2.5 items-start pl-4 text-slate-600 dark:text-slate-400 font-medium">
-                            <span className="w-1.5 h-1.5 rounded-full bg-amber-500 dark:bg-amber-400 select-none shrink-0 mt-[6px]" />
-                            <span className="flex-1">
-                              <strong className="font-extrabold text-slate-900 dark:text-white mr-1">{title}</strong>
-                              {rest.trim()}
-                            </span>
-                          </div>
-                        );
-                      }
-
-                      return (
-                        <div key={idx} className="flex gap-2.5 items-start pl-4 text-slate-600 dark:text-slate-400 font-medium">
-                          <span className="w-1.5 h-1.5 rounded-full bg-amber-500 dark:bg-amber-400 select-none shrink-0 mt-[6px]" />
-                          <span className="flex-1">{cleanTerm}</span>
-                        </div>
-                      );
-                    })}
-                </div>
-              </div>
-            )}
-
           </div>
         ) : (
           /* SECURITY WARNING: UNRECOGNIZED CERTIFICATE */
