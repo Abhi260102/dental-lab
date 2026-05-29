@@ -81,7 +81,7 @@ export default async function VerifyPage({ params }: VerifyPageProps) {
 
       {/* Brand Header */}
       <header className="max-w-5xl mx-auto w-full flex items-center justify-between py-4 border-b border-slate-200/50 dark:border-white/5">
-        <Link href="/" className="flex items-center gap-2">
+        <Link href="/" className="flex items-center gap-2 min-w-0">
           {/* Custom logo container */}
           <div className="relative shrink-0 w-8 h-8 rounded-lg overflow-hidden border border-slate-200/50 dark:border-white/10 shadow flex items-center justify-center bg-slate-900 transition-all duration-300 hover:scale-105">
             <img
@@ -90,12 +90,12 @@ export default async function VerifyPage({ params }: VerifyPageProps) {
               className="w-full h-full object-cover"
             />
           </div>
-          <span className="font-extrabold text-sm tracking-tight bg-gradient-to-r from-dent-blue-600 to-emerald-500 dark:from-dent-blue-400 dark:to-emerald-400 bg-clip-text text-transparent select-none">
+          <span className="font-extrabold text-xs sm:text-sm tracking-tight bg-gradient-to-r from-dent-blue-600 to-emerald-500 dark:from-dent-blue-400 dark:to-emerald-400 bg-clip-text text-transparent select-none truncate max-w-[120px] sm:max-w-none">
             {creatorLab}
           </span>
         </Link>
-        <div className="flex items-center gap-3">
-          <span className="text-[9px] uppercase font-bold tracking-widest text-slate-500">
+        <div className="flex items-center gap-3 shrink-0">
+          <span className="text-[9px] uppercase font-bold tracking-widest text-slate-500 hidden sm:inline">
             Verification Hub
           </span>
           <ThemeToggle />
@@ -132,38 +132,42 @@ export default async function VerifyPage({ params }: VerifyPageProps) {
               {/* Left Column: Stacked Card Front & Back mockups */}
               <div className="flex flex-col gap-6 lg:gap-8 items-center justify-center shrink-0 w-full lg:w-auto">
                 {/* Card Front Wrapper with responsive scaling and margin compensation */}
-                <div className="relative shrink-0 flex items-center justify-center w-[500px] h-[315px] scale-[0.6] min-[370px]:scale-[0.7] min-[440px]:scale-[0.8] sm:scale-[0.9] lg:scale-100 origin-center my-[-60px] min-[370px]:my-[-45px] min-[440px]:my-[-30px] sm:my-[-15px] lg:my-0">
-                  <CardFront
-                    labName={creatorLab}
-                    labLogo={card.labLogo || creatorLogo}
-                    patientName={card.patientName}
-                    doctorName={card.doctorName}
-                    date={card.date as any}
-                    materialType={card.materialType}
-                    jobId={card.jobId}
-                    warrantyYears={card.warrantyYears}
-                    cardBgImage={card.cardBgImage || cardBgImage}
-                    layoutFront={card.layoutFront || "default"}
-                    fontStyle={card.fontStyle || "inter"}
-                    primaryColor={card.primaryColor || "#0f52ba"}
-                    toothNumber={card.toothNumber}
-                  />
+                <div className="relative shrink-0 flex items-center justify-center w-[300px] h-[189px] min-[370px]:w-[350px] min-[370px]:h-[220px] min-[440px]:w-[400px] min-[440px]:h-[252px] sm:w-[450px] sm:h-[284px] lg:w-[500px] lg:h-[315px]">
+                  <div className="absolute scale-[0.6] min-[370px]:scale-[0.7] min-[440px]:scale-[0.8] sm:scale-[0.9] lg:scale-100 origin-center flex items-center justify-center">
+                    <CardFront
+                      labName={creatorLab}
+                      labLogo={card.labLogo || creatorLogo}
+                      patientName={card.patientName}
+                      doctorName={card.doctorName}
+                      date={card.date as any}
+                      materialType={card.materialType}
+                      jobId={card.jobId}
+                      warrantyYears={card.warrantyYears}
+                      cardBgImage={card.cardBgImage || cardBgImage}
+                      layoutFront={card.layoutFront || "default"}
+                      fontStyle={card.fontStyle || "inter"}
+                      primaryColor={card.primaryColor || "#0f52ba"}
+                      toothNumber={card.toothNumber}
+                    />
+                  </div>
                 </div>
 
                 {/* Card Back Wrapper with responsive scaling and margin compensation */}
-                <div className="relative shrink-0 flex items-center justify-center w-[500px] h-[315px] scale-[0.6] min-[370px]:scale-[0.7] min-[440px]:scale-[0.8] sm:scale-[0.9] lg:scale-100 origin-center my-[-60px] min-[370px]:my-[-45px] min-[440px]:my-[-30px] sm:my-[-15px] lg:my-0">
-                  <CardBack
-                    jobId={card.jobId}
-                    signature={card.signature}
-                    labPhone={card.labPhone || labPhone}
-                    labEmail={card.labEmail || labEmail}
-                    labWebsite={card.labWebsite || labWebsite}
-                    labAddress={card.labAddress || labAddress}
-                    cardBgImage={card.cardBgImage || cardBgImage}
-                    layoutBack={card.layoutBack || "default"}
-                    fontStyle={card.fontStyle || "inter"}
-                    primaryColor={card.primaryColor || "#0f52ba"}
-                  />
+                <div className="relative shrink-0 flex items-center justify-center w-[300px] h-[189px] min-[370px]:w-[350px] min-[370px]:h-[220px] min-[440px]:w-[400px] min-[440px]:h-[252px] sm:w-[450px] sm:h-[284px] lg:w-[500px] lg:h-[315px]">
+                  <div className="absolute scale-[0.6] min-[370px]:scale-[0.7] min-[440px]:scale-[0.8] sm:scale-[0.9] lg:scale-100 origin-center flex items-center justify-center">
+                    <CardBack
+                      jobId={card.jobId}
+                      signature={card.signature}
+                      labPhone={card.labPhone || labPhone}
+                      labEmail={card.labEmail || labEmail}
+                      labWebsite={card.labWebsite || labWebsite}
+                      labAddress={card.labAddress || labAddress}
+                      cardBgImage={card.cardBgImage || cardBgImage}
+                      layoutBack={card.layoutBack || "default"}
+                      fontStyle={card.fontStyle || "inter"}
+                      primaryColor={card.primaryColor || "#0f52ba"}
+                    />
+                  </div>
                 </div>
 
 

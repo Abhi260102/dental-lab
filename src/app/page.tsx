@@ -58,20 +58,20 @@ export default function Home() {
 
       {/* Header / Nav */}
       <header className="sticky top-0 z-30 w-full border-b border-slate-200/50 dark:border-white/5 bg-white/60 dark:bg-slate-950/60 backdrop-blur-md transition-colors">
-        <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-2">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+          <div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
             <img
               src={logoUrl || '/logo.png'}
               alt="Logo"
-              className="w-8 h-8 object-cover rounded-lg border border-slate-200/50 shadow-sm shrink-0"
+              className="w-7 h-7 sm:w-8 sm:h-8 object-cover rounded-lg border border-slate-200/50 shadow-sm shrink-0"
             />
 
-            <span className="font-extrabold text-lg tracking-tight bg-gradient-to-r from-dent-blue-600 to-emerald-500 dark:from-dent-blue-400 dark:to-emerald-400 bg-clip-text text-transparent uppercase">
+            <span className="font-extrabold text-sm min-[360px]:text-sm sm:text-lg tracking-tight bg-gradient-to-r from-dent-blue-600 to-emerald-500 dark:from-dent-blue-400 dark:to-emerald-400 bg-clip-text text-transparent uppercase truncate max-w-[110px] min-[360px]:max-w-[140px] min-[400px]:max-w-[180px] sm:max-w-none">
               {labName}
             </span>
           </div>
 
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2 sm:gap-4 shrink-0">
             {status === "authenticated" ? (
               <>
                 <span className="text-xs font-semibold text-slate-500 dark:text-slate-400 hidden sm:inline">
@@ -79,7 +79,7 @@ export default function Home() {
                 </span>
                 <Link
                   href="/dashboard"
-                  className="px-4 py-2 rounded-xl text-xs font-bold bg-slate-900 dark:bg-white text-white dark:text-slate-950 hover:bg-slate-800 dark:hover:bg-slate-100 transition-all uppercase tracking-wider active:scale-95 shadow-sm"
+                  className="px-2.5 py-1.5 sm:px-4 sm:py-2 rounded-xl text-[10px] sm:text-xs font-bold bg-slate-900 dark:bg-white text-white dark:text-slate-950 hover:bg-slate-800 dark:hover:bg-slate-100 transition-all uppercase tracking-wider active:scale-95 shadow-sm"
                 >
                   Dashboard
                 </Link>
@@ -88,13 +88,13 @@ export default function Home() {
               <>
                 <Link
                   href="/login"
-                  className="text-xs font-bold text-slate-600 dark:text-slate-300 hover:text-dent-blue-600 dark:hover:text-emerald-400 transition-colors uppercase tracking-wider"
+                  className="text-[10px] sm:text-xs font-bold text-slate-600 dark:text-slate-300 hover:text-dent-blue-600 dark:hover:text-emerald-400 transition-colors uppercase tracking-wider"
                 >
                   Sign In
                 </Link>
                 <Link
                   href="/register"
-                  className="px-4 py-2 rounded-xl text-xs font-bold bg-slate-900 dark:bg-white text-white dark:text-slate-950 hover:bg-slate-800 dark:hover:bg-slate-100 transition-all uppercase tracking-wider active:scale-95"
+                  className="px-2.5 py-1.5 sm:px-4 sm:py-2 rounded-xl text-[10px] sm:text-xs font-bold bg-slate-900 dark:bg-white text-white dark:text-slate-950 hover:bg-slate-800 dark:hover:bg-slate-100 transition-all uppercase tracking-wider active:scale-95"
                 >
                   Get Started
                 </Link>
@@ -149,7 +149,7 @@ export default function Home() {
         </div>
 
         {/* Hero Visual Mockup showing the actual custom card design */}
-        <div className="relative w-full aspect-[4/3] flex items-center justify-center select-none scale-[0.6] min-[370px]:scale-[0.7] min-[440px]:scale-[0.8] sm:scale-100 origin-center py-4 overflow-hidden">
+        <div className="relative w-full flex items-center justify-center select-none py-4">
           <WarrantyCardPreview
             jobId="DS-2605-AF9X"
             doctorName={doctorName}

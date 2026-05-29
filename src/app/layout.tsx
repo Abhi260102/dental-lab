@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "32 Dental Design | 32 Dental Design Warranty Card Management",
+  title: "32 Dental Design | Warranty Card Management",
   description: "Enterprise-grade 32 Dental Designoratory warranty certificate generation, verification, and analytics platform. Create premium printable and downloadable smart cards.",
   keywords: ["32 Dental Design", "warranty card", "crown warranty", "dentist certificate", "dentistry logs", "dental restoration"],
 };

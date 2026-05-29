@@ -165,10 +165,12 @@ body {
 /* Card Flip styles */
 .perspective-1000 {
   perspective: 1000px;
+  -webkit-perspective: 1000px;
 }
 
 .transform-style-3d {
   transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
 }
 
 .backface-hidden {
@@ -176,8 +178,14 @@ body {
   -webkit-backface-visibility: hidden;
 }
 
+.backface-hidden:not(.rotate-y-180) {
+  transform: translateZ(1px);
+  -webkit-transform: translateZ(1px);
+}
+
 .rotate-y-180 {
-  transform: rotateY(180deg);
+  transform: rotateY(180deg) translateZ(1px);
+  -webkit-transform: rotateY(180deg) translateZ(1px);
 }
 
 /* Hide scrollbars but allow scrolling */
