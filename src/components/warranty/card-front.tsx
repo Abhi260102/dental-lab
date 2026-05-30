@@ -157,7 +157,7 @@ export default function CardFront({
               <div key={i} className="flex items-center text-[11px] font-semibold">
                 <span className="w-24 text-slate-400 font-bold uppercase text-[8px] tracking-wider leading-none">{item.label}</span>
                 <span className="text-slate-400 mr-2.5">:</span>
-                <span className="truncate border-b border-slate-200/40 flex-grow pb-0.5" style={{ color: item.color || (isDarkFront ? "#e2e8f0" : "#1e293b"), fontWeight: item.color ? "900" : "700" }}>{item.val || "---"}</span>
+                <span className="truncate border-b border-slate-200/40 flex-grow pb-0.5" style={{ color: (isDarkFront ? "#e2e8f0" : "#1e293b"), fontWeight: "700" }}>{item.val || "---"}</span>
               </div>
             ))}
             {renderToothCrosshairRow()}
