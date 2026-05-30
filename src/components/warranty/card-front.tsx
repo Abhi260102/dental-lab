@@ -152,7 +152,7 @@ export default function CardFront({
               { label: "Doctor Name", val: doctorName },
               { label: "Delivery Date", val: formatDate(date) },
               { label: "Restoration Type", val: materialType },
-              { label: "Case ID", val: jobId, color: primaryColor }
+              { label: "Case ID", val: jobId, }
             ].map((item, i) => (
               <div key={i} className="flex items-center text-[11px] font-semibold">
                 <span className="w-24 text-slate-400 font-bold uppercase text-[8px] tracking-wider leading-none">{item.label}</span>
