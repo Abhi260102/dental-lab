@@ -1,4 +1,8 @@
 import mongoose from "mongoose";
+import User from "@/models/User";
+import WarrantyCard from "@/models/WarrantyCard";
+import Template from "@/models/Template";
+import ActivityLog from "@/models/ActivityLog";
 
 const MONGODB_URI = process.env.MONGODB_URI;
 
@@ -24,6 +28,9 @@ if (!cached) {
 }
 
 async function dbConnect() {
+  // Ensure models are registered in serverless environments to prevent MissingSchemaError
+  const _registerModels = [User, WarrantyCard, Template, ActivityLog];
+
   if (cached!.conn) {
     return cached!.conn;
   }
