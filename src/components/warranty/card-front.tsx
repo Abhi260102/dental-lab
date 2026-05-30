@@ -62,7 +62,7 @@ export default function CardFront({
     if (!toothNumber) return null;
     return (
       <div className="flex items-center text-[11px] font-semibold">
-        <span className="w-24 text-slate-400 font-bold uppercase text-[8px] tracking-wider leading-none">Teeth (FDI)</span>
+        <span className="w-24 text-slate-400 font-bold uppercase text-[8px] tracking-wider leading-none">Teeth Number</span>
         <span className="text-slate-400 mr-2.5">:</span>
         <div className="ml-5 flex items-center">
           {renderToothCrosshairOnly()}
@@ -265,7 +265,7 @@ export default function CardFront({
           </div>
           {toothNumber && (
             <div className="flex items-center text-[10px] font-semibold mt-1">
-              <span className="text-[7px] text-slate-400 uppercase tracking-wider font-bold w-[70px]">Teeth (FDI)</span>
+              <span className="text-[7px] text-slate-400 uppercase tracking-wider font-bold w-[70px]">Teeth Number</span>
               <span className="text-slate-400 mr-2">:</span>
               <div className="ml-5">
                 {renderToothCrosshairOnly()}
@@ -321,7 +321,7 @@ export default function CardFront({
             </div>
             {toothNumber && (
               <div className="flex items-center gap-2 mt-1">
-                <span className="text-[7px] text-slate-400 uppercase tracking-wider font-bold">Teeth (FDI)</span>
+                <span className="text-[7px] text-slate-400 uppercase tracking-wider font-bold">Teeth Number</span>
                 <span className="text-slate-400">:</span>
                 <div className="ml-5">
                   {renderToothCrosshairOnly()}
