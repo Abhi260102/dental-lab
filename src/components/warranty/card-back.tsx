@@ -148,7 +148,7 @@ export default function CardBack({
                   <img
                     src={signature}
                     alt="Auth Signature"
-                    className="max-h-[70%] max-w-[85%] object-contain invert dark:invert-0 filter brightness-125"
+                    className="mt-1 max-w-[85%] object-contain invert dark:invert-0 filter brightness-125"
                   />
                 ) : (
                   <div className="flex items-center gap-1 text-[8.5px] text-slate-500 font-bold uppercase tracking-wider">

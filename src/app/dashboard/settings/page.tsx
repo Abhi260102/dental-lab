@@ -3,15 +3,15 @@
 import React, { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { useProfile } from "@/context/ProfileContext";
-import { 
-  Building2, 
-  Upload, 
-  Trash2, 
-  Lock, 
-  Save, 
-  Settings, 
-  UserCircle2, 
-  Check 
+import {
+  Building2,
+  Upload,
+  Trash2,
+  Lock,
+  Save,
+  Settings,
+  UserCircle2,
+  Check
 } from "lucide-react";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -65,10 +65,10 @@ export default function SettingsPage() {
     if (!file) return;
 
     // Size limit check (e.g. 500KB to prevent heavy base64 strings in MongoDB)
-    if (file.size > 512000) {
+    if (file.size > 5120000) {
       toast({
         title: "File Too Large",
-        description: "Please upload an image smaller than 500KB.",
+        description: "Please upload an image smaller than 5KB.",
         variant: "destructive",
       });
       return;
@@ -157,7 +157,7 @@ export default function SettingsPage() {
 
   return (
     <div className="max-w-4xl mx-auto space-y-6">
-      
+
       {/* Page Header */}
       <div>
         <p className="text-xs text-slate-500 dark:text-slate-450 uppercase tracking-widest font-bold">Preferences</p>
@@ -168,7 +168,7 @@ export default function SettingsPage() {
       </div>
 
       <form onSubmit={handleSaveSettings} className="grid grid-cols-1 md:grid-cols-3 gap-6 items-start">
-        
+
         {/* Left Side: Branding assets */}
         <div className="md:col-span-1 space-y-6">
           {/* Logo Upload Card */}
@@ -194,7 +194,7 @@ export default function SettingsPage() {
                   <Building2 className="w-8 h-8 text-slate-400" />
                 )}
               </div>
-              
+
               <label className="w-full">
                 <div className="flex items-center justify-center gap-1.5 px-3 py-2 border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-900 rounded-xl cursor-pointer text-xs font-bold text-slate-600 dark:text-slate-400 select-none">
                   <Upload className="w-3.5 h-3.5" />
@@ -233,7 +233,7 @@ export default function SettingsPage() {
                   <span className="text-[10px] text-slate-400 font-semibold uppercase tracking-wider">No Signature Set</span>
                 )}
               </div>
-              
+
               <label className="w-full">
                 <div className="flex items-center justify-center gap-1.5 px-3 py-2 border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-900 rounded-xl cursor-pointer text-xs font-bold text-slate-600 dark:text-slate-400 select-none">
                   <Upload className="w-3.5 h-3.5" />
@@ -272,7 +272,7 @@ export default function SettingsPage() {
                   <span className="text-[10px] text-slate-400 font-semibold uppercase tracking-wider">Default Premium Gradient</span>
                 )}
               </div>
-              
+
               <label className="w-full">
                 <div className="flex items-center justify-center gap-1.5 px-3 py-2 border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-900 rounded-xl cursor-pointer text-xs font-bold text-slate-600 dark:text-slate-400 select-none">
                   <Upload className="w-3.5 h-3.5" />
@@ -296,7 +296,7 @@ export default function SettingsPage() {
               <CardTitle className="text-sm">Account Metadata</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4 py-6">
-              
+
               {/* Profile Details */}
               <div className="space-y-3">
                 <div className="flex items-center gap-2 border-b border-slate-100 dark:border-slate-900 pb-2 mb-2">
