@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Providers } from "@/components/providers";
+import NextTopLoader from "nextjs-toploader";
 
 const inter = Inter({
   variable: "--font-sans",
@@ -27,6 +28,17 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${inter.variable} ${geistMono.variable} h-full antialiased`} suppressHydrationWarning>
       <body className="min-h-full flex flex-col font-sans selection:bg-dent-blue-500 selection:text-white">
+        <NextTopLoader
+          color="#0f52ba"
+          initialPosition={0.08}
+          crawlSpeed={200}
+          height={3}
+          crawl={true}
+          showSpinner={false}
+          easing="ease"
+          speed={200}
+          shadow="0 0 10px #0f52ba,0 0 5px #0f52ba"
+        />
         <Providers>
           {children}
         </Providers>
