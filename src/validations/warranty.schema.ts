@@ -44,6 +44,7 @@ export const warrantyCardSchema = z.object({
   layoutBack: z.string().optional(),
   fontStyle: z.string().optional(),
   primaryColor: z.string().optional(),
+  templateId: z.string().optional().or(z.literal("")),
 });
 
 export type WarrantyCardInput = z.infer<typeof warrantyCardSchema>;

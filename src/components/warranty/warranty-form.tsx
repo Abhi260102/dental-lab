@@ -34,6 +34,7 @@ export default function WarrantyForm({
   const resetDraftCard = useWarrantyStore((state) => state.resetDraftCard);
   const [templates, setTemplates] = useState<any[]>([]);
   const [selectedTemplateId, setSelectedTemplateId] = useState<string>(initialTemplateId || "");
+  const [hasAppliedDefault, setHasAppliedDefault] = useState(false);
 
   useEffect(() => {
     if (session?.user) {
@@ -48,24 +49,48 @@ export default function WarrantyForm({
     }
   }, [session]);
 
-  // When initialTemplateId is provided (coming from templates page), apply its styles once templates load
+  // Consolidate template selection, default selection, and layout/preset applying logic
   useEffect(() => {
-    if (initialTemplateId && templates.length > 0) {
+    if (templates.length === 0) return;
+
+    // Case 1: initialTemplateId is provided (from query param or route)
+    if (initialTemplateId && !selectedTemplateId) {
       const template = templates.find((t) => t._id === initialTemplateId);
       if (template) {
+        setSelectedTemplateId(initialTemplateId);
+        setValue("templateId", initialTemplateId, { shouldValidate: true });
         setValue("cardBgImage", template.cardBgImage || "", { shouldValidate: true });
         setValue("layoutFront", template.layoutFront || "default", { shouldValidate: true });
         setValue("layoutBack", template.layoutBack || "default", { shouldValidate: true });
         setValue("fontStyle", template.fontStyle || "inter", { shouldValidate: true });
         setValue("primaryColor", template.primaryColor || "#0f52ba", { shouldValidate: true });
+        
+        // Also apply presets if we are in create mode
+        const isEditMode = !!(defaultValues && defaultValues.jobId);
+        if (!isEditMode) {
+          if (template.doctorName) setValue("doctorName", template.doctorName, { shouldValidate: true });
+          if (template.warrantyYears) setValue("warrantyYears", template.warrantyYears, { shouldValidate: true });
+          if (template.materialType) setValue("materialType", template.materialType, { shouldValidate: true });
+          if (template.notes) setValue("notes", template.notes, { shouldValidate: true });
+        }
       }
+      return;
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [initialTemplateId, templates]);
 
-  // In edit mode: auto-match the card's styling to a saved template and pre-select it in the dropdown
-  useEffect(() => {
-    if (!initialTemplateId && defaultValues && templates.length > 0 && !selectedTemplateId) {
+    // Case 2: Edit Mode (defaultValues exists and represents a saved card)
+    const isEditMode = !!(defaultValues && defaultValues.jobId);
+    if (isEditMode && !selectedTemplateId) {
+      // First, try matching by templateId
+      if (defaultValues.templateId) {
+        const template = templates.find((t) => t._id === defaultValues.templateId);
+        if (template) {
+          setSelectedTemplateId(defaultValues.templateId);
+          setValue("templateId", defaultValues.templateId, { shouldValidate: true });
+          return;
+        }
+      }
+
+      // Fallback: heuristic matching of styling parameters
       const cardLayout     = defaultValues.layoutFront  || "default";
       const cardLayoutBack = defaultValues.layoutBack   || "default";
       const cardFont       = defaultValues.fontStyle    || "inter";
@@ -80,10 +105,33 @@ export default function WarrantyForm({
 
       if (matched) {
         setSelectedTemplateId(matched._id);
+        setValue("templateId", matched._id, { shouldValidate: true });
       }
+      return;
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [templates, defaultValues]);
+
+    // Case 3: Create Mode (No initialTemplateId, No defaultValues card)
+    // We auto-select the default template (isDefault: true)
+    if (!isEditMode && !initialTemplateId && !selectedTemplateId && !hasAppliedDefault) {
+      const defaultTemplate = templates.find((t) => t.isDefault === true);
+      if (defaultTemplate) {
+        setSelectedTemplateId(defaultTemplate._id);
+        setValue("templateId", defaultTemplate._id, { shouldValidate: true });
+        setValue("cardBgImage", defaultTemplate.cardBgImage || "", { shouldValidate: true });
+        setValue("layoutFront", defaultTemplate.layoutFront || "default", { shouldValidate: true });
+        setValue("layoutBack", defaultTemplate.layoutBack || "default", { shouldValidate: true });
+        setValue("fontStyle", defaultTemplate.fontStyle || "inter", { shouldValidate: true });
+        setValue("primaryColor", defaultTemplate.primaryColor || "#0f52ba", { shouldValidate: true });
+        
+        // Preset values
+        if (defaultTemplate.doctorName) setValue("doctorName", defaultTemplate.doctorName, { shouldValidate: true });
+        if (defaultTemplate.warrantyYears) setValue("warrantyYears", defaultTemplate.warrantyYears, { shouldValidate: true });
+        if (defaultTemplate.materialType) setValue("materialType", defaultTemplate.materialType, { shouldValidate: true });
+        if (defaultTemplate.notes) setValue("notes", defaultTemplate.notes, { shouldValidate: true });
+      }
+      setHasAppliedDefault(true);
+    }
+  }, [templates, defaultValues, initialTemplateId, selectedTemplateId, hasAppliedDefault]);
 
   const getTodayDateString = () => {
     return new Date().toISOString().split("T")[0];
@@ -118,6 +166,7 @@ export default function WarrantyForm({
       layoutBack: defaultValues?.layoutBack || "default",
       fontStyle: defaultValues?.fontStyle || "inter",
       primaryColor: defaultValues?.primaryColor || "#0f52ba",
+      templateId: defaultValues?.templateId || initialTemplateId || "",
     },
   });
 
@@ -164,6 +213,7 @@ export default function WarrantyForm({
         layoutBack: defaultValues.layoutBack || "default",
         fontStyle: defaultValues.fontStyle || "inter",
         primaryColor: defaultValues.primaryColor || "#0f52ba",
+        templateId: defaultValues.templateId || "",
       };
       reset(resetValues as any);
       setDraftCard(resetValues);
@@ -212,6 +262,7 @@ export default function WarrantyForm({
             onChange={(e) => {
               const selectedId = e.target.value;
               setSelectedTemplateId(selectedId);
+              setValue("templateId", selectedId, { shouldValidate: true });
               if (!selectedId) return;
               const template = templates.find((t) => t._id === selectedId);
               if (template) {
@@ -220,6 +271,11 @@ export default function WarrantyForm({
                 setValue("layoutBack", template.layoutBack || "default", { shouldValidate: true });
                 setValue("fontStyle", template.fontStyle || "inter", { shouldValidate: true });
                 setValue("primaryColor", template.primaryColor || "#0f52ba", { shouldValidate: true });
+                // Also apply presets if user selects template
+                if (template.doctorName) setValue("doctorName", template.doctorName, { shouldValidate: true });
+                if (template.warrantyYears) setValue("warrantyYears", template.warrantyYears, { shouldValidate: true });
+                if (template.materialType) setValue("materialType", template.materialType, { shouldValidate: true });
+                if (template.notes) setValue("notes", template.notes, { shouldValidate: true });
               }
             }}
             disabled={templates.length === 0}
@@ -350,6 +406,7 @@ export default function WarrantyForm({
       <input type="hidden" {...register("fontStyle")} />
       <input type="hidden" {...register("primaryColor")} />
       <input type="hidden" {...register("cardBgImage")} />
+      <input type="hidden" {...register("templateId")} />
 
 
       {/* Submit Action */}

@@ -103,6 +103,9 @@ export async function PUT(req: Request, context: RouteContext) {
     if (updatedData.layoutBack !== undefined) card.layoutBack = updatedData.layoutBack;
     if (updatedData.fontStyle !== undefined) card.fontStyle = updatedData.fontStyle;
     if (updatedData.primaryColor !== undefined) card.primaryColor = updatedData.primaryColor;
+    if (updatedData.templateId !== undefined) {
+      card.templateId = updatedData.templateId ? (updatedData.templateId as any) : undefined;
+    }
 
     await card.save();
 

@@ -91,6 +91,11 @@ const WarrantyCardSchema = new Schema(
       ref: "User",
       required: true,
     },
+    templateId: {
+      type: Schema.Types.ObjectId,
+      ref: "Template",
+      required: false,
+    },
   },
   {
     timestamps: true,
