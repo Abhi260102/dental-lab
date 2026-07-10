@@ -102,6 +102,10 @@ const WarrantyCardSchema = new Schema(
   }
 );
 
+// Indexes to prevent memory limit errors on sort
+WarrantyCardSchema.index({ createdAt: -1 });
+WarrantyCardSchema.index({ createdBy: 1, createdAt: -1 });
+
 if (models.WarrantyCard) {
   delete (models as any).WarrantyCard;
 }

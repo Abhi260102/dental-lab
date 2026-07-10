@@ -29,6 +29,10 @@ const ActivityLogSchema = new Schema(
   }
 );
 
+// Indexes to optimize audit log sorting and querying
+ActivityLogSchema.index({ timestamp: -1 });
+ActivityLogSchema.index({ userId: 1, timestamp: -1 });
+
 const ActivityLog = models.ActivityLog || model("ActivityLog", ActivityLogSchema);
 
 export default ActivityLog;

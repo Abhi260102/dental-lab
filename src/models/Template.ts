@@ -61,6 +61,10 @@ const TemplateSchema = new Schema(
   }
 );
 
+// Indexes to optimize template lookup and sorting
+TemplateSchema.index({ isDefault: 1, createdBy: 1, updatedAt: -1 });
+TemplateSchema.index({ createdBy: 1, updatedAt: -1 });
+
 if (models.Template) {
   delete (models as any).Template;
 }
