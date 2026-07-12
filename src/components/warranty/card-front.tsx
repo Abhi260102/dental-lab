@@ -169,11 +169,11 @@ export default function CardFront({
           <div className="flex items-center gap-3">
             <div className="relative w-10 h-10 flex items-center justify-center shrink-0 rounded-full shadow-xs" style={{ backgroundColor: hexToRgba(primaryColor, 0.1), border: `1px solid ${hexToRgba(primaryColor, 0.3)}` }}>
               <div className="absolute inset-0.5 border border-dashed rounded-full" style={{ borderColor: hexToRgba(primaryColor, 0.35) }} />
-              <span className="font-mono font-black text-sm leading-none mt-[-1px]" style={{ color: primaryColor }}>{warrantyYears}</span>
+              <span className="font-mono font-black text-sm leading-none mt-[-1px]" style={{ color: primaryColor }}>{warrantyYears === 30 ? "∞" : warrantyYears}</span>
             </div>
             <div className="flex flex-col leading-none">
               <span className="text-[7.5px] uppercase tracking-wider text-slate-400 font-bold">Warranty Valid For</span>
-              <span className="text-xs font-black uppercase mt-1 tracking-wide" style={{ color: primaryColor }}>{warrantyYears} Years</span>
+              <span className="text-xs font-black uppercase mt-1 tracking-wide" style={{ color: primaryColor }}>{warrantyYears === 30 ? "Lifetime" : `${warrantyYears} Years`}</span>
             </div>
           </div>
 
@@ -280,7 +280,7 @@ export default function CardFront({
             Date: {formatDate(date)}
           </span>
           <div className="flex items-center gap-1.5 px-3 py-1 rounded-full text-[8.5px] font-bold" style={{ backgroundColor: hexToRgba(primaryColor, 0.1), border: `1px solid ${hexToRgba(primaryColor, 0.25)}`, color: primaryColor }}>
-            <span>{warrantyYears} Years Warranty</span>
+            <span>{warrantyYears === 30 ? "Lifetime Warranty" : `${warrantyYears} Years Warranty`}</span>
           </div>
         </div>
       </>
@@ -335,7 +335,7 @@ export default function CardFront({
         <div className="flex justify-center items-center gap-2 mb-2.5 z-10">
           <Award className="w-5 h-5 shrink-0" style={{ color: primaryColor }} />
           <span className="text-[9px] uppercase font-black tracking-widest" style={{ color: primaryColor }}>
-            {warrantyYears} YEARS COVER
+            {warrantyYears === 30 ? "LIFETIME COVER" : `${warrantyYears} YEARS COVER`}
           </span>
         </div>
       </>

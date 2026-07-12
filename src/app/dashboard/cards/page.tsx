@@ -213,6 +213,8 @@ export default function CardsPage() {
 
   const materialOptions = [
     { value: "", label: "All Materials" },
+    { value: "Orizin Premium Zircad", label: "Orizin Premium Zircad" },
+    { value: "Orizin Premium Multilayer Zircad", label: "Orizin Premium Multilayer Zircad" },
     { value: "Zirconia Premium", label: "Zirconia Premium" },
     { value: "Zirconia Multi-layer", label: "Zirconia Multi-layer" },
     { value: "IPS e.max Press", label: "IPS e.max Press" },
@@ -305,6 +307,7 @@ export default function CardsPage() {
                   { value: "10", label: "10 Years" },
                   { value: "15", label: "15 Years" },
                   { value: "20", label: "20 Years" },
+                  { value: "30", label: "Lifetime Cover" },
                 ]}
                 value={yearsFilter}
                 onChange={(e) => {
@@ -416,7 +419,7 @@ export default function CardsPage() {
                         </td>
                         <td className="p-4">
                           <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
-                            {card.warrantyYears} Yrs
+                            {card.warrantyYears === 30 ? "Lifetime" : `${card.warrantyYears} Yrs`}
                           </span>
                         </td>
                         <td className="p-4">
@@ -669,7 +672,7 @@ function MiniWarrantyCard({ card, onPreview, onDelete, profile, session }: { car
               </div>
             </div>
             <span className="px-2.5 py-0.5 rounded-full text-[9px] font-bold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
-              {card.warrantyYears} Yrs
+              {card.warrantyYears === 30 ? "Lifetime" : `${card.warrantyYears} Yrs`}
             </span>
           </div>
 

@@ -64,7 +64,7 @@ export default function WarrantyForm({
         setValue("layoutBack", template.layoutBack || "default", { shouldValidate: true });
         setValue("fontStyle", template.fontStyle || "inter", { shouldValidate: true });
         setValue("primaryColor", template.primaryColor || "#0f52ba", { shouldValidate: true });
-        
+
         // Also apply presets if we are in create mode
         const isEditMode = !!(defaultValues && defaultValues.jobId);
         if (!isEditMode) {
@@ -91,15 +91,15 @@ export default function WarrantyForm({
       }
 
       // Fallback: heuristic matching of styling parameters
-      const cardLayout     = defaultValues.layoutFront  || "default";
-      const cardLayoutBack = defaultValues.layoutBack   || "default";
-      const cardFont       = defaultValues.fontStyle    || "inter";
-      const cardColor      = (defaultValues.primaryColor || "#0f52ba").toLowerCase();
+      const cardLayout = defaultValues.layoutFront || "default";
+      const cardLayoutBack = defaultValues.layoutBack || "default";
+      const cardFont = defaultValues.fontStyle || "inter";
+      const cardColor = (defaultValues.primaryColor || "#0f52ba").toLowerCase();
 
       const matched = templates.find((t) =>
-        (t.layoutFront  || "default") === cardLayout &&
-        (t.layoutBack   || "default") === cardLayoutBack &&
-        (t.fontStyle    || "inter")   === cardFont &&
+        (t.layoutFront || "default") === cardLayout &&
+        (t.layoutBack || "default") === cardLayoutBack &&
+        (t.fontStyle || "inter") === cardFont &&
         (t.primaryColor || "#0f52ba").toLowerCase() === cardColor
       );
 
@@ -122,7 +122,7 @@ export default function WarrantyForm({
         setValue("layoutBack", defaultTemplate.layoutBack || "default", { shouldValidate: true });
         setValue("fontStyle", defaultTemplate.fontStyle || "inter", { shouldValidate: true });
         setValue("primaryColor", defaultTemplate.primaryColor || "#0f52ba", { shouldValidate: true });
-        
+
         // Preset values
         if (defaultTemplate.doctorName) setValue("doctorName", defaultTemplate.doctorName, { shouldValidate: true });
         if (defaultTemplate.warrantyYears) setValue("warrantyYears", defaultTemplate.warrantyYears, { shouldValidate: true });
@@ -155,8 +155,8 @@ export default function WarrantyForm({
       toothNumber: defaultValues?.toothNumber || "",
       warrantyYears: defaultValues?.warrantyYears || 5,
       materialType: defaultValues?.materialType || "Zirconia Premium",
-      date: defaultValues?.date 
-        ? new Date(defaultValues.date).toISOString().split("T")[0] 
+      date: defaultValues?.date
+        ? new Date(defaultValues.date).toISOString().split("T")[0]
         : getTodayDateString(),
       notes: defaultValues?.notes || "",
       signature: defaultValues?.signature || profile?.signature || session?.user?.signature || "",
@@ -203,8 +203,8 @@ export default function WarrantyForm({
     if (defaultValues) {
       const resetValues = {
         ...defaultValues,
-        date: defaultValues.date 
-          ? new Date(defaultValues.date).toISOString().split("T")[0] 
+        date: defaultValues.date
+          ? new Date(defaultValues.date).toISOString().split("T")[0]
           : getTodayDateString(),
         signature: defaultValues.signature || profile?.signature || session?.user?.signature || "",
         labLogo: defaultValues.labLogo || profile?.labLogo || session?.user?.labLogo || "",
@@ -239,6 +239,8 @@ export default function WarrantyForm({
     { value: "CERCON LT.M", label: "CERCON LT.M" },
     { value: "ORIZIN ZIRCAD PRIME", label: "ORIZIN ZIRCAD PRIME" },
     { value: "ORIZIN ZIRCAD PRIME ESTHETIC", label: "ORIZIN ZIRCAD PRIME ESTHETIC" },
+    { value: "ORIZIN PREMIUM ZIRCAD", label: "ORIZIN PREMIUM ZIRCAD" },
+    { value: "ORIZIN PREMIUM MULTILAYER ZIRCAD", label: "ORIZIN PREMIUM MULTILAYER ZIRCAD" },
     { value: "Zirconia Premium", label: "Zirconia Premium (High Translucent)" },
     { value: "Zirconia Multi-layer", label: "Zirconia Multi-layer (Ultra Aesthetic)" },
     { value: "IPS e.max Press", label: "IPS e.max Press (Lithium Disilicate)" },
@@ -377,7 +379,7 @@ export default function WarrantyForm({
             { value: 10, label: "10 Years Limit" },
             { value: 15, label: "15 Years Limit" },
             { value: 20, label: "20 Years Limit" },
-            { value: 30, label: "30 Years (Lifetime Cover)" },
+            { value: 30, label: "Lifetime Cover" },
           ]}
           error={errors.warrantyYears?.message}
           {...register("warrantyYears", { valueAsNumber: true })}

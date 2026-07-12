@@ -241,7 +241,7 @@ export default async function VerifyPage({ params }: VerifyPageProps) {
                     <div className="flex flex-col border-l-2 border-amber-500/30 pl-3.5 transition-colors duration-300 group-hover:border-amber-500/60">
                       <span className="text-[9px] uppercase font-black text-slate-400 dark:text-slate-500 tracking-wider block mb-1">Warranty Term Expiry</span>
                       <div className="px-3 py-1 rounded-full text-xs font-bold bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/25 inline-flex items-center w-fit shadow-xs">
-                        {expiryDateStr}
+                        {card.warrantyYears === 30 ? "Lifetime Cover" : expiryDateStr}
                       </div>
                     </div>
                   </div>
